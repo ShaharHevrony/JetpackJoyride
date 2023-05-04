@@ -1,8 +1,9 @@
 #include "ResourcesManager.h"
 
 ResourcesManager::ResourcesManager() {
+
     sf::Texture titleTex;
-    if (!m_titleTex.loadFromFile(PATH + "Title.png")) {
+    if (!titleTex.loadFromFile(PATH + "Title.png")) {
         //TODO: throw
     }
     m_titleTex = titleTex;

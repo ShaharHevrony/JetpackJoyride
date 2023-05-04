@@ -17,6 +17,23 @@ void Controller::create() {
 
 void Controller::run() {
     while (m_window.isOpen()){
+        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+            switch (event.type) {
+            case sf::Event::Closed: {
+                m_window.close();
+                return;
+            }
+                                  //if the user clicks on the window
+            case sf::Event::MouseButtonReleased: {
+               // m_music.stop();
+                //handleMouseButton(event.mouseButton);
+
+            }
+            case sf::Event::MouseMoved: {
+                //handleMouseMoved(event.mouseMove);
+            }
+            }
+        }
         create();
     }
 }
