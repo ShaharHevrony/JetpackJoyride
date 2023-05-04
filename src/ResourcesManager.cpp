@@ -10,7 +10,7 @@ ResourcesManager::ResourcesManager() {
     m_titleSpr.setTexture(m_titleTex);
 
     sf::Texture playerTex;
-    if (!playerTex.loadFromFile(PATH + "Player.png")) {
+    if (!playerTex.loadFromFile(PATH + "barryDeathElec.png")) {
         //TODO: throw
     }
     m_playerTex = playerTex;

@@ -10,7 +10,7 @@ Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switch
     m_objRect.height = texture->getSize().y / float(imageCount.y);
 }
 
-void Animation::Update(int row, bool reverseDirection, float timeDiff) {
+void Animation::Update(int row, float timeDiff) {
     m_currentImage.y = row;
     m_totalTime += timeDiff;
 
@@ -23,12 +23,15 @@ void Animation::Update(int row, bool reverseDirection, float timeDiff) {
         }
     }
 
+    
     m_objRect.top = m_currentImage.y * m_objRect.height;
-    m_objRect.left = (m_currentImage.x + reverseDirection) * abs(m_objRect.width);
-    if(reverseDirection){
-        m_objRect.width = -abs(m_objRect.width);
-    } else {
-        m_objRect.width = abs(m_objRect.width);
-    }
-    //m_objRect.width = (reverseDirection ? -1 : +1)* abs(m_objRect.width);
+    m_objRect.left = m_currentImage.x * m_objRect.width;
+    //if(reverseDirection){
+      //  m_objRect.width = -abs(m_objRect.width);
+    //} else {
+      //  m_objRect.width = abs(m_objRect.width);
+    //}
+   // m_objRect.width = (reverseDirection ? -1 : +1)* abs(m_objRect.width);
 }
+
+
