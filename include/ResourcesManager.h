@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 
 #include "Values.h"
+#include "Exeption.h"
 
 class ResourcesManager{
 public:
@@ -10,7 +11,8 @@ public:
     sf::Sprite getTitle() const;
     sf::Sprite getPlayerSpr() const;
     sf::Texture getPlayerTex() const;
-
+    sf::Sprite getButtonsSpr(int index) const;
+    sf::Texture getButtonsTex(int index) const;
 private:
     ResourcesManager();
 
@@ -19,4 +21,7 @@ private:
 
     sf::Texture m_playerTex;
     sf::Sprite m_playerSpr;
+
+    sf::Texture m_buttonsTex[4];
+    sf::Sprite m_buttonsSpr[4];
 };

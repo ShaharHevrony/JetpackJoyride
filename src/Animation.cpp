@@ -1,8 +1,7 @@
-
 #include "Animation.h"
 
 Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switchTime)
-    :m_imageCount(imageCount), m_switchTime(switchTime){
+        :m_imageCount(imageCount), m_switchTime(switchTime){
     m_totalTime = 0.f;
     m_currentImage.x = 0;
 
@@ -23,15 +22,14 @@ void Animation::Update(int row, float timeDiff) {
         }
     }
 
-    
+
     m_objRect.top = m_currentImage.y * m_objRect.height;
     m_objRect.left = m_currentImage.x * m_objRect.width;
     //if(reverseDirection){
-      //  m_objRect.width = -abs(m_objRect.width);
+    //  m_objRect.width = -abs(m_objRect.width);
     //} else {
-      //  m_objRect.width = abs(m_objRect.width);
+    //  m_objRect.width = abs(m_objRect.width);
     //}
-   // m_objRect.width = (reverseDirection ? -1 : +1)* abs(m_objRect.width);
+    // m_objRect.width = (reverseDirection ? -1 : +1)* abs(m_objRect.width);
 }
-
 
