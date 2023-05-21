@@ -54,3 +54,7 @@ sf::Sprite ResourcesManager::getButtonsSpr(int index) const {
 sf::Texture ResourcesManager::getButtonsTex(int index) const {
     return m_buttonsTex[index];
 }
+
+sf::Texture& ResourcesManager::getPlayerTestTex() const {
+    return *m_playerTestTex;
+}

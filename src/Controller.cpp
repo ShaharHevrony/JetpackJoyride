@@ -33,23 +33,10 @@ void Controller::create() {
         m_buttonSpr.push_back(tempSpr);
         m_window.draw(m_buttonSpr[index]);
     }
-
-    //sf::Sprite player;
-    //player = ResourcesManager::inctance().getPlayerSpr();
-    //m_window.draw(player);
     m_window.display();
 }
 
 void Controller::run() {
-    //sf::Texture animationTexture = ResourcesManager::inctance().getPlayerTex();
-    //sf::Sprite animationSprite = ResourcesManager::inctance().getPlayerSpr();
-    //Animation animation(&animationTexture, sf::Vector2u(4, 1), 0.3f);
-    //float timeDiff = 0.f;
-    //sf::Clock clock;
-    //sf::View view (sf::Vector2f(0.f,0.f), sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
-    //view.setCenter(m_titleSpr.getPosition());
-    //m_window.setView(view);
-
     while (m_window.isOpen()){
         //timeDiff = clock.restart().asSeconds();
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
@@ -68,9 +55,6 @@ void Controller::run() {
                 }
             }
         }
-        //animation.Update(0, timeDiff);
-        //animationSprite.setTextureRect(animation.m_objRect);
-        //m_window.draw(animationSprite);
         create();
     }
 }
