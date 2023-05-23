@@ -5,8 +5,8 @@ Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switch
     m_totalTime = 0.f;
     m_currentImage.x = 0;
 
-    m_objRect.width  = texture->getSize().x / float(imageCount.x);
-    m_objRect.height = texture->getSize().y / float(imageCount.y);
+    m_objRec.width  = texture->getSize().x / float(imageCount.x);
+    m_objRec.height = texture->getSize().y / float(imageCount.y);
 }
 
 void Animation::Update(int row, float timeDiff) {
@@ -16,20 +16,14 @@ void Animation::Update(int row, float timeDiff) {
     if (m_totalTime >= m_switchTime) {
         m_totalTime -= m_switchTime;
         m_currentImage.x++;
-
         if (m_currentImage.x >= m_imageCount.x) {
             m_currentImage.x = 0;
         }
     }
-
-
-    m_objRect.top = m_currentImage.y * m_objRect.height;
-    m_objRect.left = m_currentImage.x * m_objRect.width;
-    //if(reverseDirection){
-    //  m_objRect.width = -abs(m_objRect.width);
-    //} else {
-    //  m_objRect.width = abs(m_objRect.width);
-    //}
-    // m_objRect.width = (reverseDirection ? -1 : +1)* abs(m_objRect.width);
+    m_objRec.top = m_currentImage.y * m_objRec.height;
+    m_objRec.left = m_currentImage.x * m_objRec.width;
 }
 
+sf::IntRect Animation::getObjRec() {
+    return m_objRec;
+}

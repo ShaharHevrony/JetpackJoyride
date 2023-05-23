@@ -1,12 +1,14 @@
 #pragma once
-#include "Objects/Player.h"
+#include "Player.h"
+
 class PlayGame {
 public:
     PlayGame(sf::RenderWindow& window);
     ~PlayGame(){}
     void create();
     void run();
-    //void killBarry();
+
+    static sf::Clock gameTime;
 
 private:
     sf::RenderWindow* m_window;

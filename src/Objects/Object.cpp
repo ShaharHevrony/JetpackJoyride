@@ -1,6 +1,9 @@
-#include "Objects/Object.h"
+#include "Object.h"
+#include "Values.h"
 
-Object::Object(sf::Texture *texture,const sf::Vector2f& position) {
+sf::Clock Object::playerTime;
+
+Object::Object(sf::Texture* texture, const sf::Vector2f& position): m_animation(texture, sf::Vector2u(4, 1), 0.18f) {
     if(texture != nullptr){
         m_object.setTexture(*texture);
     }
@@ -9,12 +12,8 @@ Object::Object(sf::Texture *texture,const sf::Vector2f& position) {
 
 Object::~Object() {}
 
-void Object::moveObj(sf::Vector2f direction, float time, sf::Vector2f playerPosition) {
-    m_object.move(direction*time*120.f);
-}
-
-sf::Sprite Object::getObject() const {
-    return m_object;
+sf::Sprite& Object::getObject() const {
+    return (sf::Sprite&)m_object;
 }
 
 void Object::setObject(sf::Sprite sprite) {

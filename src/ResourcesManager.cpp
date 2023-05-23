@@ -10,12 +10,12 @@ ResourcesManager::ResourcesManager() {
     m_titleTex = titleTex;
     m_titleSpr.setTexture(m_titleTex);
 
-    sf::Texture playerTex;
-    if (!playerTex.loadFromFile(PATH + "barryDeathElec.png")) {
+    sf::Texture* playerTex = new sf::Texture();
+    if (!playerTex->loadFromFile(PATH + "BarryFlies.png")) {
         throw OpenTextureFailed();
     }
     m_playerTex = playerTex;
-    m_playerSpr.setTexture(m_playerTex);
+    m_playerSpr.setTexture(*m_playerTex);
 
 
     for(int index = 0; index < 4; index++){
@@ -26,7 +26,7 @@ ResourcesManager::ResourcesManager() {
     }
 }
 
-ResourcesManager &ResourcesManager::inctance() {
+ResourcesManager &ResourcesManager::instance() {
     try{
         static ResourcesManager m_instance;
         return m_instance;
@@ -43,7 +43,7 @@ sf::Sprite ResourcesManager::getPlayerSpr() const {
     return m_playerSpr;
 }
 
-sf::Texture ResourcesManager::getPlayerTex() const{
+sf::Texture* ResourcesManager::getPlayerTex() const{
     return m_playerTex;
 }
 
@@ -53,8 +53,4 @@ sf::Sprite ResourcesManager::getButtonsSpr(int index) const {
 
 sf::Texture ResourcesManager::getButtonsTex(int index) const {
     return m_buttonsTex[index];
-}
-
-sf::Texture& ResourcesManager::getPlayerTestTex() const {
-    return *m_playerTestTex;
 }

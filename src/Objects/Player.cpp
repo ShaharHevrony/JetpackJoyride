@@ -1,16 +1,45 @@
-#include "Objects/Player.h"
+#include "Player.h"
+#include "PlayGame.h"
+#include <iostream>
 
-Player::Player(sf::Texture *texture,const sf::Vector2f &position): Object(texture, position){}
+Player::Player(sf::Texture* texture, const sf::Vector2f &position) :Object(texture, position) {}
 
 Player::~Player() {}
 
-void Player::move(float time, sf::Vector2f position) {
+void Player::move(float time) {
     sf::Vector2f direction(0,0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         direction.y = -1;
+        direction.x = 0;
     } else {
         direction.y = 1;
+        direction.x = 0;
     }
-    direction.x = 0;
-    moveObj(direction, time, position);
+
+    if(m_object.getPosition().y < 800 && m_object.getPosition().y > 50) {
+        if(direction.y == -1){
+            m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+        } else {
+            m_object.setTextureRect(sf::IntRect(124.75*2,0,124.75,171));
+        }
+        m_object.move(direction*time*SPEED);
+    } else if(m_object.getPosition().y >= 800 && direction.y == -1) {
+        m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+        m_object.move(direction*time*SPEED);
+    } else if(m_object.getPosition().y <= 50 && direction.y == 1) {
+        m_object.setTextureRect(sf::IntRect(124.75*2,0,124.75,171));
+        m_object.move(direction*time*SPEED);
+    } else {
+        if(m_object.getPosition().y >= 800) {
+            animate();
+        } else {
+            m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+        }
+    }
+}
+
+void Player::animate() {
+    float timeDiff = Object::playerTime.restart().asSeconds();
+    m_animation.Update(0, timeDiff);
+    m_object.setTextureRect(m_animation.getObjRec());
 }

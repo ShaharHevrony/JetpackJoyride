@@ -18,14 +18,14 @@ Controller::~Controller() {}
 
 void Controller::create() {
     m_window.clear(sf::Color(150,150,150));
-    m_titleSpr = ResourcesManager::inctance().getTitle();
+    m_titleSpr = ResourcesManager::instance().getTitle();
     m_titleSpr.setPosition(SCREEN_CENTER, 230);
     m_titleSpr.setOrigin(TITLE_WIDTH/2, TITLE_HEIGHT/2);
     m_window.draw(m_titleSpr);
 
     sf::Sprite tempSpr;
     for(int index = 0; index < 4; index++){
-        m_buttonsTex[index] = ResourcesManager::inctance().getButtonsTex(index);
+        m_buttonsTex[index] = ResourcesManager::instance().getButtonsTex(index);
         sf::Texture* tempTex = &m_buttonsTex[index];
         tempSpr.setTexture(*tempTex);
         tempSpr.setPosition(SCREEN_CENTER, index * MENU_GAP + MENU_START_ROW);
@@ -38,14 +38,13 @@ void Controller::create() {
 
 void Controller::run() {
     while (m_window.isOpen()){
-        //timeDiff = clock.restart().asSeconds();
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed: {
                     m_window.close();
                     return;
                 }
-                    //if the user clicks on the window
+                //if the user clicks on the window
                 case sf::Event::MouseButtonReleased: {
                     handleMouseButton(event.mouseButton);
 
@@ -68,22 +67,22 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
         if (m_buttonSpr[index].getGlobalBounds().contains(location)) {
             switch (index) {
                 //if click on eraser
-                case playButton: {
+                case PlayButton: {
                     PlayGame* play = new PlayGame(m_window);
                     play->run();
                     break;
                 }
-                case shopButton: {
+                case ShopButton: {
                     Shop shop = Shop();
                     shop.run();
                     break;
                 }
-                case settingButton:{
+                case SettingButton:{
                     Setting setting = Setting();
                     setting.run();
                     break;
                 }
-                case helpButton:{
+                case HelpButton:{
                     Help help = Help();
                     help.run();
                     break;
