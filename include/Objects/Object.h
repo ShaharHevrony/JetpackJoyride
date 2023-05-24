@@ -3,7 +3,7 @@
 #include "ResourcesManager.h"
 #include "Animation.h"
 
-class PlayGame;
+class Player;
 
 class Object {
 public:

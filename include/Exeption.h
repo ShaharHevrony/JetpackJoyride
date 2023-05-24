@@ -7,3 +7,24 @@ public:
         return "Opening the texture failed\n";
     }
 };
+
+class OpenFailed : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "The file is exist, but can't open this file.\n";
+    }
+};
+
+class FileNotExist : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "The file is not exist.\n";
+    }
+};
+
+class AlreadyOpen : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "The file is already open.\n";
+    }
+};

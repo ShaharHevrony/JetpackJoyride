@@ -12,15 +12,13 @@ public:
     sf::Sprite getPlayerSpr() const;
     sf::Texture* getPlayerTex() const;
     sf::Sprite getButtonsSpr(int index) const;
+    sf::Texture* getCoinTex() const;
+    sf::Sprite getCoinSpr() const;
     sf::Texture getButtonsTex(int index) const;
-    sf::Sprite getBachground() const;
-    sf::Texture getBachgroundTex() const;
-    sf::Sprite getBachgroundStartSpr() const;
-    sf::Texture getBachgroundStartTex() const;
-
-
-
-
+    sf::Sprite getBackground() const;
+    sf::Texture getBackgroundTex() const;
+    sf::Sprite getBackgroundStartSpr() const;
+    sf::Texture getBackgroundStartTex() const;
 
 private:
     ResourcesManager();
@@ -39,4 +37,6 @@ private:
     sf::Texture m_backgroundStartTex;
     sf::Sprite m_backgroundStartSpr;
 
+    sf::Texture* m_coinTex;
+    sf::Sprite m_coinSpr;
 };

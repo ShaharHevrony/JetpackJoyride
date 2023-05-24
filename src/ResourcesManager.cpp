@@ -17,6 +17,12 @@ ResourcesManager::ResourcesManager() {
     m_playerTex = playerTex;
     m_playerSpr.setTexture(*m_playerTex);
 
+    sf::Texture* coinTex = new sf::Texture();
+    if (!coinTex->loadFromFile(PATH + "coin.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_coinTex = coinTex;
+    m_coinSpr.setTexture(*m_coinTex);
 
     for(int index = 0; index < 4; index++){
         if(!m_buttonsTex[index].loadFromFile(PATH + buttons[index])){
@@ -73,22 +79,28 @@ sf::Texture ResourcesManager::getButtonsTex(int index) const {
     return m_buttonsTex[index];
 }
 
-sf::Sprite ResourcesManager::getBachground() const
-{
+sf::Sprite ResourcesManager::getBackground() const{
     return m_backgroundSpr;
 }
 
-sf::Texture ResourcesManager::getBachgroundTex() const
-{
+sf::Texture ResourcesManager::getBackgroundTex() const{
     return m_backgroundTex;
 }
 
-sf::Sprite ResourcesManager::getBachgroundStartSpr() const
-{
+sf::Sprite ResourcesManager::getBackgroundStartSpr() const{
     return m_backgroundStartSpr;
 }
 
-sf::Texture ResourcesManager::getBachgroundStartTex() const
-{
+sf::Texture ResourcesManager::getBackgroundStartTex() const{
     return m_backgroundStartTex;
+}
+
+sf::Sprite ResourcesManager::getCoinSpr() const
+{
+    return m_coinSpr;
+}
+
+sf::Texture* ResourcesManager::getCoinTex() const
+{
+    return m_coinTex;
 }

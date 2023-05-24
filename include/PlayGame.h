@@ -1,5 +1,7 @@
 #pragma once
 #include "Player.h"
+#include "TempObj.h"
+#include "Coins.h"
 
 class PlayGame {
 public:
@@ -8,7 +10,8 @@ public:
     void create();
     void run();
     void draw();
-
+    void readObjectFile();
+    void writeObjectFile();
 
     static sf::Clock gameTime;
 
@@ -19,8 +22,11 @@ private:
     sf::Sprite m_backgroundStartSpr;
     sf::RenderWindow* m_window;
     std::shared_ptr<Player> m_player;
-    float m_wigthBackSize;
-    //bool m_firsTime = true;
+    std::shared_ptr<Coins> m_coin;
+    float m_widthBackSize;
     float m_loopTime = 0;
     bool m_start = true;
+
+    std::vector<std::string> m_map;
+    std::vector<std::vector<std::shared_ptr<Coins>>> m_objectMap;
 };
