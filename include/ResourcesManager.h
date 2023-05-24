@@ -13,6 +13,14 @@ public:
     sf::Texture* getPlayerTex() const;
     sf::Sprite getButtonsSpr(int index) const;
     sf::Texture getButtonsTex(int index) const;
+    sf::Sprite getBachground() const;
+    sf::Texture getBachgroundTex() const;
+    sf::Sprite getBachgroundStartSpr() const;
+    sf::Texture getBachgroundStartTex() const;
+
+
+
+
 
 private:
     ResourcesManager();
@@ -27,4 +35,8 @@ private:
 
     sf::Texture m_buttonsTex[4];
     sf::Sprite m_buttonsSpr[4];
+
+    sf::Texture m_backgroundStartTex;
+    sf::Sprite m_backgroundStartSpr;
+
 };

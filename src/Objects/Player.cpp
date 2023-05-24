@@ -15,24 +15,24 @@ void Player::move(float time) {
         direction.x = 0;
     }
 
-    if(m_object.getPosition().y < 800 && m_object.getPosition().y > 50) {
+    if(m_object.getPosition().y < 650 && m_object.getPosition().y > 70) {
         if(direction.y == -1){
-            m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+            m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
         } else {
-            m_object.setTextureRect(sf::IntRect(124.75*2,0,124.75,171));
+            m_object.setTextureRect(sf::IntRect(110*2,0,110,150));
         }
         m_object.move(direction*time*SPEED);
-    } else if(m_object.getPosition().y >= 800 && direction.y == -1) {
-        m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+    } else if(m_object.getPosition().y >= 650 && direction.y == -1) {
+        m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
         m_object.move(direction*time*SPEED);
-    } else if(m_object.getPosition().y <= 50 && direction.y == 1) {
-        m_object.setTextureRect(sf::IntRect(124.75*2,0,124.75,171));
+    } else if(m_object.getPosition().y <= 70 && direction.y == 1) {
+        m_object.setTextureRect(sf::IntRect(110*2,0,110,150));
         m_object.move(direction*time*SPEED);
     } else {
-        if(m_object.getPosition().y >= 800) {
+        if(m_object.getPosition().y >= 650) {
             animate();
         } else {
-            m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
+            m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
         }
     }
 }

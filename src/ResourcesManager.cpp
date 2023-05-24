@@ -24,6 +24,20 @@ ResourcesManager::ResourcesManager() {
         }
         m_buttonsSpr[index].setTexture(m_buttonsTex[index]);
     }
+
+    sf::Texture backgroundTex;
+    if (!backgroundTex.loadFromFile(PATH + "Hall.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_backgroundTex = backgroundTex;
+    m_backgroundSpr.setTexture(m_backgroundTex);
+
+    sf::Texture backgroundStartTex;
+    if (!backgroundStartTex.loadFromFile(PATH + "StartOfHall.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_backgroundStartTex = backgroundStartTex;
+    m_backgroundStartSpr.setTexture(m_backgroundStartTex);
 }
 
 ResourcesManager &ResourcesManager::instance() {
@@ -57,4 +71,24 @@ sf::Sprite ResourcesManager::getButtonsSpr(int index) const {
 
 sf::Texture ResourcesManager::getButtonsTex(int index) const {
     return m_buttonsTex[index];
+}
+
+sf::Sprite ResourcesManager::getBachground() const
+{
+    return m_backgroundSpr;
+}
+
+sf::Texture ResourcesManager::getBachgroundTex() const
+{
+    return m_backgroundTex;
+}
+
+sf::Sprite ResourcesManager::getBachgroundStartSpr() const
+{
+    return m_backgroundStartSpr;
+}
+
+sf::Texture ResourcesManager::getBachgroundStartTex() const
+{
+    return m_backgroundStartTex;
 }

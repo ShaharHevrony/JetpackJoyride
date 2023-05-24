@@ -11,7 +11,7 @@ enum Buttons{
     HelpButton,
 };
 
-const int WINDOW_HEIGHT   = 1068;
+const int WINDOW_HEIGHT   = 920;
 const int WINDOW_WIDTH    = 1898;
 const int SCREEN_CENTER   = WINDOW_WIDTH / 2;
 const int MENU_START_ROW  = WINDOW_HEIGHT / 2;
