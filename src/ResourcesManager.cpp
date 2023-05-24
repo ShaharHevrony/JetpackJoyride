@@ -11,7 +11,7 @@ ResourcesManager::ResourcesManager() {
     m_titleSpr.setTexture(m_titleTex);
 
     sf::Texture* playerTex = new sf::Texture();
-    if (!playerTex->loadFromFile(PATH + "BarryFlies.png")) {
+    if (!playerTex->loadFromFile(PATH + "Player.png")) {
         //throw OpenTextureFailed();
     }
     m_playerTex = playerTex;
