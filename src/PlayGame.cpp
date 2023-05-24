@@ -8,7 +8,7 @@ sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
     //writeObjectFile();
-    readObjectFile();
+    //readObjectFile();
     create();
 }
 
@@ -97,7 +97,7 @@ void PlayGame::draw() {
     m_coin->move(time);
     m_window->draw(m_coin->getObject());
     m_window->draw(m_player->getObject());
-
+    /*
     for(int row = 0; row < m_objectMap.size(); row++) {
         for(int col = 0; col < m_objectMap[row].size(); col++) {
             if(m_objectMap[col][row] != nullptr){
@@ -110,6 +110,7 @@ void PlayGame::draw() {
             }
         }
     }
+     */
     m_window->display();
 }
 
