@@ -5,5 +5,5 @@ Coins::Coins(sf::Texture* texture, const sf::Vector2f &position): Object(texture
 Coins::~Coins(){}
 
 void Coins::move(float time) {
-
+	animate();
 }

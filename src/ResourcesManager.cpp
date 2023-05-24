@@ -38,6 +38,14 @@ ResourcesManager::ResourcesManager() {
     }
     m_backgroundStartTex = backgroundStartTex;
     m_backgroundStartSpr.setTexture(m_backgroundStartTex);
+
+    sf::Texture* coinTex = new sf::Texture();
+    if (!coinTex->loadFromFile(PATH + "coin.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_coinTex = coinTex;
+    m_coinSpr.setTexture(*m_coinTex);
+
 }
 
 ResourcesManager &ResourcesManager::instance() {
@@ -91,4 +99,14 @@ sf::Sprite ResourcesManager::getBachgroundStartSpr() const
 sf::Texture ResourcesManager::getBachgroundStartTex() const
 {
     return m_backgroundStartTex;
+}
+
+sf::Sprite ResourcesManager::getCoinSpr() const
+{
+    return m_coinSpr;
+}
+
+sf::Texture* ResourcesManager::getCoinTex() const
+{
+    return m_coinTex;
 }

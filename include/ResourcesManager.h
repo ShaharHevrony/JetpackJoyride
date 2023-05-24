@@ -17,7 +17,8 @@ public:
     sf::Texture getBachgroundTex() const;
     sf::Sprite getBachgroundStartSpr() const;
     sf::Texture getBachgroundStartTex() const;
-
+    sf::Sprite getCoinSpr() const;
+    sf::Texture* getCoinTex() const;
 
 
 
@@ -38,5 +39,8 @@ private:
 
     sf::Texture m_backgroundStartTex;
     sf::Sprite m_backgroundStartSpr;
+
+    sf::Texture* m_coinTex;
+    sf::Sprite m_coinSpr;
 
 };

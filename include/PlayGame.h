@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Coins.h"
 
 class PlayGame {
 public:
@@ -19,6 +20,7 @@ private:
     sf::Sprite m_backgroundStartSpr;
     sf::RenderWindow* m_window;
     std::shared_ptr<Player> m_player;
+    std::shared_ptr<Coins> m_coin;
     float m_wigthBackSize;
     //bool m_firsTime = true;
     float m_loopTime = 0;

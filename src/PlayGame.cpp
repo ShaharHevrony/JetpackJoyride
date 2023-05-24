@@ -13,8 +13,10 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 void PlayGame::create(){
     m_backgroundX = 0.0f;
 
-    sf::Vector2f position(250,650);
-    m_player = std::make_shared<Player>(ResourcesManager::instance().getPlayerTex(), position);
+    sf::Vector2f PlayetPosition(250,650);
+    m_player = std::make_shared<Player>(ResourcesManager::instance().getPlayerTex(), PlayetPosition);
+    sf::Vector2f testCoinPosition(700, 650);
+    m_coin = std::make_shared<Coins>(ResourcesManager::instance().getCoinTex(), testCoinPosition);
     m_wigthBackSize = ResourcesManager::instance().getBachgroundTex().getSize().x;
     m_window->clear();
     m_backgroundStartSpr = ResourcesManager::instance().getBachgroundStartSpr();
@@ -59,12 +61,14 @@ void PlayGame::run() {
         variableChanged = true;
     }
 
+
         //update the speed of the background move
         m_backgroundX -= 1.0f + speedTime;
         //if the size of m_backgroundX is biger than the wigth of the backround 
         if ((m_backgroundX <= -(m_wigthBackSize)) ) {
             if (m_start) {
                 m_backgroundStartSpr = ResourcesManager::instance().getBachground();
+                m_backgroundX = 0.0f;
             }
             m_backgroundX = 0.0f;
             m_start = false;
@@ -83,15 +87,18 @@ void PlayGame::draw()
             m_background[i].setPosition(m_backgroundX + i * ResourcesManager::instance().getBachgroundTex().getSize().x, 0);
             m_window->draw(m_background[i]);
         }else {
-            m_backgroundStartSpr.setPosition(m_backgroundX, 0);
+            m_backgroundStartSpr.setPosition(m_backgroundX  , 0);
             m_window->draw(m_backgroundStartSpr);
         }
 
     }
 
     m_player->animate();
+    m_coin->animate();
     float time = gameTime.restart().asSeconds();
     m_player->move(time);
+    m_coin->move(time);
+    m_window->draw(m_coin->getObject());
     m_window->draw(m_player->getObject());
     m_window->display();
 }
