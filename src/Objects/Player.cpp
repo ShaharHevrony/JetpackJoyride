@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(sf::Texture texture, const sf::Vector2f &position) :Object(texture, position) {}
+Player::Player(sf::Texture* texture, const sf::Vector2f &position) :Object(texture, position) {}
 
 Player::~Player() {}
 

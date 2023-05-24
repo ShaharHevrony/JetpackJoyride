@@ -5,35 +5,38 @@ ResourcesManager::ResourcesManager() {
 
     sf::Texture titleTex;
     if (!titleTex.loadFromFile(PATH + "Title.png")) {
-        throw OpenTextureFailed();
+        //throw OpenTextureFailed();
     }
     m_titleTex = titleTex;
     m_titleSpr.setTexture(m_titleTex);
 
-    //sf::Texture playerTex = new sf::Texture();
-    sf::Texture playerTex;
-    if (!playerTex.loadFromFile(PATH + "BarryFlies.png")) {
-        throw OpenTextureFailed();
+    sf::Texture* playerTex = new sf::Texture();
+    if (!playerTex->loadFromFile(PATH + "BarryFlies.png")) {
+        //throw OpenTextureFailed();
     }
     m_playerTex = playerTex;
-    m_playerSpr.setTexture(m_playerTex);
+    m_playerSpr.setTexture(*m_playerTex);
 
 
     for(int index = 0; index < 4; index++){
         if(!m_buttonsTex[index].loadFromFile(PATH + buttons[index])){
-            throw OpenTextureFailed();
+            //throw OpenTextureFailed();
         }
         m_buttonsSpr[index].setTexture(m_buttonsTex[index]);
     }
 }
 
 ResourcesManager &ResourcesManager::instance() {
+    static ResourcesManager m_instance;
+    return m_instance;
+    /*
     try{
         static ResourcesManager m_instance;
         return m_instance;
     } catch (std::exception& e){
         e.what();
     }
+    */
 }
 
 sf::Sprite ResourcesManager::getTitle() const {
@@ -44,7 +47,7 @@ sf::Sprite ResourcesManager::getPlayerSpr() const {
     return m_playerSpr;
 }
 
-sf::Texture ResourcesManager::getPlayerTex() const{
+sf::Texture* ResourcesManager::getPlayerTex() const{
     return m_playerTex;
 }
 
