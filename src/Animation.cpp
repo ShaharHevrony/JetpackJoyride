@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switchTime)
-        :m_imageCount(imageCount), m_switchTime(switchTime){
+        :m_imageCount(imageCount), m_switchTime(switchTime) {
     m_totalTime = 0.f;
     m_currentImage.x = 0;
 
@@ -17,10 +17,10 @@ void Animation::Update(int row, float timeDiff) {
         m_totalTime -= m_switchTime;
         m_currentImage.x++;
         if (m_currentImage.x >= m_imageCount.x) {
-            m_currentImage.x = 0;
+            m_currentImage.x  = 0;
         }
     }
-    m_objRec.top = m_currentImage.y * m_objRec.height;
+    m_objRec.top  = m_currentImage.y * m_objRec.height;
     m_objRec.left = m_currentImage.x * m_objRec.width;
 }
 

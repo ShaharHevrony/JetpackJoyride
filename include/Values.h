@@ -11,12 +11,6 @@ enum Buttons{
     HelpButton,
 };
 
-enum plying{
-    GoingUp,
-    GoingDown,
-    Walking,
-};
-
 const int WINDOW_HEIGHT   = 1068;
 const int WINDOW_WIDTH    = 1898;
 const int SCREEN_CENTER   = WINDOW_WIDTH / 2;
@@ -26,7 +20,8 @@ const int MENU_PIC_WIDTH  = 420;
 const int MENU_PIC_HEIGHT = 133;
 const int TITLE_WIDTH     = 700;
 const int TITLE_HEIGHT    = 404;
-const float SPEED         = 200.f;
+const float SPEED         = 300.f;
+
 //"flowtrect"
 //const int SPRITE_SCALE = 0.720720720;
 

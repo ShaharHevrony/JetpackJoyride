@@ -3,4 +3,3 @@ file (GLOB MY_HEADER_FILES CONFIGURE_DEPENDS LIST_DIRECTORIES false RELATIVE ${C
 target_sources (${CMAKE_PROJECT_NAME} PRIVATE ${MY_HEADER_FILES})
 
 add_subdirectory(Objects)
-#add_subdirectory(staticObject)
