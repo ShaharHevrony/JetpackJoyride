@@ -12,6 +12,7 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 void PlayGame::create(){
     sf::Vector2f position(200,800);
     m_player = std::make_shared<Player>(ResourcesManager::instance().getPlayerTex(), position);
+    m_player->setObject(ResourcesManager::instance().getPlayerSpr());
     m_window->clear(sf::Color(150,150,150));
     m_window->display();
 }

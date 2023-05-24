@@ -23,6 +23,5 @@ const int TITLE_HEIGHT    = 404;
 const float SPEED         = 300.f;
 
 //"flowtrect"
-//const int SPRITE_SCALE = 0.720720720;
 
 const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};

@@ -10,7 +10,7 @@ public:
     static ResourcesManager& instance();
     sf::Sprite getTitle() const;
     sf::Sprite getPlayerSpr() const;
-    sf::Texture* getPlayerTex() const;
+    sf::Texture getPlayerTex() const;
     sf::Sprite getButtonsSpr(int index) const;
     sf::Texture getButtonsTex(int index) const;
 
@@ -22,7 +22,7 @@ private:
     sf::Texture m_titleTex;
     sf::Sprite m_titleSpr;
 
-    sf::Texture* m_playerTex;
+    sf::Texture m_playerTex;
     sf::Sprite m_playerSpr;
 
     sf::Texture m_buttonsTex[4];

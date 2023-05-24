@@ -1,8 +1,7 @@
 #include "Player.h"
-#include "PlayGame.h"
 #include <iostream>
 
-Player::Player(sf::Texture* texture, const sf::Vector2f &position) :Object(texture, position) {}
+Player::Player(sf::Texture texture, const sf::Vector2f &position) :Object(texture, position) {}
 
 Player::~Player() {}
 
@@ -36,10 +35,4 @@ void Player::move(float time) {
             m_object.setTextureRect(sf::IntRect(124.75*3,0,124.75,171));
         }
     }
-}
-
-void Player::animate() {
-    float timeDiff = Object::playerTime.restart().asSeconds();
-    m_animation.Update(0, timeDiff);
-    m_object.setTextureRect(m_animation.getObjRec());
 }

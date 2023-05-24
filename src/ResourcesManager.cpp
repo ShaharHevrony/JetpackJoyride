@@ -10,12 +10,13 @@ ResourcesManager::ResourcesManager() {
     m_titleTex = titleTex;
     m_titleSpr.setTexture(m_titleTex);
 
-    sf::Texture* playerTex = new sf::Texture();
-    if (!playerTex->loadFromFile(PATH + "BarryFlies.png")) {
+    //sf::Texture playerTex = new sf::Texture();
+    sf::Texture playerTex;
+    if (!playerTex.loadFromFile(PATH + "BarryFlies.png")) {
         throw OpenTextureFailed();
     }
     m_playerTex = playerTex;
-    m_playerSpr.setTexture(*m_playerTex);
+    m_playerSpr.setTexture(m_playerTex);
 
 
     for(int index = 0; index < 4; index++){
@@ -43,7 +44,7 @@ sf::Sprite ResourcesManager::getPlayerSpr() const {
     return m_playerSpr;
 }
 
-sf::Texture* ResourcesManager::getPlayerTex() const{
+sf::Texture ResourcesManager::getPlayerTex() const{
     return m_playerTex;
 }
 
