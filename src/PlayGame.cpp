@@ -97,15 +97,15 @@ void PlayGame::draw() {
         }
     }
 
-    m_player->animate(1);
+    //m_player->animate(1);
     m_player2->animate(2);
     //m_coin->animate(3);
     float time = gameTime.restart().asSeconds();
-    m_player->move(time);
+    //m_player->move(time);
     m_player2->move(time);
     //m_coin->move(time);
     //m_window->draw(m_coin->getObject());
-    m_window->draw(m_player->getObject());
+    //m_window->draw(m_player->getObject());
     m_window->draw(m_player2->getObject());
     m_window->display();
     /*
