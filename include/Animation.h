@@ -8,7 +8,7 @@ public:
     Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
     Animation(){}
     ~Animation(){}
-    void Update(int row);
+    void Update();
     sf::IntRect getObjRec();
 
 private:

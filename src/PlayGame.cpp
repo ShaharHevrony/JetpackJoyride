@@ -12,11 +12,6 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 
 void PlayGame::create(){
     m_backgroundX = 0.0f;
-
-    /*for(int i = 0; i < COINS_POSITION.size(); i++){
-        Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_POSITION[i]);
-        m_coin.push_back(tempCoin);
-    }*/
     m_allCoins.resize(NUM_OF_COIN_VEC);
     for (int i = 0; i < NUM_OF_COIN_VEC; i++) {
         m_allCoins[i].resize(COINS_LOC[i].size());
@@ -28,6 +23,11 @@ void PlayGame::create(){
 
     sf::Vector2f playerPosition(250,650);
     m_player = Player(ResourcesManager::instance().getPlayerTex(), playerPosition);
+
+    //sf::Vector2f positionA(450, 700);
+    //sf::Vector2f positionB(324, 540);
+    //m_obstacle = Obstacle(ResourcesManager::instance().getObstacle(), positionA, positionB);
+    //m_obstacleOpposite = Obstacle(ResourcesManager::instance().getObstacle(), positionB, positionB);
 
     m_widthBackSize = ResourcesManager::instance().getBackgroundTex().getSize().x;
     m_window->clear();
@@ -95,6 +95,7 @@ void PlayGame::draw() {
             m_window->draw(m_backgroundStartSpr);
         }
     }
+
     float time = gameTime.restart().asSeconds();
     if (m_allCoins[m_coinsGroup][0].getSwitchCoins()) {
         m_coinsGroup++;
@@ -107,6 +108,12 @@ void PlayGame::draw() {
         m_window->draw(m_allCoins[m_coinsGroup][j].getObject());
     }
 
+    //m_obstacle.animate();
+    //m_obstacle.move(time);
+    //m_window->draw(m_obstacle.getObject());
+    //m_obstacleOpposite.animate();
+    //m_obstacleOpposite.move(time);
+    //m_window->draw(m_obstacleOpposite.getObject());
     m_player.animate();
     m_player.move(time);
     m_window->draw(m_player.getObject());

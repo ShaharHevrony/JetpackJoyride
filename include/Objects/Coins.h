@@ -8,6 +8,7 @@ public:
     ~Coins();
     virtual void move(float time);
     bool getSwitchCoins();
+
 private:
     bool m_needSwitchCoins = false;
 };

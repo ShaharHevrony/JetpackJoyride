@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <cmath>
+
 #include "ResourcesManager.h"
 #include "Animation.h"
 
@@ -12,7 +14,6 @@ public:
     ~Object();
     virtual void move(float time) = 0;
     sf::Sprite& getObject() const;
-    void setObject(sf::Sprite sprite);
     void animate();
 
 protected:

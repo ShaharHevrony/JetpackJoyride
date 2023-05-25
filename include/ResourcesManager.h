@@ -14,6 +14,7 @@ public:
     sf::Sprite getButtonsSpr(int index) const;
     sf::Texture* getCoinTex() const;
     sf::Sprite getCoinSpr() const;
+    sf::Texture* getObstacle() const;
     sf::Texture getButtonsTex(int index) const;
     sf::Sprite getBackground() const;
     sf::Texture getBackgroundTex() const;
@@ -39,4 +40,7 @@ private:
 
     sf::Texture* m_coinTex;
     sf::Sprite m_coinSpr;
+
+    sf::Texture* m_obstacleTex;
+    sf::Sprite m_obstacleSpr;
 };

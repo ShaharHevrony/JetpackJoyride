@@ -11,9 +11,9 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switch
     m_objRec.height = texture->getSize().y / float(imageCount.y);
 }
 
-void Animation::Update(int row) {
+void Animation::Update() {
     float timeDiff = animationClock.restart().asSeconds();
-    m_currentImage.y = row;
+    m_currentImage.y = 0;
     m_totalTime += timeDiff;
     if (m_totalTime >= m_switchTime) {
         m_totalTime -= m_switchTime;

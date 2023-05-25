@@ -2,14 +2,6 @@
 #include "Values.h"
 
 ResourcesManager::ResourcesManager() {
-
-    sf::Texture titleTex;
-    if (!titleTex.loadFromFile(PATH + "Title.png")) {
-        //throw OpenTextureFailed();
-    }
-    m_titleTex = titleTex;
-    m_titleSpr.setTexture(m_titleTex);
-
     sf::Texture* playerTex = new sf::Texture();
     if (!playerTex->loadFromFile(PATH + "Player.png")) {
         //throw OpenTextureFailed();
@@ -23,6 +15,20 @@ ResourcesManager::ResourcesManager() {
     }
     m_coinTex = coinTex;
     m_coinSpr.setTexture(*m_coinTex);
+
+    sf::Texture* obstacleTex = new sf::Texture();
+    if (!obstacleTex->loadFromFile(PATH + "Zappers.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_obstacleTex = obstacleTex;
+    m_obstacleSpr.setTexture(*m_coinTex);
+
+    sf::Texture titleTex;
+    if (!titleTex.loadFromFile(PATH + "Title.png")) {
+        //throw OpenTextureFailed();
+    }
+    m_titleTex = titleTex;
+    m_titleSpr.setTexture(m_titleTex);
 
     for(int index = 0; index < 4; index++){
         if(!m_buttonsTex[index].loadFromFile(PATH + buttons[index])){
@@ -99,7 +105,10 @@ sf::Sprite ResourcesManager::getCoinSpr() const{
     return m_coinSpr;
 }
 
-sf::Texture* ResourcesManager::getCoinTex() const
-{
+sf::Texture* ResourcesManager::getCoinTex() const{
     return m_coinTex;
+}
+
+sf::Texture* ResourcesManager::getObstacle() const{
+    return m_obstacleTex;
 }

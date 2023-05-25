@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "TempObj.h"
+#include "Obstacle.h"
 #include "Coins.h"
 
 class PlayGame {
@@ -20,9 +20,8 @@ private:
     sf::Sprite m_backgroundStartSpr;
     sf::RenderWindow* m_window;
     Player m_player;
-    //std::vector<Coins> m_coin;
-
-    //std::vector<sf::Vector2f> m_coinPositions;
+    //Obstacle m_obstacle;
+    //Obstacle m_obstacleOpposite;
     int m_coinsGroup = 0;
     float m_widthBackSize;
     bool m_start = true;

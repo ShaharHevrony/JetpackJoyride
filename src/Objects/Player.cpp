@@ -33,6 +33,7 @@ void Player::move(float time) {
             animate();
         } else {
             m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
+            m_object.move(sf::Vector2f(0,5)*time*SPEED);
         }
     }
 }

@@ -3,8 +3,6 @@
 
 #include "Controller.h"
 #include "ResourcesManager.h"
-#include "Animation.h"
-
 #include "PlayGame.h"
 #include "Shop.h"
 #include "Setting.h"
@@ -44,7 +42,7 @@ void Controller::run() {
                     m_window.close();
                     return;
                 }
-                //if the user clicks on the window
+                    //if the user clicks on the window
                 case sf::Event::MouseButtonReleased: {
                     handleMouseButton(event.mouseButton);
 
