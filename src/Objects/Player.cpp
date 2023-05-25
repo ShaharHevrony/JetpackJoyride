@@ -36,5 +36,3 @@ void Player::move(float time) {
         }
     }
 }
-
-//void Player::move(float time) {}

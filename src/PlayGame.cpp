@@ -14,18 +14,19 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 
 void PlayGame::create(){
     m_backgroundX = 0.0f;
+    m_coinPositions = {
+            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 60), sf::Vector2f(72, 84), sf::Vector2f(96, 108),
+            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 72),
+            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 60), sf::Vector2f(72, 84), sf::Vector2f(96, 108),
+            // ... add the remaining positions
+    };
 
-    sf::Vector2f playerPosition2(550,650);
-    sf::Texture* tempTexture = new sf::Texture();
-    if (!tempTexture->loadFromFile(PATH + "coin.png")) {
-        //throw OpenTextureFailed();
+    for(int i = 0; i < m_coinPositions.size(); i++){
+        Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), m_coinPositions[i]);
     }
-    m_player2 = Player(tempTexture, playerPosition2);
-    
+
     sf::Vector2f playerPosition(250,650);
     m_player = Player(ResourcesManager::instance().getPlayerTex(), playerPosition);
-    //sf::Vector2f testCoinPosition(800, 650);
-    //m_coin = std::make_shared<Coins>(ResourcesManager::instance().getCoinTex(), testCoinPosition);
 
     m_widthBackSize = ResourcesManager::instance().getBackgroundTex().getSize().x;
     m_window->clear();
@@ -48,7 +49,6 @@ void PlayGame::run() {
     float elapsedTime = 0.0f;
     float changeInterval = 5.0f;
     float speedTime = 0.0f;
-    bool variableChanged = false;
 
     while (m_window->isOpen()){
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
@@ -67,7 +67,6 @@ void PlayGame::run() {
         if (elapsedTime >= changeInterval) {
             speedTime += 0.01f;
             elapsedTime -= changeInterval;
-            variableChanged = true;
         }
 
         //update the speed of the background move
@@ -76,11 +75,12 @@ void PlayGame::run() {
         if ((m_backgroundX <= -(m_widthBackSize)) ) {
             if (m_start) {
                 m_backgroundStartSpr = ResourcesManager::instance().getBackground();
-                m_backgroundX = 0.0f;
             }
             m_backgroundX = 0.0f;
             m_start = false;
         }
+
+        updatePositions();
         draw();
     }
 }
@@ -97,16 +97,14 @@ void PlayGame::draw() {
         }
     }
 
+    for (int i = 0; i < m_coin.size(); i++) {
+        m_window->draw(m_coin[i].getObject());
+    }
+
     m_player.animate();
-    m_player2.animate();
-    //m_coin->animate(3);
     float time = gameTime.restart().asSeconds();
     m_player.move(time);
-    m_player2.move(time);
-    //m_coin->move(time);
-    //m_window->draw(m_coin->getObject());
     m_window->draw(m_player.getObject());
-    m_window->draw(m_player2.getObject());
     m_window->display();
     /*
     for(int row = 0; row < m_objectMap.size(); row++) {
@@ -123,6 +121,19 @@ void PlayGame::draw() {
     }
      */
 }
+
+void PlayGame::updatePositions() {
+    // Move coins from right to left
+    for (int i = 0; i < m_coin.size(); i++) {
+        m_coin[i].getObject().move(0.5f,0.f); // Adjust the speed as needed
+
+        // If coin goes out of the window, reposition it to the right side
+        if (m_coin[i].getObject().getPosition().x < -440.f) {
+            m_coin[i].getObject().setPosition(WINDOW_WIDTH, m_coin[i].getObject().getPosition().y);
+        }
+    }
+}
+
 /*
 void PlayGame::readObjectFile() {
     std::ifstream readingFile;
