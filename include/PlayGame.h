@@ -20,12 +20,11 @@ private:
     sf::Sprite m_backgroundStartSpr;
     sf::RenderWindow* m_window;
     Player m_player;
-    std::vector<Coins> m_coin;
+    //std::vector<Coins> m_coin;
 
-    std::vector<sf::Vector2f> m_coinPositions;
-
+    //std::vector<sf::Vector2f> m_coinPositions;
+    int m_coinsGroup = 0;
     float m_widthBackSize;
     bool m_start = true;
-    std::vector<std::string> m_map;
-    std::vector<std::vector<std::shared_ptr<Coins>>> m_objectMap;
+    std::vector<std::vector<Coins>> m_allCoins;
 };

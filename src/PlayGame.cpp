@@ -13,9 +13,17 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 void PlayGame::create(){
     m_backgroundX = 0.0f;
 
-    for(int i = 0; i < COINS_POSITION.size(); i++){
+    /*for(int i = 0; i < COINS_POSITION.size(); i++){
         Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_POSITION[i]);
         m_coin.push_back(tempCoin);
+    }*/
+    m_allCoins.resize(NUM_OF_COIN_VEC);
+    for (int i = 0; i < NUM_OF_COIN_VEC; i++) {
+        m_allCoins[i].resize(COINS_LOC[i].size());
+        for (int j = 0; j < COINS_LOC[i].size(); j++) {
+            Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_LOC[i][j]);
+            m_allCoins[i][j] = tempCoin;
+        }
     }
 
     sf::Vector2f playerPosition(250,650);
@@ -87,11 +95,16 @@ void PlayGame::draw() {
             m_window->draw(m_backgroundStartSpr);
         }
     }
-
     float time = gameTime.restart().asSeconds();
-    for (int i = 0; i < m_coin.size(); i++) {
-        m_coin[i].move(time);
-        m_window->draw(m_coin[i].getObject());
+    if (m_allCoins[m_coinsGroup][0].getSwitchCoins()) {
+        m_coinsGroup++;
+    }
+    if (m_coinsGroup >= m_allCoins.size()) {
+        m_coinsGroup = 0;
+    }
+    for (int j = 0; j < m_allCoins[m_coinsGroup].size(); j++) {
+        m_allCoins[m_coinsGroup][j].move(time);
+        m_window->draw(m_allCoins[m_coinsGroup][j].getObject());
     }
 
     m_player.animate();
