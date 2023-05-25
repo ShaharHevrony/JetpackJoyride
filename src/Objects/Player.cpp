@@ -1,10 +1,10 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(sf::Texture* texture, const sf::Vector2f &position) :Object(texture, position) {}
+Player::Player(sf::Texture* texture, const sf::Vector2f &position, int number) :Object(texture, position, number) {}
 
 Player::~Player() {}
-
+/*
 void Player::move(float time) {
     sf::Vector2f direction(0,0);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -36,3 +36,5 @@ void Player::move(float time) {
         }
     }
 }
+*/
+void Player::move(float time) {}

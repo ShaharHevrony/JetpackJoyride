@@ -95,8 +95,7 @@ sf::Texture ResourcesManager::getBackgroundStartTex() const{
     return m_backgroundStartTex;
 }
 
-sf::Sprite ResourcesManager::getCoinSpr() const
-{
+sf::Sprite ResourcesManager::getCoinSpr() const{
     return m_coinSpr;
 }
 
