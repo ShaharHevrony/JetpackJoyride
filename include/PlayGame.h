@@ -10,9 +10,6 @@ public:
     void create();
     void run();
     void draw();
-    void updatePositions();
-    //void readObjectFile();
-    //void writeObjectFile();
 
     static sf::Clock gameTime;
 
@@ -24,7 +21,9 @@ private:
     sf::RenderWindow* m_window;
     Player m_player;
     std::vector<Coins> m_coin;
+
     std::vector<sf::Vector2f> m_coinPositions;
+
     float m_widthBackSize;
     bool m_start = true;
     std::vector<std::string> m_map;

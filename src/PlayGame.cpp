@@ -7,22 +7,15 @@
 sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
-    //writeObjectFile();
-    //readObjectFile();
     create();
 }
 
 void PlayGame::create(){
     m_backgroundX = 0.0f;
-    m_coinPositions = {
-            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 60), sf::Vector2f(72, 84), sf::Vector2f(96, 108),
-            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 72),
-            sf::Vector2f(0, 12), sf::Vector2f(24, 36), sf::Vector2f(48, 60), sf::Vector2f(72, 84), sf::Vector2f(96, 108),
-            // ... add the remaining positions
-    };
 
-    for(int i = 0; i < m_coinPositions.size(); i++){
-        Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), m_coinPositions[i]);
+    for(int i = 0; i < COINS_POSITION.size(); i++){
+        Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_POSITION[i]);
+        m_coin.push_back(tempCoin);
     }
 
     sf::Vector2f playerPosition(250,650);
@@ -79,8 +72,6 @@ void PlayGame::run() {
             m_backgroundX = 0.0f;
             m_start = false;
         }
-
-        updatePositions();
         draw();
     }
 }
@@ -97,94 +88,14 @@ void PlayGame::draw() {
         }
     }
 
+    float time = gameTime.restart().asSeconds();
     for (int i = 0; i < m_coin.size(); i++) {
+        m_coin[i].move(time);
         m_window->draw(m_coin[i].getObject());
     }
 
     m_player.animate();
-    float time = gameTime.restart().asSeconds();
     m_player.move(time);
     m_window->draw(m_player.getObject());
     m_window->display();
-    /*
-    for(int row = 0; row < m_objectMap.size(); row++) {
-        for(int col = 0; col < m_objectMap[row].size(); col++) {
-            if(m_objectMap[col][row] != nullptr){
-                std::cout << "found a coin here: col - " << col << " , row - " << row  << " and the position is: (x = "
-                << m_objectMap[col][row]->getObject().getPosition().x << " , y = "
-                << m_objectMap[col][row]->getObject().getPosition().y << ")\n";
-
-                m_window->draw(m_objectMap[col][row]->getObject());
-                m_objectMap[col][row]->move(time);
-            }
-        }
-    }
-     */
 }
-
-void PlayGame::updatePositions() {
-    // Move coins from right to left
-    for (int i = 0; i < m_coin.size(); i++) {
-        m_coin[i].getObject().move(0.5f,0.f); // Adjust the speed as needed
-
-        // If coin goes out of the window, reposition it to the right side
-        if (m_coin[i].getObject().getPosition().x < -440.f) {
-            m_coin[i].getObject().setPosition(WINDOW_WIDTH, m_coin[i].getObject().getPosition().y);
-        }
-    }
-}
-
-/*
-void PlayGame::readObjectFile() {
-    std::ifstream readingFile;
-    const std::string filePath = "GameMap";
-    readingFile.open(filePath, std::fstream::in);
-    if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
-        throw FileNotExist();
-    }
-    if (!readingFile.is_open()) {             //File doesn't open
-        throw OpenFailed();
-    }
-    m_map.clear();
-    std::string str;
-    while (!readingFile.eof()) {
-        std::getline(readingFile, str);
-        m_map.push_back(str);
-    }
-    readingFile.close();
-
-    m_objectMap.resize(NUM_OF_OBJECTS);
-    for(int row = 0; row < m_map.size(); row++) {
-        m_objectMap[row].resize(m_map.size());
-        for(int col = 0; col < m_map[row].size(); col++) {
-            char type = m_map[col][row];
-            switch (type) {
-                case COIN: {
-                    m_objectMap[col][row] = std::make_shared<Coins>(ResourcesManager::instance().getCoinTex(),
-                                      sf::Vector2f(WINDOW_WIDTH + 50 * col, 50 * (row % NUM_OF_OBJECTS)));
-                    break;
-                }
-                case SPACE: {
-                    break;
-                }
-            }
-        }
-    }
-}
-
-void PlayGame::writeObjectFile() {
-    std::ofstream writingFile;
-    if (std::filesystem::exists("GameMap")) {
-        //If the file exist then we clear all the file contents and create a new empty file.
-        writingFile.open("GameMap", std::ios::out | std::ios::trunc);
-    } else {
-        writingFile.open("GameMap");
-    }
-
-    if (!writingFile.is_open()) {
-        throw OpenFailed();
-    }
-    writingFile << MAP;
-    writingFile.close();
-}
-*/
