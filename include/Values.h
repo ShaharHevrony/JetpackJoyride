@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons{
     PlayButton,

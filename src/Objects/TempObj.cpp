@@ -1,6 +1,6 @@
 #include "TempObj.h"
 
-TempObj::TempObj(sf::Texture *texture, const sf::Vector2f &position) :Object(texture, position, 0) {}
+TempObj::TempObj(sf::Texture *texture, const sf::Vector2f &position) :Object(texture, position) {}
 
 TempObj::~TempObj() {}
 

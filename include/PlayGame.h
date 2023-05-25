@@ -21,8 +21,8 @@ private:
     sf::Texture m_backgroundTex;
     sf::Sprite m_backgroundStartSpr;
     sf::RenderWindow* m_window;
-    std::shared_ptr<Player> m_player;
-    std::shared_ptr<Player> m_player2;
+    Player m_player;
+    Player m_player2;
     std::shared_ptr<Coins> m_coin;
     float m_widthBackSize;
     bool m_start = true;
