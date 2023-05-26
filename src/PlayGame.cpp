@@ -12,23 +12,33 @@ PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
 
 void PlayGame::create(){
     m_backgroundX = 0.0f;
+    createCoin();
+    createBarry();
+    createObstical();
+    createBackGround();
+}
+void PlayGame::createCoin() {
     m_allCoins.resize(NUM_OF_COIN_VEC);
-    for (int i = 0; i < NUM_OF_COIN_VEC; i++) {
+    for (int i = 0; i < NUM_OF_COIN_VEC; i++) { //move
         m_allCoins[i].resize(COINS_LOC[i].size());
         for (int j = 0; j < COINS_LOC[i].size(); j++) {
             Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_LOC[i][j]);
             m_allCoins[i][j] = tempCoin;
         }
     }
-
-    sf::Vector2f playerPosition(250,650);
+}
+void PlayGame::createBarry() {
+    sf::Vector2f playerPosition(250, 650);
     m_player = Player(ResourcesManager::instance().getPlayerTex(), playerPosition);
+}
+void PlayGame::createObstical() {
+    sf::Vector2f positionA(800, 250);
+    sf::Vector2f positionB(800, 540);
+    m_obstacle = Obstacle(ResourcesManager::instance().getObstacle(), positionA, positionB, false);
+    m_obstacleOpposite = Obstacle(ResourcesManager::instance().getObstacle(), positionB, positionA, true);
 
-    //sf::Vector2f positionA(450, 700);
-    //sf::Vector2f positionB(324, 540);
-    //m_obstacle = Obstacle(ResourcesManager::instance().getObstacle(), positionA, positionB);
-    //m_obstacleOpposite = Obstacle(ResourcesManager::instance().getObstacle(), positionB, positionB);
-
+}
+void PlayGame::createBackGround() {
     m_widthBackSize = ResourcesManager::instance().getBackgroundTex().getSize().x;
     m_window->clear();
     m_backgroundStartSpr = ResourcesManager::instance().getBackgroundStartSpr();
@@ -43,7 +53,6 @@ void PlayGame::create(){
     m_background[2].setPosition(3 * (m_backgroundTex.getSize().x), 0);
     m_window->display();
 }
-
 void PlayGame::run() {
     m_start = true;
     sf::Clock loopClock; // Clock to measure loop time
@@ -108,12 +117,12 @@ void PlayGame::draw() {
         m_window->draw(m_allCoins[m_coinsGroup][j].getObject());
     }
 
-    //m_obstacle.animate();
+    m_obstacle.animate();
     //m_obstacle.move(time);
-    //m_window->draw(m_obstacle.getObject());
-    //m_obstacleOpposite.animate();
+    m_window->draw(m_obstacle.getObject());
+    m_obstacleOpposite.animate();
     //m_obstacleOpposite.move(time);
-    //m_window->draw(m_obstacleOpposite.getObject());
+    m_window->draw(m_obstacleOpposite.getObject());
     m_player.animate();
     m_player.move(time);
     m_window->draw(m_player.getObject());
