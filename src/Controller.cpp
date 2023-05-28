@@ -16,15 +16,14 @@ Controller::~Controller() {}
 
 void Controller::create() {
     m_window.clear(sf::Color(150,150,150));
-    m_titleSpr = ResourcesManager::instance().getTitle();
-    m_titleSpr.setPosition(SCREEN_CENTER, 230);
-    m_titleSpr.setOrigin(TITLE_WIDTH/2, TITLE_HEIGHT/2);
-    m_window.draw(m_titleSpr);
+    m_title.setTexture(*ResourcesManager::instance().getTitle());
+    m_title.setPosition(SCREEN_CENTER, 230);
+    m_title.setOrigin(TITLE_WIDTH / 2, TITLE_HEIGHT / 2);
+    m_window.draw(m_title);
 
     sf::Sprite tempSpr;
     for(int index = 0; index < 4; index++){
-        m_buttonsTex[index] = ResourcesManager::instance().getButtonsTex(index);
-        sf::Texture* tempTex = &m_buttonsTex[index];
+        sf::Texture* tempTex = ResourcesManager::instance().getButtons(index);
         tempSpr.setTexture(*tempTex);
         tempSpr.setPosition(SCREEN_CENTER, index * MENU_GAP + MENU_START_ROW);
         tempSpr.setOrigin(MENU_PIC_WIDTH / 2, MENU_PIC_HEIGHT / 2);

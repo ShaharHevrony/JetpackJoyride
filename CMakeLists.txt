@@ -17,6 +17,7 @@ endif ()
 
 
 if(APPLE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.app/Contents/MacOS)
 
     add_executable (JetpackJoyride MACOSX_BUNDLE "")
 
@@ -39,6 +40,7 @@ endif()
 
 
 if(WIN32)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
     add_executable (${CMAKE_PROJECT_NAME})
 

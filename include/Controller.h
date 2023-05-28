@@ -13,8 +13,7 @@ public:
     void handleMouseMoved(sf::Event::MouseMoveEvent& event);
 private:
     sf::RenderWindow m_window;
-    sf::Sprite m_titleSpr;
-    sf::Texture m_buttonsTex[4];
+    sf::Sprite m_title;
     std::vector<sf::Sprite> m_buttonSpr;
     int m_buttonToScale = 0;
 };

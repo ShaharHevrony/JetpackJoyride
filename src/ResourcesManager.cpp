@@ -1,3 +1,5 @@
+
+
 #include "ResourcesManager.h"
 #include "Values.h"
 
@@ -6,50 +8,45 @@ ResourcesManager::ResourcesManager() {
     if (!playerTex->loadFromFile(PATH + "Player.png")) {
         //throw OpenTextureFailed();
     }
-    m_playerTex = playerTex;
-    m_playerSpr.setTexture(*m_playerTex);
+    m_player = playerTex;
 
     sf::Texture* coinTex = new sf::Texture();
     if (!coinTex->loadFromFile(PATH + "coin.png")) {
         //throw OpenTextureFailed();
     }
-    m_coinTex = coinTex;
-    m_coinSpr.setTexture(*m_coinTex);
+    m_coin = coinTex;
 
     sf::Texture* obstacleTex = new sf::Texture();
     if (!obstacleTex->loadFromFile(PATH + "Zappers.png")) {
         //throw OpenTextureFailed();
     }
-    m_obstacleTex = obstacleTex;
-    m_obstacleSpr.setTexture(*m_coinTex);
+    m_obstacle = obstacleTex;
 
-    sf::Texture titleTex;
-    if (!titleTex.loadFromFile(PATH + "Title.png")) {
+    sf::Texture* titleTex = new sf::Texture();
+    if (!titleTex->loadFromFile(PATH + "Title.png")) {
         //throw OpenTextureFailed();
     }
-    m_titleTex = titleTex;
-    m_titleSpr.setTexture(m_titleTex);
+    m_title = titleTex;
 
     for(int index = 0; index < 4; index++){
-        if(!m_buttonsTex[index].loadFromFile(PATH + buttons[index])){
+        sf::Texture* tempButton = new sf::Texture();
+        if(!tempButton->loadFromFile(PATH + buttons[index])){
             //throw OpenTextureFailed();
         }
-        m_buttonsSpr[index].setTexture(m_buttonsTex[index]);
+        m_buttons[index] = tempButton;
     }
 
-    sf::Texture backgroundTex;
-    if (!backgroundTex.loadFromFile(PATH + "Hall.png")) {
+    sf::Texture* backgroundTex = new sf::Texture();
+    if (!backgroundTex->loadFromFile(PATH + "Hall.png")) {
         //throw OpenTextureFailed();
     }
-    m_backgroundTex = backgroundTex;
-    m_backgroundSpr.setTexture(m_backgroundTex);
+    m_background = backgroundTex;
 
-    sf::Texture backgroundStartTex;
-    if (!backgroundStartTex.loadFromFile(PATH + "StartOfHall.png")) {
+    sf::Texture* backgroundStartTex = new sf::Texture();
+    if (!backgroundStartTex->loadFromFile(PATH + "StartOfHall.png")) {
         //throw OpenTextureFailed();
     }
-    m_backgroundStartTex = backgroundStartTex;
-    m_backgroundStartSpr.setTexture(m_backgroundStartTex);
+    m_firstBackground = backgroundStartTex;
 }
 
 ResourcesManager &ResourcesManager::instance() {
@@ -65,50 +62,30 @@ ResourcesManager &ResourcesManager::instance() {
     */
 }
 
-sf::Sprite ResourcesManager::getTitle() const {
-    return m_titleSpr;
+sf::Texture* ResourcesManager::getTitle() const {
+    return m_title;
 }
 
-sf::Sprite ResourcesManager::getPlayerSpr() const {
-    return m_playerSpr;
+sf::Texture* ResourcesManager::getPlayer() const{
+    return m_player;
 }
 
-sf::Texture* ResourcesManager::getPlayerTex() const{
-    return m_playerTex;
+sf::Texture* ResourcesManager::getButtons(int index) const {
+    return m_buttons[index];
 }
 
-sf::Sprite ResourcesManager::getButtonsSpr(int index) const {
-    return m_buttonsSpr[index];
+sf::Texture* ResourcesManager::getBackground() const{
+    return m_background;
 }
 
-sf::Texture ResourcesManager::getButtonsTex(int index) const {
-    return m_buttonsTex[index];
+sf::Texture* ResourcesManager::getFirstBackground() const{
+    return m_firstBackground;
 }
 
-sf::Sprite ResourcesManager::getBackground() const{
-    return m_backgroundSpr;
-}
-
-sf::Texture ResourcesManager::getBackgroundTex() const{
-    return m_backgroundTex;
-}
-
-sf::Sprite ResourcesManager::getBackgroundStartSpr() const{
-    return m_backgroundStartSpr;
-}
-
-sf::Texture ResourcesManager::getBackgroundStartTex() const{
-    return m_backgroundStartTex;
-}
-
-sf::Sprite ResourcesManager::getCoinSpr() const{
-    return m_coinSpr;
-}
-
-sf::Texture* ResourcesManager::getCoinTex() const{
-    return m_coinTex;
+sf::Texture* ResourcesManager::getCoin() const{
+    return m_coin;
 }
 
 sf::Texture* ResourcesManager::getObstacle() const{
-    return m_obstacleTex;
+    return m_obstacle;
 }
