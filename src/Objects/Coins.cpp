@@ -15,6 +15,29 @@ void Coins::move(float time) {
     m_object.move(direction*time*65.f);
 
 }
+
+void Coins::handleCollision(Object& object) {
+    if (&object == this) {
+        return;
+    }
+    else {
+        object.handleCollision(*this);
+    }
+}
+
+void Coins::handleCollision(Coins& coins) {}
+
+void Coins::handleCollision(Player& player) {
+    /*
+    if (player.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        player->handleCollision(*this, player);
+
+    }*/
+    //player.handleCollision(*this);
+
+}
+
+
 bool Coins::getSwitchCoins() {
     return m_needSwitchCoins;
 }

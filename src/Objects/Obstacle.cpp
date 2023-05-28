@@ -22,6 +22,21 @@ void Obstacle::move(float time) {
     m_object.move(direction*time*65.f);
 }
 
+void Obstacle::handleCollision(Object& object) {
+    if (&object == this) {
+        return;
+    }
+    else {
+        object.handleCollision(*this);
+    }
+}
+
+void Obstacle::handleCollision(Obstacle& Obstacle) {}
+
+void Obstacle::handleCollision(Player& player) {
+    //player.handleCollision(*this);
+}
+
 //void Obstacle::calculateAngle(const sf::Vector2f &startPosition, const sf::Vector2f &endPosition) {
 //    // Calculate the delta between the two positions
 //    #define M_PI       3.14159265358979323846   // pi

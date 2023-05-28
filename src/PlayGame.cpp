@@ -19,7 +19,7 @@ void PlayGame::create(){
 }
 void PlayGame::createCoin() {
     m_allCoins.resize(NUM_OF_COIN_VEC);
-    for (int i = 0; i < NUM_OF_COIN_VEC; i++) { //move
+    for (int i = 0; i < 1; i++) { //move
         m_allCoins[i].resize(COINS_LOC[i].size());
         for (int j = 0; j < COINS_LOC[i].size(); j++) {
             Coins tempCoin = Coins(ResourcesManager::instance().getCoinTex(), COINS_LOC[i][j]);
@@ -27,10 +27,12 @@ void PlayGame::createCoin() {
         }
     }
 }
+
 void PlayGame::createBarry() {
     sf::Vector2f playerPosition(250, 650);
     m_player = Player(ResourcesManager::instance().getPlayerTex(), playerPosition);
 }
+
 void PlayGame::createObstical() {
     sf::Vector2f positionA(800, 250);
     sf::Vector2f positionB(800, 540);
@@ -38,6 +40,7 @@ void PlayGame::createObstical() {
     m_obstacleOpposite = Obstacle(ResourcesManager::instance().getObstacle(), positionB, positionA, true);
 
 }
+
 void PlayGame::createBackGround() {
     m_widthBackSize = ResourcesManager::instance().getBackgroundTex().getSize().x;
     m_window->clear();
@@ -52,6 +55,21 @@ void PlayGame::createBackGround() {
     m_background[1].setPosition(2 * (m_backgroundTex.getSize().x), 0);
     m_background[2].setPosition(3 * (m_backgroundTex.getSize().x), 0);
     m_window->display();
+}
+
+void PlayGame::dealWithCollision()
+{
+    //check if the player collision with coin
+    for (int i = 0; i < 1; i++) { //move
+        for (int j = 0; j < COINS_LOC[i].size() ; j++) {
+            m_player.handleCollision(m_allCoins[i][j]);
+            if (m_allCoins[i][j].getDelete() == true) {
+                m_allCoins[i][j].setDelete();
+                m_allCoins[i].erase(m_allCoins[i].begin() + j);
+                m_allCoins[i].resize(COINS_LOC[i].size());
+            }
+        }
+    }
 }
 void PlayGame::run() {
     m_start = true;
@@ -89,6 +107,7 @@ void PlayGame::run() {
             m_backgroundX = 0.0f;
             m_start = false;
         }
+        dealWithCollision();
         draw();
     }
 }
@@ -106,12 +125,13 @@ void PlayGame::draw() {
     }
 
     float time = gameTime.restart().asSeconds();
-    if (m_allCoins[m_coinsGroup][0].getSwitchCoins()) {
-        m_coinsGroup++;
-    }
-    if (m_coinsGroup >= m_allCoins.size()) {
-        m_coinsGroup = 0;
-    }
+    //if (m_allCoins[m_coinsGroup][0].getSwitchCoins()) {
+      //  m_coinsGroup++;
+    //}
+    //if (m_coinsGroup >= m_allCoins.size()) {
+      //  m_coinsGroup = 0;
+   // }
+
     for (int j = 0; j < m_allCoins[m_coinsGroup].size(); j++) {
         m_allCoins[m_coinsGroup][j].move(time);
         m_window->draw(m_allCoins[m_coinsGroup][j].getObject());

@@ -37,3 +37,18 @@ void Player::move(float time) {
         }
     }
 }
+
+void Player::handleCollision(Object& object) {
+    object.handleCollision(*this);
+}
+
+void Player::handleCollision(Player& player) {}
+
+void Player::handleCollision(Coins& Coins) {
+    if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        Coins.setDelete();
+        Coins.setCollided();
+    }
+}
+
+void Player::handleCollision(Obstacle& obstacle) {}

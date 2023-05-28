@@ -10,7 +10,7 @@ public:
 	void craete();
 	void draw();
 private:
-	Player m_player;
-	Obstacle m_obstacle;
-	Obstacle m_obstacleOpposite;
+	//Player m_player;
+	//Obstacle m_obstacle;
+	//Obstacle m_obstacleOpposite;
 };

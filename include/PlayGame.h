@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "Obstacle.h"
+class Obstacle;
 #include "Coins.h"
 #include "Board.h"
 
@@ -15,6 +15,8 @@ public:
     void createBarry();
     void createObstical();
     void createBackGround();
+    void dealWithCollision();
+
     static sf::Clock gameTime;
 
 private:

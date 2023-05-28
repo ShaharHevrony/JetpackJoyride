@@ -10,9 +10,24 @@ Object::Object(sf::Texture* texture, const sf::Vector2f& position): m_animation(
     animate();
 }
 
-Object::~Object() {}
+bool Object::getCollided() const {
+    return m_collided;
+}
 
-sf::Sprite& Object::getObject() const {
+void Object::setCollided() {
+    m_collided = !m_collided;
+}
+
+void Object::setDelete()
+{
+    m_isDelete = !m_isDelete;
+}
+
+bool Object::getDelete() const {
+    return m_isDelete;
+}
+
+sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
