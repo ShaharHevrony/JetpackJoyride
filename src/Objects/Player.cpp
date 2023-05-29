@@ -40,7 +40,12 @@ void Player::move(float time) {
 }
 
 void Player::handleCollision(Object& object) {
-    object.handleCollision(*this);
+    if (&object == this) {
+        return;
+    }
+    else {
+        object.handleCollision(*this);
+    }
 }
 
 void Player::handleCollision(Player& player) {}

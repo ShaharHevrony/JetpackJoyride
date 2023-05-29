@@ -29,10 +29,5 @@ void Coin::handleCollision(Object& object) {
 void Coin::handleCollision(Coin& coin) {}
 
 void Coin::handleCollision(Player& player) {
-    /*
-    if (player.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
-        player->handleCollision(*this, player);
-
-    }*/
-    //player.handleCollision(*this);
+    player.handleCollision(*this);
 }

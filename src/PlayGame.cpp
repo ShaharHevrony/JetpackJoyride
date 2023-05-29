@@ -70,15 +70,15 @@ void PlayGame::run() {
 }
 
 void PlayGame::dealWithCollision(){
+    int counter = 0;
     //check if the player collision with coins
-    for (int i = 0; i < m_singleObjects.size(); i++) {
-        m_player.handleCollision(*m_singleObjects[i]);
-        if (m_singleObjects[i]->getDelete() == true) {
-            m_singleObjects[i]->setDelete();
-            m_singleObjects.erase(m_singleObjects.begin() + i);
-            m_singleObjects.resize(COINS_LOC[i].size());
-        }
+    for (auto& mySingleObj : m_singleObjects) {
+        counter++;
+        m_player.handleCollision(*mySingleObj);
     }
+    std::erase_if(m_singleObjects, [](const auto& item) {return item->getDelete(); });
+
+    /*
     //check if the player collision with obstacles
     for (int i = 0; i < m_pairedObjects.size(); i++) {
         m_player.handleCollision(*m_pairedObjects[i]);
@@ -87,7 +87,7 @@ void PlayGame::dealWithCollision(){
             m_pairedObjects.erase(m_pairedObjects.begin() + i);
             m_pairedObjects.resize(COINS_LOC[i].size());
         }
-    }
+    }*/
 }
 
 void PlayGame::draw(){

@@ -31,7 +31,7 @@ void Board::writeObjectFile() {
         writingFile.close();
     }
 }
-
+/*
 void Board::readObjectFile() {
     std::ifstream readingFile;
     m_smartMap.resize(MAP.size());
@@ -62,7 +62,7 @@ void Board::readObjectFile() {
         readingFile.close();
     }
 }
-
+*/
 std::vector<std::string> Board::getMap(int index) const {
     return m_smartMap[index];
 }

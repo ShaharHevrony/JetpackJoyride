@@ -13,7 +13,7 @@ void PairedObject::calculateAngle() {
     sf::Vector2f midpoint = (m_object.getPosition() + m_pairsPosition) * 0.5f;
     sf::Vector2f delta = m_object.getPosition() - midpoint;
     float angleRadians = std::atan2(delta.y, delta.x);
-    float angleDegrees = angleRadians * (180.0f / M_PI);
+    float angleDegrees = angleRadians * (180.0f );
     angleDegrees += 270.0f;
     angleDegrees = std::fmod(angleDegrees, 360.0f);
     m_object.setRotation(angleDegrees);
