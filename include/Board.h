@@ -12,9 +12,11 @@ public:
     Board();
     ~Board();
     void readObjectFile();
+    void readObjectFile(int index);
     void writeObjectFile();
 
     std::vector<std::string> getMap(int index) const;
+    std::vector<std::string> getMap() const;
     sf::Sprite getFirstBackground() const;
     std::vector<sf::Sprite> getBackgrounds() const;
     float getWidth() const;
@@ -26,5 +28,6 @@ public:
 private:
     std::vector<sf::Sprite> m_backgrounds;
     sf::Sprite m_firstBackground;
-    std::vector<std::vector<std::string>> m_map;
+    std::vector<std::vector<std::string>> m_smartMap;
+    std::vector<std::string> m_stupidMap;
 };

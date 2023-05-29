@@ -23,10 +23,14 @@ void PlayGame::createObjectMap(){
     srand(time(nullptr));
     int randMap = rand() % MAP.size();
     //int randMap = 1;
+    m_board.readObjectFile(randMap);
     sf::Vector2f position;
-    for(int row = 0; row < m_board.getMap(randMap).size(); row++) {
+    //for(int row = 0; row < m_board.getMap(randMap).size(); row++) {
+    //        for(int col = 0; col < NUM_OF_OBJECTS; col++) {
+    //              char type = m_board.getMap(randMap)[row][col];
+    for(int row = 0; row < m_board.getMap().size(); row++) {
         for(int col = 0; col < NUM_OF_OBJECTS; col++) {
-            char type = m_board.getMap(randMap)[row][col];
+            char type = m_board.getMap()[row][col];
             switch (type) {
                 case COIN: {
                     position = sf::Vector2f(WINDOW_WIDTH + 50 * row, 60 + 50 * col);
