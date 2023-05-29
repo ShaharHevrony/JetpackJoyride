@@ -1,43 +1,34 @@
 #pragma once
-
 #include <memory>
 #include <fstream>
 #include <filesystem>
 #include <vector>
+#include <ctime>
 
-#include "Player.h"
-#include "Coins.h"
 #include "Board.h"
-
-class Obstacle;
+#include "Player.h"
+#include "Coin.h"
+#include "Obstacle.h"
 
 class PlayGame {
 public:
     PlayGame(sf::RenderWindow& window);
-    ~PlayGame(){}
+    ~PlayGame();
     void create();
-    void run();
-    void draw();
-    void createCoin();
     void createBarry();
-    void createObstical();
-    void createBackGround();
+    void createObjectMap();
+    void run();
     void dealWithCollision();
-    void readObjectFile();
-    void writeObjectFile();
-
-    static sf::Clock gameTime;
+    void moveObjects();
+    void draw();
 
 private:
-    float m_backgroundX = 0.0f;
-    sf::Sprite m_background[3];
-    sf::Sprite m_firstBackground;
+    static sf::Clock gameTime;
+
+    ControlGame m_control;
     sf::RenderWindow* m_window;
     Player m_player;
-    Obstacle m_obstacle;
-    Obstacle m_obstacleOpposite;
-    float m_widthBackSize;
-    bool m_start = true;
-    std::vector<std::string> m_map;
-    std::vector<std::vector<Coins>> m_objectMap;
+    Board m_board;
+    std::vector<std::unique_ptr<Object>> m_singleObjects;
+    std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
 };

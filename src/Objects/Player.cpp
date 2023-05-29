@@ -1,5 +1,6 @@
 #include "Player.h"
-#include <iostream>
+
+Player::Player():Object() {}
 
 Player::Player(sf::Texture* texture, const sf::Vector2f &position) :Object(texture, position) {}
 
@@ -44,7 +45,7 @@ void Player::handleCollision(Object& object) {
 
 void Player::handleCollision(Player& player) {}
 
-void Player::handleCollision(Coins& Coins) {
+void Player::handleCollision(Coin& Coins) {
     if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         Coins.setDelete();
         Coins.setCollided();

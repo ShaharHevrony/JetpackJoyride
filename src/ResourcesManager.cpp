@@ -1,65 +1,61 @@
 
-
 #include "ResourcesManager.h"
 #include "Values.h"
 
 ResourcesManager::ResourcesManager() {
     sf::Texture* playerTex = new sf::Texture();
     if (!playerTex->loadFromFile(PATH + "Player.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_player = playerTex;
 
     sf::Texture* coinTex = new sf::Texture();
     if (!coinTex->loadFromFile(PATH + "coin.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_coin = coinTex;
 
     sf::Texture* obstacleTex = new sf::Texture();
     if (!obstacleTex->loadFromFile(PATH + "Zappers.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_obstacle = obstacleTex;
 
     sf::Texture* titleTex = new sf::Texture();
     if (!titleTex->loadFromFile(PATH + "Title.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_title = titleTex;
 
     for(int index = 0; index < 4; index++){
         sf::Texture* tempButton = new sf::Texture();
         if(!tempButton->loadFromFile(PATH + buttons[index])){
-            //throw OpenTextureFailed();
+            throw OpenTextureFailed();
         }
         m_buttons[index] = tempButton;
     }
 
     sf::Texture* backgroundTex = new sf::Texture();
     if (!backgroundTex->loadFromFile(PATH + "Hall.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_background = backgroundTex;
 
     sf::Texture* backgroundStartTex = new sf::Texture();
     if (!backgroundStartTex->loadFromFile(PATH + "StartOfHall.png")) {
-        //throw OpenTextureFailed();
+        throw OpenTextureFailed();
     }
     m_firstBackground = backgroundStartTex;
 }
 
 ResourcesManager &ResourcesManager::instance() {
-    static ResourcesManager m_instance;
-    return m_instance;
-    /*
     try{
         static ResourcesManager m_instance;
         return m_instance;
     } catch (std::exception& e){
-        e.what();
+        std::cout << e.what() << std::endl;
+        throw;
     }
-    */
 }
 
 sf::Texture* ResourcesManager::getTitle() const {

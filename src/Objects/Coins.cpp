@@ -1,22 +1,23 @@
-#include "Coins.h"
+#include "Coin.h"
 
-Coins::Coins(sf::Texture* texture, const sf::Vector2f &position): Object(texture, position) {}
+Coin::Coin(): Object() {}
 
-Coins::~Coins() {}
+Coin::Coin(sf::Texture* texture, const sf::Vector2f &position): Object(texture, position) {}
 
-void Coins::move(float time) {
-    m_needSwitchCoins = false;
+Coin::~Coin() {}
+
+void Coin::move(float time) {
     animate();
     sf::Vector2f direction(-1,0);
-    if (m_object.getPosition().x < -220.f) {
-        m_needSwitchCoins = true;
-        m_object.setPosition(WINDOW_WIDTH, m_object.getPosition().y);
-    }
+    //if (m_object.getPosition().x < -220.f) {
+    //    m_needSwitchCoins = true;
+    //    m_object.setPosition(WINDOW_WIDTH, m_object.getPosition().y);
+    //}
     m_object.move(direction*time*65.f);
 
 }
 
-void Coins::handleCollision(Object& object) {
+void Coin::handleCollision(Object& object) {
     if (&object == this) {
         return;
     }
@@ -25,19 +26,13 @@ void Coins::handleCollision(Object& object) {
     }
 }
 
-void Coins::handleCollision(Coins& coins) {}
+void Coin::handleCollision(Coin& coin) {}
 
-void Coins::handleCollision(Player& player) {
+void Coin::handleCollision(Player& player) {
     /*
     if (player.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         player->handleCollision(*this, player);
 
     }*/
     //player.handleCollision(*this);
-
-}
-
-
-bool Coins::getSwitchCoins() {
-    return m_needSwitchCoins;
 }

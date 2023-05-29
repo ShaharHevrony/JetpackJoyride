@@ -1,14 +1,23 @@
 #include "Object.h"
 #include "Values.h"
 
-Object::Object(sf::Texture* texture, const sf::Vector2f& position): m_animation(texture, sf::Vector2u(4, 1), 0.18f) {
+Object::Object() {}
+
+Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(texture, sf::Vector2u(4, 1), 0.18f){
     if(texture != nullptr) {
         m_object.setTexture(*texture);
     }
     m_object.setPosition(position);
-    //m_object.setOrigin(texture->getSize().x, texture->getSize().y);
     animate();
 }
+
+Object::Object(Object& other) {
+    m_object.setTexture(*other.getObject().getTexture());
+    m_object.setPosition(other.getObject().getPosition());
+    m_object.setRotation(other.getObject().getRotation());
+}
+
+Object::~Object() {}
 
 bool Object::getCollided() const {
     return m_collided;

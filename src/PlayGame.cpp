@@ -1,76 +1,57 @@
 #include <SFML/Graphics.hpp>
 #include "PlayGame.h"
-#include "ResourcesManager.h"
-#include "Animation.h"
-
 
 sf::Clock PlayGame::gameTime;
 
-PlayGame::PlayGame(sf::RenderWindow& window) :m_window(&window) {
-    writeObjectFile();
-    readObjectFile();
-    create();
-}
+PlayGame::PlayGame(sf::RenderWindow& window) : m_window(&window) {}
 
-void PlayGame::create(){
-    m_backgroundX = 0.0f;
-    createCoin();
+PlayGame::~PlayGame() {}
+
+void PlayGame::create() {
     createBarry();
-    createObstical();
-    createBackGround();
-}
-void PlayGame::createCoin() {
-
+    createObjectMap();
+    m_board.setFirstBackground();
+    m_board.setBackgrounds(BACKGROUND);
 }
 
-void PlayGame::createBarry() {
+void PlayGame::createBarry(){
     sf::Vector2f playerPosition(250, 650);
     m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
 }
 
-void PlayGame::createObstical() {
-    sf::Vector2f positionA(800, 250);
-    sf::Vector2f positionB(800, 540);
-    m_obstacle = Obstacle(ResourcesManager::instance().getObstacle(), positionA, positionB, false);
-    m_obstacleOpposite = Obstacle(ResourcesManager::instance().getObstacle(), positionB, positionA, true);
-
-}
-
-void PlayGame::createBackGround() {
-    m_widthBackSize = ResourcesManager::instance().getBackground()->getSize().x;
-    m_window->clear();
-    m_firstBackground.setTexture(*ResourcesManager::instance().getFirstBackground());
-
-    m_background[0].setTexture(*ResourcesManager::instance().getBackground());
-    m_background[1].setTexture(*ResourcesManager::instance().getBackground());
-    m_background[2].setTexture(*ResourcesManager::instance().getBackground());
-
-    m_background[0].setPosition(ResourcesManager::instance().getBackground()->getSize().x, 0);
-    m_background[1].setPosition(2 * (ResourcesManager::instance().getBackground()->getSize().x), 0);
-    m_background[2].setPosition(3 * (ResourcesManager::instance().getBackground()->getSize().x), 0);
-    m_window->display();
-}
-
-void PlayGame::dealWithCollision() {
-    //check if the player collision with coin
-    for (int i = 0; i < 1; i++) { //move
-        for (int j = 0; j < COINS_LOC[i].size() ; j++) {
-            m_player.handleCollision(m_objectMap[i][j]);
-            if (m_objectMap[i][j].getDelete() == true) {
-                m_objectMap[i][j].setDelete();
-                m_objectMap[i].erase(m_objectMap[i].begin() + j);
-                m_objectMap[i].resize(COINS_LOC[i].size());
+void PlayGame::createObjectMap(){
+    srand(time(nullptr));
+    int randMap = rand() % MAP.size();
+    //int randMap = 1;
+    sf::Vector2f position;
+    for(int row = 0; row < m_board.getMap(randMap).size(); row++) {
+        for(int col = 0; col < NUM_OF_OBJECTS; col++) {
+            char type = m_board.getMap(randMap)[row][col];
+            switch (type) {
+                case COIN: {
+                    position = sf::Vector2f(WINDOW_WIDTH + 50 * row, 60 + 50 * col);
+                    m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position));
+                    break;
+                }
+                case OBSTACLE:{
+                    position = sf::Vector2f(WINDOW_WIDTH + 60 * row, 50 + 60 * col);
+                    m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getObstacle(), position));
+                    if(m_pairedObjects.size() % 2 == 0){
+                        m_pairedObjects[m_pairedObjects.size()-2]->setPaired(position);
+                        m_pairedObjects[m_pairedObjects.size()-1]->setPaired(m_pairedObjects[m_pairedObjects.size()-2]->getObject().getPosition());
+                    }
+                    break;
+                }
+                case SPACE:{
+                    break;
+                }
             }
         }
     }
 }
-void PlayGame::run() {
-    m_start = true;
-    sf::Clock loopClock; // Clock to measure loop time
-    float elapsedTime = 0.0f;
-    float changeInterval = 5.0f;
-    float speedTime = 0.0f;
 
+void PlayGame::run() {
+    create();
     while (m_window->isOpen()){
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -80,126 +61,91 @@ void PlayGame::run() {
                 }
             }
         }
-        // Calculate the elapsed time in seconds
-        float loopTime = loopClock.getElapsedTime().asSeconds();
-        elapsedTime += loopTime;
-        loopClock.restart();
-        //every 5 seconds update the speed
-        if (elapsedTime >= changeInterval) {
-            speedTime += 0.01f;
-            elapsedTime -= changeInterval;
-        }
-
-        //update the speed of the background move
-        m_backgroundX -= 0.5f + speedTime;
-        //if the size of m_backgroundX is bigger than the width of the background
-        if ((m_backgroundX <= -(m_widthBackSize)) ) {
-            if (m_start) {
-                m_firstBackground.setTexture(*ResourcesManager::instance().getFirstBackground());
-            }
-            m_backgroundX = 0.0f;
-            m_start = false;
-        }
-        dealWithCollision();
         draw();
     }
 }
 
-void PlayGame::draw() {
+void PlayGame::dealWithCollision(){
+    //check if the player collision with coins
+    for (int i = 0; i < m_singleObjects.size(); i++) {
+        m_player.handleCollision(*m_singleObjects[i]);
+        if (m_singleObjects[i]->getDelete() == true) {
+            m_singleObjects[i]->setDelete();
+            m_singleObjects.erase(m_singleObjects.begin() + i);
+            m_singleObjects.resize(COINS_LOC[i].size());
+        }
+    }
+    //check if the player collision with obstacles
+    for (int i = 0; i < m_pairedObjects.size(); i++) {
+        m_player.handleCollision(*m_pairedObjects[i]);
+        if (m_pairedObjects[i]->getDelete() == true) {
+            m_pairedObjects[i]->setDelete();
+            m_pairedObjects.erase(m_pairedObjects.begin() + i);
+            m_pairedObjects.resize(COINS_LOC[i].size());
+        }
+    }
+}
+
+void PlayGame::draw(){
     m_window->clear();
-    for (int i = 0; i < 3; ++i) {
-        if (!m_start) {
-            m_background[i].setPosition(m_backgroundX + i * ResourcesManager::instance().getBackground()->getSize().x, 0);
-            m_window->draw(m_background[i]);
+    // Calculate the elapsed time in seconds
+    float loopTime = m_control.LoopClock_t.getElapsedTime().asSeconds();
+    m_control.ElapsedTime_t += loopTime;
+    m_control.LoopClock_t.restart();
+    //every 5 seconds update the speed
+    if (m_control.ElapsedTime_t >= m_control.ChangeInterval_t) {
+        m_control.SpeedTime_t += 0.01f;
+        m_control.ElapsedTime_t -= m_control.ChangeInterval_t;
+    }
+
+    //update the speed of the background move
+    m_control.BackgroundSpeed_t -= 0.5f + m_control.SpeedTime_t;
+    //if the size of m_backgroundX is bigger than the width of the background
+    if (m_control.BackgroundSpeed_t <= -(m_board.getWidth())) {
+        if (m_control.Start_t) {
+            m_board.setFirstBackground();
+        }
+        m_control.BackgroundSpeed_t = 0.0f;
+        m_control.Start_t = false;
+    }
+
+    for (int i = 0; i < BACKGROUND; ++i) {
+        if (!m_control.Start_t) {
+            m_board.setBackgroundPosition(i, sf::Vector2f (m_control.BackgroundSpeed_t + i * ResourcesManager::instance().getBackground()->getSize().x, 0));
+            m_window->draw(m_board.getBackgrounds()[i]);
         }else {
-            m_firstBackground.setPosition(m_backgroundX, 0);
-            m_window->draw(m_firstBackground);
+            m_board.setFirstBackgroundPosition(sf::Vector2f (m_control.BackgroundSpeed_t, 0));
+            m_window->draw(m_board.getFirstBackground());
         }
     }
 
-    float time = gameTime.restart().asSeconds();
-    for (int row = 0; row < m_objectMap.size(); row++) {
-        for (int col = 0; col < m_objectMap[row].size(); col++) {
-            m_objectMap[row][col].move(time);
-            m_window->draw(m_objectMap[row][col].getObject());
+    moveObjects();
+    for(int index = 0; index < m_pairedObjects.size(); index++){
+        if(index != m_pairedObjects.size()-1 || m_pairedObjects.size() % 2 == 0){
+            m_window->draw(m_pairedObjects[index]->getObject());
         }
     }
-    m_obstacle.animate();
-    m_obstacle.move(time);
-    m_window->draw(m_obstacle.getObject());
-
-    m_obstacleOpposite.animate();
-    m_obstacleOpposite.move(time);
-    m_window->draw(m_obstacleOpposite.getObject());
-
-    m_player.animate();
-    m_player.move(time);
+    for (int row = 0; row < m_singleObjects.size(); row++) {
+        m_window->draw(m_singleObjects[row]->getObject());
+    }
     m_window->draw(m_player.getObject());
-
     m_window->display();
 }
 
-void PlayGame::readObjectFile() {
-    std::ifstream readingFile;
-    const std::string filePath = "GameMap";
-    if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
-        throw FileNotExist();
-    }
-
-    readingFile.open(filePath, std::fstream::in);
-    if (!readingFile.is_open()) {             //File doesn't open
-        throw OpenFailed();
-    }
-    m_map.clear();
-
-    do {
-        std::string str;
-        char my_line[NUM_OF_OBJECTS];
-        std::getline(readingFile, str);
-        for (int i = 0; i < str.size(); i++) {
-            my_line[i] = str[i];
+void PlayGame::moveObjects(){
+    float time = gameTime.restart().asSeconds();
+    for(int index = 0; index < m_pairedObjects.size(); index++){
+        if(index != m_pairedObjects.size()-1 || m_pairedObjects.size() % 2 == 0){
+            m_pairedObjects[index]->animate();
+            m_pairedObjects[index]->move(time);
         }
-        m_map.push_back(my_line);
-    } while (!readingFile.eof());
-    readingFile.close();
-
-    for(int row = 0; row < m_map.size(); row++) {
-        std::vector<Coins> tempVector;
-        for(int col = 0; col < m_map[col].size(); col++) {
-            char type = m_map[row][col];
-            switch (type) {
-                case COIN: {
-                    Coins tempCoin = Coins(ResourcesManager::instance().getCoin(), sf::Vector2f(WINDOW_WIDTH + 50 * row, 60 + 50 * (col % NUM_OF_OBJECTS)));
-                    tempVector.push_back(tempCoin);
-                    break;
-                }
-                case OBSTACLE:{
-                    break;
-                }
-                case SPACE: {
-                    break;
-                }
-            }
-        }
-        m_objectMap.push_back(tempVector);
-    }
-}
-
-void PlayGame::writeObjectFile() {
-
-    std::ofstream writingFile;
-    if (std::filesystem::exists("GameMap")) {
-        //If the file exist then we clear all the file contents and create a new empty file.
-        writingFile.open("GameMap", std::ios::out | std::ios::trunc);
-    }
-    else {
-        writingFile.open("GameMap");
     }
 
-    if (!writingFile.is_open()) {
-        throw OpenFailed();
+    for (int index = 0; index < m_singleObjects.size(); index++) {
+        m_singleObjects[index]->animate();
+        m_singleObjects[index]->move(time);
     }
-    writingFile << MAP;
-    writingFile.close();
-
+    m_player.animate();
+    m_player.move(time);
+    dealWithCollision();
 }
