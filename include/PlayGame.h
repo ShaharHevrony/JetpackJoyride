@@ -25,6 +25,10 @@ public:
     void moveObjects();
     void draw();
     int randMap();
+    double calculateDistance(double x1, double y1, double x2, double y2);
+    sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
+
+
 
 private:
     static sf::Clock gameTime;

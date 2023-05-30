@@ -34,6 +34,8 @@ public:
 protected:
     sf::Sprite m_object;
     Animation m_animation;
+    //const sf::Vector2f& m_position;
+
 
 private:
     bool m_isDelete = false;

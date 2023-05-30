@@ -27,9 +27,11 @@ void Object::setCollided() {
     m_collided = !m_collided;
 }
 
+
 void Object::setDelete() {
     m_isDelete = !m_isDelete;
 }
+
 
 bool Object::getDelete() const {
     return m_isDelete;

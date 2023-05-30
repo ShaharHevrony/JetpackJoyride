@@ -45,6 +45,19 @@ void PlayGame::createObjectMap(){
                         if(lastObject == nullptr || position.x > lastObject->getObject().getPosition().x){
                             lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
                         }
+                       sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition();
+                        // Calculate the distance between the two positions
+                        double distance = calculateDistance(firstPosition.x, firstPosition.y, position.x, position.y);
+
+                        // Calculate the number of additional sprites needed to cover the distance
+                        int additionalSprites = static_cast<int>(distance ) - 1;
+
+                        // Duplicate the sprite and set paired positions for the additional sprites
+                        for (int i = 0; i < additionalSprites; ++i) {
+                            sf::Vector2f newPosition = interpolatePosition(firstPosition, position, static_cast<float>(i + 1) / (additionalSprites + 1));
+                            m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(), newPosition));
+                            m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
+                        }
                     }
                     break;
                 }
@@ -199,4 +212,17 @@ int PlayGame::randMap() {
         m_control.RandomCount_t.clear();
     }
     return random;
+}
+
+double PlayGame::calculateDistance(double x1, double y1, double x2, double y2) {
+    double deltaX = x2 - x1;
+    double deltaY = y2 - y1;
+    double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+    return distance;
+}
+
+sf::Vector2f PlayGame::interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t) {
+    float x = position1.x + t * (position2.x - position1.x);
+    float y = position1.y + t * (position2.y - position1.y);
+    return sf::Vector2f(x, y);
 }

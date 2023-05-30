@@ -60,6 +60,12 @@ ResourcesManager::ResourcesManager() {
         }
         m_barryDeath[index] = tempDed;
     }
+
+    sf::Texture* laiserLine = new sf::Texture();
+    if (!laiserLine->loadFromFile(PATH + "beam.png")) {
+        throw OpenTextureFailed();
+    }
+    m_laiserLine = laiserLine;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -116,4 +122,9 @@ sf::Texture* ResourcesManager::getObstacle() const{
 
 sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
+}
+
+sf::Texture* ResourcesManager::getLiserLine() const
+{
+    return m_laiserLine;
 }
