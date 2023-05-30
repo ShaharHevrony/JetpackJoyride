@@ -54,6 +54,8 @@ void Player::handleCollision(Coin& Coins) {
     if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         Coins.setDelete();
         Coins.setCollided();
+        Event event = Event(CollectedMoney, COLLECTED_MONEY);
+        EventsQueue::instance().push(event);
     }
 }
 

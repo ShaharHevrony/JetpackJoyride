@@ -8,7 +8,7 @@ class PairedObject: public Object {
 public:
     PairedObject();
     PairedObject(sf::Texture* texture, const sf::Vector2f& position);
-    ~PairedObject();
+    virtual ~PairedObject();
     void calculateAngle();
     void setPaired(const sf::Vector2f& position);
 

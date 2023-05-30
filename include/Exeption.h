@@ -4,11 +4,19 @@
 class OpenTextureFailed : public std::exception {
 public:
     const char* what() const noexcept {
-        return "Opening the file failed\n";
+        return "Opening the texture failed\n";
     }
 };
 
-class OpenFailed : public std::exception {
+class OpenFontFailed : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "Opening the font failed\n";
+    }
+};
+
+
+class OpenFileFailed : public std::exception {
 public:
     const char* what() const noexcept {
         return "The file is exist, but can't open this file.\n";

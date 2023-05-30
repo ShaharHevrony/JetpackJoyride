@@ -7,7 +7,7 @@ class Coin: public Object{
 public:
     Coin();
     Coin(sf::Texture* texture, const sf::Vector2f& position);
-    ~Coin();
+    virtual ~Coin();
 
     virtual void move(float time);
     virtual void handleCollision(Object& object);

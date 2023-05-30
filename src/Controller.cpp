@@ -75,8 +75,8 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case SettingButton:{
-                    Setting setting = Setting();
-                    setting.run();
+                    Setting* setting = new Setting(m_window);
+                    setting->run();
                     break;
                 }
                 case HelpButton:{

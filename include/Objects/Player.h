@@ -3,11 +3,13 @@
 #include "Coin.h"
 #include "Obstacle.h"
 
+class ScoreBoard;
+
 class Player: public Object{
 public:
     Player();
     Player(sf::Texture* texture, const sf::Vector2f& position);
-    ~Player();
+    virtual ~Player();
 
     virtual void move(float time);
     virtual void handleCollision(Object& object);

@@ -8,6 +8,7 @@ PlayGame::PlayGame(sf::RenderWindow& window) : m_window(&window) {}
 PlayGame::~PlayGame() {}
 
 void PlayGame::create() {
+    m_control.RandomCount_t.clear();
     createBarry();
     createObjectMap();
     m_board.setFirstBackground();
@@ -20,29 +21,28 @@ void PlayGame::createBarry(){
 }
 
 void PlayGame::createObjectMap(){
-    srand(time(nullptr));
-    int randMap = rand() % MAP.size();
-    //int randMap = 1;
-    m_board.readObjectFile(randMap);
+    int random = randMap();
     sf::Vector2f position;
-    //for(int row = 0; row < m_board.getMap(randMap).size(); row++) {
-    //        for(int col = 0; col < NUM_OF_OBJECTS; col++) {
-    //              char type = m_board.getMap(randMap)[row][col];
-    for(int row = 0; row < m_board.getMap().size(); row++) {
-        for(int col = 0; col < NUM_OF_OBJECTS; col++) {
-            char type = m_board.getMap()[row][col];
+    for(int row = 0; row < m_board.getMap(random).size(); row++) {
+            for(int col = 0; col < NUM_OF_OBJECTS; col++) {
+                  char type = m_board.getMap(random)[row][col];
+            position = sf::Vector2f(WINDOW_WIDTH + 55 * row, 40 + 55 * col);
             switch (type) {
                 case COIN: {
-                    position = sf::Vector2f(WINDOW_WIDTH + 50 * row, 60 + 50 * col);
                     m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position));
+                    if(lastObject == nullptr || position.x > lastObject->getObject().getPosition().x){
+                        lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
+                    }
                     break;
                 }
                 case OBSTACLE:{
-                    position = sf::Vector2f(WINDOW_WIDTH + 60 * row, 50 + 60 * col);
                     m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getObstacle(), position));
                     if(m_pairedObjects.size() % 2 == 0){
                         m_pairedObjects[m_pairedObjects.size()-2]->setPaired(position);
                         m_pairedObjects[m_pairedObjects.size()-1]->setPaired(m_pairedObjects[m_pairedObjects.size()-2]->getObject().getPosition());
+                        if(lastObject == nullptr || position.x > lastObject->getObject().getPosition().x){
+                            lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
+                        }
                     }
                     break;
                 }
@@ -65,18 +65,21 @@ void PlayGame::run() {
                 }
             }
         }
+        if(lastObject->getObject().getPosition().x <= 0.f || lastObject == nullptr){
+            createObjectMap();
+        }
         draw();
     }
 }
 
 void PlayGame::dealWithCollision(){
-    int counter = 0;
+    int singleCounter = 0;
     //check if the player collision with coins
     for (auto& mySingleObj : m_singleObjects) {
-        counter++;
+        singleCounter++;
         m_player.handleCollision(*mySingleObj);
     }
-    std::erase_if(m_singleObjects, [](const auto& item) {return item->getDelete(); });
+    std::erase_if(m_singleObjects, [](const auto& item) {return item->getDelete();});
 
     /*
     //check if the player collision with obstacles
@@ -90,38 +93,49 @@ void PlayGame::dealWithCollision(){
     }*/
 }
 
+void PlayGame::dealWithEvent() {
+    while(!EventsQueue::instance().empty()) {
+        auto event = EventsQueue::instance().pop();
+        switch (event.getEventType()) {
+            case CollectedMoney:{
+                //add sound of money here
+                m_scoreBoard.addPoints(event.getPoints());
+                break;
+            }
+            case Death:{
+                break;
+            }
+        }
+    }
+}
+
 void PlayGame::draw(){
     m_window->clear();
+    float changeInterval = 3.0f;
+    float elapsedTime    = 0.0f;
     // Calculate the elapsed time in seconds
-    float loopTime = m_control.LoopClock_t.getElapsedTime().asSeconds();
-    m_control.ElapsedTime_t += loopTime;
-    m_control.LoopClock_t.restart();
+    m_control.Time_t = m_control.LoopClock_t.getElapsedTime().asSeconds();
     //every 5 seconds update the speed
-    if (m_control.ElapsedTime_t >= m_control.ChangeInterval_t) {
-        m_control.SpeedTime_t += 0.01f;
-        m_control.ElapsedTime_t -= m_control.ChangeInterval_t;
+    elapsedTime += m_control.Time_t;
+    if (elapsedTime >= changeInterval) {
+        m_control.Start_t += 15.f;
+        elapsedTime -= changeInterval;
     }
 
-    //update the speed of the background move
-    m_control.BackgroundSpeed_t -= 0.5f + m_control.SpeedTime_t;
-    //if the size of m_backgroundX is bigger than the width of the background
-    if (m_control.BackgroundSpeed_t <= -(m_board.getWidth())) {
-        if (m_control.Start_t) {
-            m_board.setFirstBackground();
-        }
-        m_control.BackgroundSpeed_t = 0.0f;
-        m_control.Start_t = false;
+    if(m_board.getBackgrounds()[0].getPosition().x <= 0 && m_board.getBackgrounds()[0].getPosition().x >= -1){
+        m_board.setBorderPosition(2);
+    } else if(m_board.getBackgrounds()[1].getPosition().x <= 0 && m_board.getBackgrounds()[1].getPosition().x >= -1){
+        m_board.setBorderPosition(0);
+    } else if(m_board.getBackgrounds()[2].getPosition().x <= 0 && m_board.getBackgrounds()[2].getPosition().x >= -1){
+        m_board.setBorderPosition(1);
     }
 
+    m_control.LoopClock_t.restart();
+    m_board.moveBackgrounds(m_control.Time_t * m_control.Speed_t);
     for (int i = 0; i < BACKGROUND; ++i) {
-        if (!m_control.Start_t) {
-            m_board.setBackgroundPosition(i, sf::Vector2f (m_control.BackgroundSpeed_t + i * ResourcesManager::instance().getBackground()->getSize().x, 0));
-            m_window->draw(m_board.getBackgrounds()[i]);
-        }else {
-            m_board.setFirstBackgroundPosition(sf::Vector2f (m_control.BackgroundSpeed_t, 0));
-            m_window->draw(m_board.getFirstBackground());
-        }
+        m_window->draw(m_board.getBackgrounds()[i]);
     }
+    m_window->draw(m_board.getFirstBackground());
 
     moveObjects();
     for(int index = 0; index < m_pairedObjects.size(); index++){
@@ -132,24 +146,42 @@ void PlayGame::draw(){
     for (int row = 0; row < m_singleObjects.size(); row++) {
         m_window->draw(m_singleObjects[row]->getObject());
     }
+    m_scoreBoard.draw(*m_window);
     m_window->draw(m_player.getObject());
     m_window->display();
 }
 
 void PlayGame::moveObjects(){
     float time = gameTime.restart().asSeconds();
+    lastObject->move(m_control.Time_t * m_control.Speed_t);
+
     for(int index = 0; index < m_pairedObjects.size(); index++){
-        if(index != m_pairedObjects.size()-1 || m_pairedObjects.size() % 2 == 0){
+        if(index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0){
             m_pairedObjects[index]->animate();
-            m_pairedObjects[index]->move(time);
+            m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         }
     }
 
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->animate();
-        m_singleObjects[index]->move(time);
+        m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
     m_player.animate();
     m_player.move(time);
     dealWithCollision();
+    dealWithEvent();
+}
+
+int PlayGame::randMap() {
+    srand(time(nullptr));
+    int random = rand() % MAP.size();
+    if(m_control.RandomCount_t.size() != MAP.size()){
+        while (m_control.RandomCount_t.contains(random)) {
+            random = rand() % MAP.size();
+        }
+        m_control.RandomCount_t.insert(random);
+    } else {
+        m_control.RandomCount_t.clear();
+    }
+    return random;
 }

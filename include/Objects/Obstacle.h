@@ -7,7 +7,7 @@ class Obstacle: public PairedObject{
 public:
     Obstacle();
     Obstacle(sf::Texture* texture, const sf::Vector2f& position);
-    ~Obstacle();
+    virtual ~Obstacle();
 
     virtual void move(float time);
     virtual void handleCollision(Object& object);

@@ -11,6 +11,7 @@ public:
     void create();
     void handleMouseButton(sf::Event::MouseButtonEvent& event);
     void handleMouseMoved(sf::Event::MouseMoveEvent& event);
+
 private:
     sf::RenderWindow m_window;
     sf::Sprite m_title;

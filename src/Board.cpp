@@ -1,9 +1,13 @@
 #include "Board.h"
 
 Board::Board() {
+    m_allMaps.clear();
     try {
         writeObjectFile();
-        //readObjectFile();
+        for(int index = 0; index < MAP.size(); index++){
+            readObjectFile(index);
+            m_allMaps.insert(m_map);
+        }
         readObjectFile(0);
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
@@ -25,49 +29,15 @@ void Board::writeObjectFile() {
         }
 
         if (!writingFile.is_open()) {
-            throw OpenFailed();
+            throw OpenFileFailed();
         }
         writingFile << MAP[index];
         writingFile.close();
     }
 }
-/*
-void Board::readObjectFile() {
-    std::ifstream readingFile;
-    m_smartMap.resize(MAP.size());
-    for(int index = 0; index < MAP.size(); index++) {
-        int lineCount = 0;
-        std::string filePath = "mapNum"+ std::to_string(index);
-        if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
-            throw FileNotExist();
-        }
-        readingFile.open(filePath, std::fstream::in);
-        if (!readingFile.is_open()) {             //File doesn't open
-            throw OpenFailed();
-        }
-        m_smartMap.clear();
-        std::vector<std::string> tempVector;
-        while (!readingFile.eof()) {
-            std::string str;
-            char my_line[MAP[index].size()][NUM_OF_OBJECTS];
-            std::getline(readingFile, str);
-            for (int i = 0; i < str.size(); i++) {
-                my_line[lineCount][i] = str[i];
-            }
-            //m_smartMap[index].push_back(my_line[lineCount]);
-            tempVector.push_back(my_line[lineCount]);
-            lineCount++;
-        }
-        m_smartMap.push_back(tempVector);
-        readingFile.close();
-    }
-}
-*/
-std::vector<std::string> Board::getMap(int index) const {
-    return m_smartMap[index];
-}
 
 void Board::readObjectFile(int index) {
+    m_map.clear();
     std::ifstream readingFile;
     std::string filePath = "mapNum" + std::to_string(index);
     if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
@@ -75,9 +45,8 @@ void Board::readObjectFile(int index) {
     }
     readingFile.open(filePath, std::fstream::in);
     if (!readingFile.is_open()) {             //File doesn't open
-        throw OpenFailed();
+        throw OpenFileFailed();
     }
-    m_stupidMap.clear();
 
     while (!readingFile.eof()) {
         std::string str;
@@ -86,13 +55,23 @@ void Board::readObjectFile(int index) {
         for (int i = 0; i < str.size(); i++) {
             my_line[i] = str[i];
         }
-        m_stupidMap.push_back(my_line);
+        m_map.push_back(my_line);
     }
     readingFile.close();
 }
 
-std::vector<std::string> Board::getMap() const {
-    return m_stupidMap;
+void Board::moveBackgrounds(float time) {
+    sf::Vector2f direction(-1,0);
+    m_firstBackground.move(direction*time);
+    for(int index = 0; index < 3; index++){
+        m_backgrounds[index].move(direction*time);
+    }
+}
+
+std::vector<std::string> Board::getMap(int index) const {
+    auto ptr = m_allMaps.begin();
+    std::advance(ptr, index);
+    return *ptr;
 }
 
 std::vector<sf::Sprite> Board::getBackgrounds() const{
@@ -103,8 +82,12 @@ void Board::setBackgrounds(int size) {
     m_backgrounds.resize(size);
     for (int index = 0; index < size; index++) {
         m_backgrounds[index].setTexture(*ResourcesManager::instance().getBackground());
-        m_backgrounds[index].setPosition((index + 1) * ResourcesManager::instance().getBackground()->getSize().x, 0);
+        m_backgrounds[index].setPosition(index * ResourcesManager::instance().getBackground()->getSize().x - index, 0);
     }
+}
+
+void Board::setBorderPosition(int index){
+    m_backgrounds[index].setPosition((BACKGROUND - 1) * ResourcesManager::instance().getBackground()->getSize().x - BACKGROUND, 0);
 }
 
 void Board::setBackgroundPosition(int index, sf::Vector2f position){

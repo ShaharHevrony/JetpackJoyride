@@ -27,8 +27,7 @@ void Object::setCollided() {
     m_collided = !m_collided;
 }
 
-void Object::setDelete()
-{
+void Object::setDelete() {
     m_isDelete = !m_isDelete;
 }
 

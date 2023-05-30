@@ -8,6 +8,7 @@
 class ResourcesManager{
 public:
     static ResourcesManager& instance();
+    sf::Font& getFont();
     sf::Texture* getTitle() const;
     sf::Texture* getPlayer() const;
     sf::Texture* getCoin() const;
@@ -18,6 +19,8 @@ public:
 
 private:
     ResourcesManager();
+    ~ResourcesManager();
+    sf::Font     m_font;
     sf::Texture* m_player;
     sf::Texture* m_coin;
     sf::Texture* m_obstacle;

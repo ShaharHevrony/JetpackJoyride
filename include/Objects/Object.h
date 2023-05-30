@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "ResourcesManager.h"
 #include "Animation.h"
+#include "EventsQueue.h"
 
 class Player;
 class Obstacle;
@@ -12,7 +13,7 @@ public:
     Object();
     Object(sf::Texture* texture, const sf::Vector2f& position);
     Object(Object& other);
-    ~Object();
+    virtual ~Object();
     void animate();
     sf::Sprite& getObject();
 

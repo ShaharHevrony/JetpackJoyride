@@ -3,6 +3,12 @@
 #include "Values.h"
 
 ResourcesManager::ResourcesManager() {
+    sf::Font font;
+    if(!font.loadFromFile(PATH + "Jetpackia.ttf")) {
+        throw OpenFontFailed();
+    }
+    m_font = font;
+
     sf::Texture* playerTex = new sf::Texture();
     if (!playerTex->loadFromFile(PATH + "Player.png")) {
         throw OpenTextureFailed();
@@ -48,6 +54,16 @@ ResourcesManager::ResourcesManager() {
     m_firstBackground = backgroundStartTex;
 }
 
+ResourcesManager::~ResourcesManager() {
+    delete m_player;
+    delete m_firstBackground;
+    delete m_background;
+    delete m_coin;
+    delete m_obstacle;
+    delete m_title;
+    delete m_buttons[4];
+}
+
 ResourcesManager &ResourcesManager::instance() {
     try{
         static ResourcesManager m_instance;
@@ -56,6 +72,10 @@ ResourcesManager &ResourcesManager::instance() {
         std::cout << e.what() << std::endl;
         throw;
     }
+}
+
+sf::Font& ResourcesManager::getFont(){
+    return m_font;
 }
 
 sf::Texture* ResourcesManager::getTitle() const {
