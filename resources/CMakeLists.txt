@@ -16,7 +16,6 @@ configure_file ("barryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("beam.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("barryDed.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
 configure_file ("BerryFlies.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)

@@ -19,8 +19,6 @@ public:
     sf::Texture* getBarryDeath(int index) const;
     sf::Texture* getLiserLine() const;
 
-
-
 private:
     ResourcesManager();
     ~ResourcesManager();

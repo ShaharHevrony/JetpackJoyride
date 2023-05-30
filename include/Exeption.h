@@ -36,3 +36,10 @@ public:
         return "The file is already open.\n";
     }
 };
+
+class FileIsInvalid : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "The file is invalid, cant read.\n";
+    }
+};

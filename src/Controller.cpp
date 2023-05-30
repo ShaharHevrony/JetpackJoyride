@@ -6,6 +6,7 @@
 #include "PlayGame.h"
 #include "Shop.h"
 #include "Setting.h"
+#include "Setting.h"
 #include "Help.h"
 
 Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride"){
@@ -75,8 +76,13 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case SettingButton:{
-                    Setting* setting = new Setting(m_window);
-                    setting->run();
+                    try{
+                        Setting *setting = new Setting(m_window);
+                        setting->run();
+                    } catch (std::exception& e){
+                        std::cout << e.what() << std::endl;
+                        throw;
+                    }
                     break;
                 }
                 case HelpButton:{

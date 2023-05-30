@@ -79,7 +79,7 @@ ResourcesManager::~ResourcesManager() {
 }
 
 ResourcesManager &ResourcesManager::instance() {
-    try{
+    try {
         static ResourcesManager m_instance;
         return m_instance;
     } catch (std::exception& e){

@@ -45,12 +45,12 @@ void PlayGame::createObjectMap(){
                         if(lastObject == nullptr || position.x > lastObject->getObject().getPosition().x){
                             lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
                         }
-                       sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition();
+                        sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition();
                         // Calculate the distance between the two positions
                         double distance = calculateDistance(firstPosition.x, firstPosition.y, position.x, position.y);
 
                         // Calculate the number of additional sprites needed to cover the distance
-                        int additionalSprites = static_cast<int>(distance ) - 1;
+                        int additionalSprites = static_cast<int>(distance) - 1;
 
                         // Duplicate the sprite and set paired positions for the additional sprites
                         for (int i = 0; i < additionalSprites; ++i) {
@@ -93,7 +93,6 @@ void PlayGame::dealWithCollision(){
         m_player.handleCollision(*mySingleObj);
     }
     std::erase_if(m_singleObjects, [](const auto& item) {return item->getDelete();});
-
     
     //check if the player collision with obstacles
     for (auto& mypairObj : m_pairedObjects) {
@@ -102,7 +101,6 @@ void PlayGame::dealWithCollision(){
             m_isDead = true;
         }
     }
-
 }
 
 void PlayGame::dealWithEvent() {
@@ -185,19 +183,14 @@ void PlayGame::moveObjects() {
             tempSpr.setTexture(*tempTex);
             m_player.setSprite(tempSpr);
             m_player.playAnimationOnce(tempTex);
-
         }
     }
     else {
         m_player.animate();
         m_player.move(time);
     }
-
-
     dealWithCollision();
     dealWithEvent();
-
-
 }
 
 int PlayGame::randMap() {

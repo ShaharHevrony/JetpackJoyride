@@ -18,13 +18,10 @@ public:
     sf::Sprite& getObject();
     void setSprite(sf::Sprite& obj);
 
-
-
     bool getCollided() const;
     bool getDelete() const;
     void setCollided();
     void setDelete();
-
     virtual void move(float time) = 0;
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;

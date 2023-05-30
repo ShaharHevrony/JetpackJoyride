@@ -1,6 +1,8 @@
 #include "Animation.h"
 #include "iostream"
 
+sf::Clock Animation::animationClock;
+
 Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
         :m_imageCount(imageCount), m_switchTime(switchTime) {
     animationClock.restart().asSeconds();
@@ -26,8 +28,7 @@ void Animation::Update() {
     m_objRec.left = m_currentImage.x * m_objRec.width;
 }
 
-bool Animation::hasPlayed() const
-{
+bool Animation::hasPlayed() const{
     return m_hasPlayed;
 }
 
