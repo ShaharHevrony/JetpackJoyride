@@ -13,6 +13,31 @@ Board::Board() {
         std::cout << e.what() << std::endl;
         throw;
     }
+    b2Vec2 gravity(0.0f, 9.8f);
+    b2World world(gravity);
+
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0.0f, 990.0f);
+    b2Body* groundBody = world.CreateBody(&groundBodyDef);
+
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(WINDOW_WIDTH, 50.0f);
+    groundBody->CreateFixture(&groundBox, 0.0f);
+
+    b2BodyDef objectBodyDef;
+    objectBodyDef.type = b2_dynamicBody;
+    objectBodyDef.position.Set(400.0f, 100.0f);
+    b2Body* objectBody = world.CreateBody(&objectBodyDef);
+    b2PolygonShape objectBox;
+    objectBox.SetAsBox(50.0f, 50.0f);
+
+    b2FixtureDef objectFixtureDef;
+    objectFixtureDef.shape = &objectBox;
+    objectFixtureDef.density = 1.0f;
+    objectFixtureDef.friction = 0.3f;
+    objectBody->CreateFixture(&objectFixtureDef);
+
+
 }
 
 Board::~Board() {}

@@ -1,8 +1,6 @@
 #include "Object.h"
 #include "Values.h"
 
-Object::Object() {}
-
 Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(texture, sf::Vector2u(4, 1), 0.18f){
     if(texture != nullptr) {
         m_object.setTexture(*texture);
@@ -51,3 +49,9 @@ void Object::animate() {
     m_object.setTextureRect(m_animation.getObjRec());
 }
 
+void Object::draw(sf::RenderWindow *window) {
+    auto angle = m_body->GetAngle() * 180 / b2_pi;
+    m_object.setRotation(angle);
+    m_object.setPosition(sf::Vector2f(m_body->GetPosition().x,m_body->GetPosition().y));
+    window->draw(m_object);
+}

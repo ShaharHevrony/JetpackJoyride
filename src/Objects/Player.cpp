@@ -58,15 +58,13 @@ void Player::handleCollision(Coin& Coins) {
     }
 }
 
-void Player::playAnimationOnce(sf::Texture *tempTex)
-{
+void Player::playAnimationOnce(sf::Texture *tempTex) {
     if (!m_animation.hasPlayed()) {
         // Set the switch time to control the animation speed
         float switchTime = 0.18f;
         m_animation = Animation(tempTex, sf::Vector2u(3, 1), switchTime);
     }
 }
-
 
 void Player::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {

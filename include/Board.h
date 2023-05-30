@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <set>
+#include <box2d/box2d.h>
 
 #include "ResourcesManager.h"
 #include "Player.h"

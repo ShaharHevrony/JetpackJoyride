@@ -24,7 +24,7 @@ if(APPLE)
     add_subdirectory (include)
     add_subdirectory (src)
     add_subdirectory (resources)
-
+    add_subdirectory(external/box2d/src)
 
     set (SFML_STATIC_LIBRARIES FALSE)
     set (SFML_DIR "/usr/local/Cellar/sfml/2.5.1")
@@ -34,6 +34,7 @@ if(APPLE)
     set_target_properties ( PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
 
     target_link_libraries (JetpackJoyride sfml-graphics sfml-audio)
+    target_link_libraries(${CMAKE_PROJECT_NAME} box2d)
 
 endif()
 
@@ -49,6 +50,7 @@ if(WIN32)
     add_subdirectory (include)
     add_subdirectory (src)
     add_subdirectory (resources)
+    add_subdirectory(external/box2d/src)
 
     set (SFML_STATIC_LIBRARIES TRUE)
     set (SFML_DIR "C:/SFML/SFML-2.5.1/lib/cmake/SFML")
@@ -58,6 +60,7 @@ if(WIN32)
     set_target_properties (sfml-main sfml-system sfml-window sfml-graphics sfml-audio sfml-network PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
 
     target_link_libraries (${CMAKE_PROJECT_NAME} sfml-graphics sfml-main sfml-audio)
+    target_link_libraries(${CMAKE_PROJECT_NAME} box2d)
 
     configure_file (C:/SFML/SFML-2.5.1/bin/openal32.dll ${CMAKE_BINARY_DIR} COPYONLY)
 

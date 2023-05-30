@@ -18,16 +18,6 @@ enum EventsTypes {
     Death,
 };
 
-struct settingBar {
-    sf::Vector2f Start_t;
-    sf::Vector2f End_t;
-    sf::CircleShape Circle_t;
-    sf::Text Type_t;
-    int Percentage_t;
-    bool On_t;
-    bool CircleGrabbed_t;
-};
-
 struct ControlGame {
     std::unordered_set<int> RandomCount_t;
     bool Start_t          = true;
@@ -56,6 +46,7 @@ const int NUM_OF_OBJECTS  = 14;
 const int COLLECTED_MONEY = 5;
 const int TOP_FIVE        = 5;
 const float SPEED         = 320.f;
+const float SCALE         = 30.0f;
 
 const char SPACE          = '-';
 const char COIN           = '*';

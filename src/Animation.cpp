@@ -1,10 +1,9 @@
 #include "Animation.h"
 #include "iostream"
 
-sf::Clock Animation::animationClock;
-
 Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
         :m_imageCount(imageCount), m_switchTime(switchTime) {
+    if(texture == nullptr) return;
     animationClock.restart().asSeconds();
     m_totalTime = 0.f;
     m_currentImage.x = 0;

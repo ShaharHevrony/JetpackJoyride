@@ -13,8 +13,7 @@ public:
     sf::IntRect getObjRec();
 
 private:
-    static sf::Clock animationClock;
-
+    sf::Clock animationClock;
     bool m_hasPlayed;
     sf::IntRect m_objRec;
     sf::Vector2u m_imageCount;
