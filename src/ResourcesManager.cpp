@@ -52,6 +52,14 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     m_firstBackground = backgroundStartTex;
+
+    for (int index = 0; index < 2; index++) {
+        sf::Texture* tempDed = new sf::Texture();
+        if (!tempDed->loadFromFile(PATH + barryDeath[index])) {
+            throw OpenTextureFailed();
+        }
+        m_barryDeath[index] = tempDed;
+    }
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -104,4 +112,8 @@ sf::Texture* ResourcesManager::getCoin() const{
 
 sf::Texture* ResourcesManager::getObstacle() const{
     return m_obstacle;
+}
+
+sf::Texture* ResourcesManager::getBarryDeath(int index) const {
+    return m_barryDeath[index];
 }

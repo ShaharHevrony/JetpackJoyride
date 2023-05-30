@@ -8,6 +8,7 @@ PlayGame::PlayGame(sf::RenderWindow& window) : m_window(&window) {}
 PlayGame::~PlayGame() {}
 
 void PlayGame::create() {
+    m_isDead = false;
     m_control.RandomCount_t.clear();
     createBarry();
     createObjectMap();
@@ -21,8 +22,9 @@ void PlayGame::createBarry(){
 }
 
 void PlayGame::createObjectMap(){
-    int random = randMap();
+    //int random = randMap();
     sf::Vector2f position;
+    int random = 7;
     for(int row = 0; row < m_board.getMap(random).size(); row++) {
             for(int col = 0; col < NUM_OF_OBJECTS; col++) {
                   char type = m_board.getMap(random)[row][col];
@@ -73,24 +75,21 @@ void PlayGame::run() {
 }
 
 void PlayGame::dealWithCollision(){
-    int singleCounter = 0;
     //check if the player collision with coins
     for (auto& mySingleObj : m_singleObjects) {
-        singleCounter++;
         m_player.handleCollision(*mySingleObj);
     }
     std::erase_if(m_singleObjects, [](const auto& item) {return item->getDelete();});
 
-    /*
+    
     //check if the player collision with obstacles
-    for (int i = 0; i < m_pairedObjects.size(); i++) {
-        m_player.handleCollision(*m_pairedObjects[i]);
-        if (m_pairedObjects[i]->getDelete() == true) {
-            m_pairedObjects[i]->setDelete();
-            m_pairedObjects.erase(m_pairedObjects.begin() + i);
-            m_pairedObjects.resize(COINS_LOC[i].size());
+    for (auto& mypairObj : m_pairedObjects) {
+        m_player.handleCollision(*mypairObj);
+        if (mypairObj->getCollided()) {
+            m_isDead = true;
         }
-    }*/
+    }
+
 }
 
 void PlayGame::dealWithEvent() {
@@ -151,12 +150,12 @@ void PlayGame::draw(){
     m_window->display();
 }
 
-void PlayGame::moveObjects(){
+void PlayGame::moveObjects() {
     float time = gameTime.restart().asSeconds();
     lastObject->move(m_control.Time_t * m_control.Speed_t);
 
-    for(int index = 0; index < m_pairedObjects.size(); index++){
-        if(index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0){
+    for (int index = 0; index < m_pairedObjects.size(); index++) {
+        if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
             m_pairedObjects[index]->animate();
             m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         }
@@ -166,10 +165,26 @@ void PlayGame::moveObjects(){
         m_singleObjects[index]->animate();
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
-    m_player.animate();
-    m_player.move(time);
+    if (m_isDead) {
+        sf::Sprite tempSpr;
+        for (int index = 0; index < 2; index++) {
+            sf::Texture* tempTex = ResourcesManager::instance().getBarryDeath(index);
+            tempSpr.setTexture(*tempTex);
+            m_player.setSprite(tempSpr);
+            m_player.playAnimationOnce(tempTex);
+
+        }
+    }
+    else {
+        m_player.animate();
+        m_player.move(time);
+    }
+
+
     dealWithCollision();
     dealWithEvent();
+
+
 }
 
 int PlayGame::randMap() {

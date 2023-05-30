@@ -26,6 +26,12 @@ void Animation::Update() {
     m_objRec.left = m_currentImage.x * m_objRec.width;
 }
 
+bool Animation::hasPlayed() const
+{
+    return m_hasPlayed;
+}
+
 sf::IntRect Animation::getObjRec() {
     return m_objRec;
 }
+

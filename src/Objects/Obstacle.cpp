@@ -23,5 +23,5 @@ void Obstacle::handleCollision(Object& object) {
 void Obstacle::handleCollision(Obstacle& Obstacle) {}
 
 void Obstacle::handleCollision(Player& player) {
-    //player.handleCollision(*this);
+    player.handleCollision(*this);
 }

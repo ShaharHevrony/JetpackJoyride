@@ -16,7 +16,7 @@ ScoreBoard::~ScoreBoard() {}
 void ScoreBoard::draw(sf::RenderWindow &window) {
     float elapse = round(timer.getElapsedTime().asSeconds());
     std::stringstream str[3];
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < 3; i++){
         str[i].str("");
     }
     str[0] << score;

@@ -16,6 +16,9 @@ public:
     virtual ~Object();
     void animate();
     sf::Sprite& getObject();
+    void setSprite(sf::Sprite& obj);
+
+
 
     bool getCollided() const;
     bool getDelete() const;

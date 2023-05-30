@@ -39,7 +39,13 @@ sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
+void Object::setSprite(sf::Sprite& obj)
+{
+    m_object = obj;
+}
+
 void Object::animate() {
     m_animation.Update();
     m_object.setTextureRect(m_animation.getObjRec());
 }
+

@@ -12,6 +12,9 @@ configure_file ("Zappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("BerryDeathElec.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("barryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("barryDed.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 configure_file ("BerryFlies.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)

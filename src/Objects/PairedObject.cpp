@@ -1,4 +1,5 @@
 #include "PairedObject.h"
+#include <math.h>
 
 PairedObject::PairedObject() : Object() {}
 
