@@ -5,11 +5,14 @@ class PlayGame;
 
 class Animation {
 public:
+
     Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
     Animation(){}
     ~Animation(){}
     void Update();
+    bool hasPlayed() const;
     sf::IntRect getObjRec();
+
 
 private:
     sf::IntRect m_objRec;
@@ -19,4 +22,5 @@ private:
 
     float m_totalTime;
     float m_switchTime;
+    bool m_hasPlayed;
 };

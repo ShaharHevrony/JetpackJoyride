@@ -36,4 +36,5 @@ private:
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
     std::unique_ptr<Object> lastObject;
+    bool m_isDead = false;
 };

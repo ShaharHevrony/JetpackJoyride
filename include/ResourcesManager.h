@@ -16,6 +16,8 @@ public:
     sf::Texture* getButtons(int index) const;
     sf::Texture* getFirstBackground() const;
     sf::Texture* getBackground() const;
+    sf::Texture* getBarryDeath(int index) const;
+
 
 private:
     ResourcesManager();
@@ -28,4 +30,6 @@ private:
     sf::Texture* m_buttons[4];
     sf::Texture* m_firstBackground;
     sf::Texture* m_background;
+    sf::Texture* m_barryDeath[2];
+
 };
