@@ -62,8 +62,13 @@ void Board::readObjectFile(int index) {
 void Board::moveBackgrounds(float time) {
     sf::Vector2f direction(-1,0);
     m_firstBackground.move(direction*time);
-    for(int index = 0; index < 3; index++){
-        m_backgrounds[index].move(direction*time);
+    for (int index = 0; index < 3; index++) {
+        m_backgrounds[index].move(direction * time);
+        if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
+            sf::Vector2f position = m_backgrounds[(index + 2) % 3].getPosition();
+            position.x += m_backgrounds[(index + 2) % 3].getGlobalBounds().width;
+            m_backgrounds[index].setPosition(position);
+        }
     }
 }
 

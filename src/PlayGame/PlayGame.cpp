@@ -166,14 +166,6 @@ void PlayGame::draw() {
         //elapsedTime -= changeInterval;
     }
 
-    if (m_board.getBackgrounds()[0].getPosition().x <= 0 && m_board.getBackgrounds()[0].getPosition().x >= -1) {
-        m_board.setBorderPosition(2);
-    } else if (m_board.getBackgrounds()[1].getPosition().x <= 0 && m_board.getBackgrounds()[1].getPosition().x >= -1) {
-        m_board.setBorderPosition(0);
-    } else if (m_board.getBackgrounds()[2].getPosition().x <= 0 && m_board.getBackgrounds()[2].getPosition().x >= -1) {
-        m_board.setBorderPosition(1);
-    }
-
     m_control.LoopClock_t.restart();
     m_board.moveBackgrounds(m_control.Time_t * m_control.Speed_t);
     for (int i = 0; i < BACKGROUND; ++i) {

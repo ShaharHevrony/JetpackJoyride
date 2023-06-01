@@ -14,7 +14,7 @@ class Board {
 public:
     Board();
     ~Board();
-    void readObjectFile();
+    //void readObjectFile();
     void readObjectFile(int index);
     void writeObjectFile();
     void moveBackgrounds(float time);
