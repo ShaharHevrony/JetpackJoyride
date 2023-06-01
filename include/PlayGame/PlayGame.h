@@ -4,14 +4,14 @@
 #include <filesystem>
 #include <vector>
 #include <ctime>
-#include <Box2D/Box2D.h>
+#include "box2d/box2d.h"
 
 #include "Board.h"
-#include "Player.h"
+//#include "Player.h"
 #include "Coin.h"
 #include "Obstacle.h"
 #include "ScoreBoard.h"
-#include "EventsQueue.h"
+#include "Events/EventsQueue.h"
 
 #include "TempPlayer.h"
 #include "Floor.h"
@@ -21,7 +21,6 @@ public:
     PlayGame(sf::RenderWindow& window);
     ~PlayGame();
     void create();
-    void createBarry();
     void createObjectMap();
     void run();
     void dealWithCollision();

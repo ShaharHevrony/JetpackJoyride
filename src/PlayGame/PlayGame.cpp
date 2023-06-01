@@ -1,11 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include "PlayGame.h"
+#include "PlayGame/PlayGame.h"
 
 sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     m_world = std::make_unique<b2World>(b2Vec2(0.0, 6));
     sf::Vector2f playerPosition(250, 0);
+    //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
     m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
     m_floor = std::make_unique<Floor>(&m_world);
 }
@@ -16,15 +17,9 @@ void PlayGame::create() {
     m_isDead = false;
     m_control.RandomCount_t.clear();
 
-    createBarry();
     createObjectMap();
     m_board.setFirstBackground();
     m_board.setBackgrounds(BACKGROUND);
-
-}
-
-void PlayGame::createBarry() {
-    //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
 }
 
 void PlayGame::createObjectMap() {
@@ -44,17 +39,14 @@ void PlayGame::createObjectMap() {
                     break;
                 }
                 case OBSTACLE: {
-                    m_pairedObjects.push_back(
-                            std::make_unique<Obstacle>(ResourcesManager::instance().getObstacle(), position));
+                    m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getObstacle(), position));
                     if (m_pairedObjects.size() % 2 == 0) {
                         m_pairedObjects[m_pairedObjects.size() - 2]->setPaired(position);
-                        m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(
-                                m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition());
+                        m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition());
                         if (lastObject == nullptr || position.x > lastObject->getObject().getPosition().x) {
                             lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
                         }
-                        sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() -
-                                                                     2]->getObject().getPosition();
+                        sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() -2]->getObject().getPosition();
                         // Calculate the distance between the two positions
                         double distance = calculateDistance(firstPosition.x, firstPosition.y, position.x, position.y);
 
@@ -70,7 +62,7 @@ void PlayGame::createObjectMap() {
                                     std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(),
                                                                newPosition));
                             m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
-                        }
+                            }
                     }
                     break;
                 }
@@ -84,7 +76,6 @@ void PlayGame::createObjectMap() {
 
 void PlayGame::run() {
     create();
-    bool isJumping = false;
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -107,15 +98,15 @@ void PlayGame::run() {
             }
         }
         if (lastObject->getObject().getPosition().x <= 0.f || lastObject == nullptr) {
+            m_singleObjects.clear();
+            m_pairedObjects.clear();
             createObjectMap();
         }
-
         moveObjects();
         if (m_spacePressed) {
             m_tempPlayer->space();
         }
         m_tempPlayer->animate();
-//        m_tempPlayer->move(true);
         dealWithCollision();
         dealWithEvent();
         draw();
@@ -157,14 +148,12 @@ void PlayGame::dealWithEvent() {
 void PlayGame::draw() {
     m_window->clear();
     float changeInterval = 3.0f;
-    float elapsedTime = 0.0f;
     // Calculate the elapsed time in seconds
     m_control.Time_t = m_control.LoopClock_t.getElapsedTime().asSeconds();
-    //every 5 seconds update the speed
-    elapsedTime += m_control.Time_t;
+    float elapsedTime = m_control.Time_t;
     if (elapsedTime >= changeInterval) {
-        m_control.Start_t += 15.f;
-        elapsedTime -= changeInterval;
+        m_control.Speed_t += 15.f;
+        //elapsedTime -= changeInterval;
     }
 
     if (m_board.getBackgrounds()[0].getPosition().x <= 0 && m_board.getBackgrounds()[0].getPosition().x >= -1) {
@@ -190,7 +179,7 @@ void PlayGame::draw() {
     for (int row = 0; row < m_singleObjects.size(); row++) {
         m_window->draw(m_singleObjects[row]->getObject());
     }
-    m_scoreBoard.draw(*m_window);
+    m_scoreBoard.draw(m_window);
     //m_window->draw(m_player.getObject());
     m_tempPlayer->draw(m_window);
     m_floor->draw(m_window);
@@ -202,10 +191,8 @@ void PlayGame::moveObjects() {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
-
     float time = gameTime.restart().asSeconds();
     lastObject->move(m_control.Time_t * m_control.Speed_t);
-
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
             m_pairedObjects[index]->animate();
@@ -228,8 +215,6 @@ void PlayGame::moveObjects() {
     } else {
         //m_player.animate();
         //m_player.move(time);
-        //m_tempPlayer.animate();
-        //m_tempPlayer.move(time);
     }
 }
 

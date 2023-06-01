@@ -12,6 +12,7 @@ public:
     void calculateAngle();
     void setPaired(const sf::Vector2f& position);
 
+    virtual void space() = 0;
     virtual void move(float time) = 0;
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;

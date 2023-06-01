@@ -20,7 +20,6 @@ enum EventsTypes {
 
 struct ControlGame {
     std::unordered_set<int> RandomCount_t;
-    bool Start_t          = true;
     sf::Clock LoopClock_t = sf::Clock(); //Clock to measure loop time
     float Speed_t         = 320.f;
     float Time_t          = 0.f;
@@ -52,11 +51,6 @@ const char SPACE          = '-';
 const char COIN           = '*';
 const char OBSTACLE       = '<';
 
-/*
-const std::string SETTING = "65 73\n"
-                            "1405 40321 4932 20494 20135";
-*/
-
 const std::vector<std::string> MAP = { "---***---***--\n"
                                        "---***---***--\n"
                                        "---***---***--\n"
@@ -78,7 +72,7 @@ const std::vector<std::string> MAP = { "---***---***--\n"
                                        "--------------\n"
                                        "--<------<----\n"
                                        "--------------\n"
-                                       "--------------\n"
+                                       "----------<---\n"
                                        "-----<--------\n"
                                        "---*****----<-",
 

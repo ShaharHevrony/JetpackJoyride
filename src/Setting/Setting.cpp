@@ -1,5 +1,5 @@
 
-#include "Setting.h"
+#include "Setting/Setting.h"
 
 Setting::Setting(sf::RenderWindow &window):m_window(&window) {
     m_renderTexture.create(window.getSize().x, window.getSize().y);
@@ -62,6 +62,7 @@ void Setting::draw() {
             sf::Vertex(m_music.getEnd(), sf::Color(150, 150, 150))
     };
     m_window->draw(musicLine, 2, sf::Lines);
+    m_music.setType("MUSIC: ");
     m_window->draw(m_music.getType());
     m_window->draw(m_music.getCircle());
 
@@ -70,6 +71,7 @@ void Setting::draw() {
         sf::Vertex(m_sound.getEnd(), sf::Color(150, 150, 150))
     };
     m_window->draw(soundLine, 2, sf::Lines);
+    m_sound.setType("SOUND: ");
     m_window->draw(m_sound.getType());
     m_window->draw(m_sound.getCircle());
     m_window->display();
@@ -87,7 +89,7 @@ void Setting::create() {
 
     for(int index = 0; index < TOP_FIVE; index++){
         m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, 80));
-        m_topBoard[index].setPosition(sf::Vector2f(m_settingBoard.getPosition().x, m_settingBoard.getPosition().y + 80*index)); //-position.y));
+        m_topBoard[index].setPosition(sf::Vector2f(m_settingBoard.getPosition().x, m_settingBoard.getPosition().y + 80 * index)); //-position.y));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/2, m_topBoard->getSize().y/2);
         m_topBoard[index].setFillColor(sf::Color(245,222,222));
         m_topBoard[index].setOutlineThickness(2);
@@ -149,9 +151,10 @@ void Setting::writeFile() {
 }
 
 void Setting::sort() {
-    for (int i = 0; i < TOP_FIVE - 1; ++i) {
-        for (int j = 0; j < TOP_FIVE - i - 1; ++j) {
-            if (m_topScore[j] > m_topScore[j + 1]) {
+    for (int i = 0; i < TOP_FIVE - 1; i++) {
+        for (int j = 0; j < TOP_FIVE - i - 1; j++) {
+            if (m_topScore[j] < m_topScore[j + 1]) {
+                // Swap the elements
                 int temp = m_topScore[j];
                 m_topScore[j] = m_topScore[j + 1];
                 m_topScore[j + 1] = temp;
@@ -164,7 +167,7 @@ void Setting::sort() {
 }
 
 void Setting::checkPotentialBest(int score) {
-    sort();
+    //sort();
     if (score > m_topScore[0]){
         m_topScore[0] = score;
         sort();

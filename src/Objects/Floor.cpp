@@ -6,7 +6,7 @@ Floor::Floor(std::unique_ptr<b2World> *world) : Object(){
 }
 
 void Floor::createSquareBody(b2World *world, b2BodyType bodyType, sf::Vector2i rect) {
-//BodyDef
+    //BodyDef
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(WINDOW_WIDTH / 2,WINDOW_HEIGHT);
@@ -14,7 +14,6 @@ void Floor::createSquareBody(b2World *world, b2BodyType bodyType, sf::Vector2i r
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape boxShape;
-
     boxShape.SetAsBox(WINDOW_WIDTH,100.f);
 
     // FixtureDef

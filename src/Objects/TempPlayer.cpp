@@ -29,21 +29,6 @@ void TempPlayer::create(b2World *world,b2BodyType bodyType, float radius) {
     m_body->SetUserData(this);
 }
 
-void TempPlayer::move(bool isJumping) {
-    if (isJumping) {
-        b2Vec2 velocity = m_body->GetLinearVelocity();
-        velocity.y = 10.0f; // Set desired jump velocity here
-        m_body->SetLinearVelocity(velocity);
-    }
-
-
-    // Update the position of the SFML sprite to match the Box2D object
-    b2Vec2 bodyPosition = m_body->GetPosition();
-    float bodyAngle = m_body->GetAngle();
-    m_object.setPosition(bodyPosition.x * SCALE, bodyPosition.y * SCALE);
-    m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-}
-
 void TempPlayer::createSensor(b2World *world, float width, float height, b2Vec2 center, int data) {
     b2PolygonShape shape;
     shape.SetAsBox(width, height, center, 0);
@@ -56,3 +41,13 @@ void TempPlayer::createSensor(b2World *world, float width, float height, b2Vec2 
     m_body->CreateFixture(&fixture)->SetUserData((void *) data);
 }
 
+void TempPlayer::space(){
+    float jumpVelocity = -30.0f; // Adjust the jump velocity as needed
+    b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
+    bodyVelocity.y = jumpVelocity;
+    m_body->SetLinearVelocity(bodyVelocity);
+    b2Vec2 bodyPosition = m_body->GetPosition();
+    float bodyAngle = m_body->GetAngle();
+    m_object.setPosition(bodyPosition.x * SCALE, bodyPosition.y * SCALE);
+    m_object.setRotation(bodyAngle * 180.0f / b2_pi);
+}

@@ -1,5 +1,5 @@
 
-#include "AudioManager.h"
+#include "Setting/AudioManager.h"
 
 AudioManager::AudioManager(int volume) :m_volume(volume) {}
 
@@ -82,6 +82,7 @@ sf::Text AudioManager::getType() const {
 }
 
 void AudioManager::setType(std::string string) {
+    positionToVolume();
     m_type.setString(string + std::to_string(m_volume));
 }
 

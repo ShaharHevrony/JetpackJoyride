@@ -10,7 +10,7 @@ class ScoreBoard {
 public:
     ScoreBoard();
     ~ScoreBoard();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow *window);
     int getScore() const;
     void addPoints(int addToScore);
     int getBest() const;
@@ -20,6 +20,6 @@ public:
     static int best;
 
 private:
-    sf::Text m_text[3];
+    std::stringstream m_str[3];
     sf::Text m_scoreBoard[3];
 };

@@ -3,10 +3,10 @@
 
 #include "Controller.h"
 #include "ResourcesManager.h"
-#include "PlayGame.h"
+#include "PlayGame/PlayGame.h"
 #include "Shop.h"
-#include "Setting.h"
-#include "Setting.h"
+#include "Setting/Setting.h"
+#include "Setting/Setting.h"
 #include "Help.h"
 
 Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride"){
