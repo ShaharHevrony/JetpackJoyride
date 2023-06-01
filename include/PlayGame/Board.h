@@ -5,16 +5,14 @@
 #include <fstream>
 #include <filesystem>
 #include <set>
-#include "box2d/box2d.h"
 
+#include "box2d/box2d.h"
 #include "ResourcesManager.h"
-#include "Player.h"
 
 class Board {
 public:
     Board();
     ~Board();
-    //void readObjectFile();
     void readObjectFile(int index);
     void writeObjectFile();
     void moveBackgrounds(float time);
@@ -24,10 +22,7 @@ public:
     std::vector<sf::Sprite> getBackgrounds() const;
     float getWidth() const;
     void setFirstBackground();
-    void setFirstBackgroundPosition(sf::Vector2f position);
     void setBackgrounds(int size);
-    void setBorderPosition(int index);
-    void setBackgroundPosition(int index, sf::Vector2f position);
 
 private:
     std::vector<sf::Sprite> m_backgrounds;

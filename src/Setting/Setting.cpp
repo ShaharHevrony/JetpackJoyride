@@ -80,22 +80,24 @@ void Setting::draw() {
 void Setting::create() {
     readFile();
     sort();
-    m_settingBoard.setSize(sf::Vector2f(m_window->getSize().x/2 ,m_window->getSize().y/10*9));
-    m_settingBoard.setPosition(m_window->getSize().x/2, m_window->getSize().y/2);
-    m_settingBoard.setOrigin(m_settingBoard.getSize().x/2, m_settingBoard.getSize().y/2);
+    int music = 1;
+    int sound = 2;
+    m_settingBoard.setSize(sf::Vector2f(SETTING_WIDTH ,SETTING_HEIGHT));
+    m_settingBoard.setPosition(WIDTH_CENTER, HEIGHT_CENTER);
+    m_settingBoard.setOrigin(SETTING_WIDTH/2, SETTING_HEIGHT/2);
     m_settingBoard.setFillColor(sf::Color(245,208,208));
-    m_music.create(1,m_settingBoard.getPosition());
-    m_sound.create(2,m_settingBoard.getPosition());
+    m_music.create(music);
+    m_sound.create(sound);
 
     for(int index = 0; index < TOP_FIVE; index++){
-        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, 80));
-        m_topBoard[index].setPosition(sf::Vector2f(m_settingBoard.getPosition().x, m_settingBoard.getPosition().y + 80 * index)); //-position.y));
+        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SETTING_SIZE * 1.5));
+        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER, HEIGHT_CENTER + SETTING_SIZE * 1.5 * index)); //-position.y));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/2, m_topBoard->getSize().y/2);
         m_topBoard[index].setFillColor(sf::Color(245,222,222));
         m_topBoard[index].setOutlineThickness(2);
         m_topBoard[index].setOutlineColor(sf::Color(150,150,150));
 
-        m_topText[index].setPosition(m_topBoard[index].getPosition().x, m_topBoard[index].getPosition().y - 15);
+        m_topText[index].setPosition(m_topBoard[index].getPosition().x, m_topBoard[index].getPosition().y - SETTING_SIZE/5);
         m_topText[index].setOrigin(m_topText[index].getLocalBounds().width/2, m_topText[index].getLocalBounds().height/2);
         m_topText[index].setFillColor(sf::Color(150,150,150));
     }
@@ -162,7 +164,7 @@ void Setting::sort() {
         }
     }
     for(int i = 0; i < TOP_FIVE; i++){
-        m_topText[i] = sf::Text(std::to_string(m_topScore[i]), ResourcesManager::instance().getFont(), 60);
+        m_topText[i] = sf::Text(std::to_string(m_topScore[i]), ResourcesManager::instance().getFont(), SETTING_SIZE);
     }
 }
 

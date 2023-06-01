@@ -17,19 +17,20 @@ public:
     void animate();
     sf::Sprite& getObject();
     void setSprite(sf::Sprite& obj);
-    //void draw(sf::RenderWindow* window);
     bool getCollided() const;
     bool getDelete() const;
     void setCollided();
     void setDelete();
+    b2Body* getBody();
 
-    virtual void space() = 0;
+        virtual void space() = 0;
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Coin& coin) = 0;
+    virtual void setSpace(bool) = 0;
 
 protected:
     sf::Sprite m_object;

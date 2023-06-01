@@ -6,7 +6,7 @@ class AudioManager {
 public:
     AudioManager(int volume = 0);
     ~AudioManager();
-    void create(int index, sf::Vector2f boardPosition);
+    void create(int index);
     void positionToVolume();
     void volumeToPosition();
     void handleMouseMoved(sf::Vector2f& mouseMove);

@@ -4,16 +4,15 @@
 #include <filesystem>
 #include <vector>
 #include <ctime>
-#include "box2d/box2d.h"
 
+#include "box2d/box2d.h"
 #include "Board.h"
-//#include "Player.h"
 #include "Coin.h"
 #include "Obstacle.h"
 #include "ScoreBoard.h"
 #include "Events/EventsQueue.h"
 
-#include "TempPlayer.h"
+#include "Player.h"
 #include "Bound.h"
 
 class PlayGame {
@@ -36,7 +35,7 @@ private:
     static sf::Clock gameTime;
     ControlGame m_control;
     sf::RenderWindow* m_window;
-    std::unique_ptr<TempPlayer> m_tempPlayer;
+    std::unique_ptr<Player> m_tempPlayer;
     std::unique_ptr<Object> m_floor;
     std::unique_ptr<Object> m_ceiling;
     Board m_board;

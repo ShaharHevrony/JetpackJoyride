@@ -65,8 +65,8 @@ void Board::moveBackgrounds(float time) {
     for (int index = 0; index < 3; index++) {
         m_backgrounds[index].move(direction * time);
         if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
-            sf::Vector2f position = m_backgrounds[(index + 2) % 3].getPosition();
-            position.x += m_backgrounds[(index + 2) % 3].getGlobalBounds().width;
+            sf::Vector2f position = m_backgrounds[(index + 2) % BACKGROUND].getPosition();
+            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width;
             m_backgrounds[index].setPosition(position);
         }
     }
@@ -87,15 +87,8 @@ void Board::setBackgrounds(int size) {
     for (int index = 0; index < size; index++) {
         m_backgrounds[index].setTexture(*ResourcesManager::instance().getBackground());
         m_backgrounds[index].setPosition(index * ResourcesManager::instance().getBackground()->getSize().x - index, 0);
+        m_backgrounds[index].setScale(SET_BACKGROUND, SET_BACKGROUND);
     }
-}
-
-void Board::setBorderPosition(int index){
-    m_backgrounds[index].setPosition((BACKGROUND - 1) * ResourcesManager::instance().getBackground()->getSize().x - BACKGROUND, 0);
-}
-
-void Board::setBackgroundPosition(int index, sf::Vector2f position){
-    m_backgrounds[index].setPosition(position);
 }
 
 sf::Sprite Board::getFirstBackground() const{
@@ -104,10 +97,7 @@ sf::Sprite Board::getFirstBackground() const{
 
 void Board::setFirstBackground() {
     m_firstBackground.setTexture(*ResourcesManager::instance().getFirstBackground());
-}
-
-void Board::setFirstBackgroundPosition(sf::Vector2f position) {
-    m_firstBackground.setPosition(position);
+    m_firstBackground.setScale(SET_BACKGROUND, SET_BACKGROUND);
 }
 
 float Board::getWidth() const {

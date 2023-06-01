@@ -5,8 +5,7 @@ class PlayGame;
 
 class Animation {
 public:
-    Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
-    Animation(){}
+    Animation(sf::Texture* texture = nullptr, sf::Vector2u imageCount = {0,0}, float switchTime = 0.f);
     ~Animation(){}
     void Update();
     bool hasPlayed() const;

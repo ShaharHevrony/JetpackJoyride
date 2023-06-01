@@ -6,19 +6,18 @@ AudioManager::AudioManager(int volume) :m_volume(volume) {}
 
 AudioManager::~AudioManager() {}
 
-void AudioManager::create(int index, sf::Vector2f boardPosition) {
-    sf::Vector2f position = sf::Vector2f(boardPosition.x/6, boardPosition.y/6);
-    m_start = sf::Vector2f(boardPosition.x - position.x, boardPosition.y - 2 * index * position.y);
-    m_end   = sf::Vector2f(boardPosition.x + position.x ,boardPosition.y - 2 * index * position.y);
+void AudioManager::create(int index) {
+    sf::Vector2f position = sf::Vector2f(WIDTH_CENTER/6, HEIGHT_CENTER/6);
+    m_start = sf::Vector2f(WIDTH_CENTER - 1.5 * position.x, HEIGHT_CENTER - 1.5 * index * position.y);
+    m_end   = sf::Vector2f(WIDTH_CENTER + 1.5 * position.x ,HEIGHT_CENTER - 1.5 * index * position.y);
 
-    float circleRadius = 20.f;
-    m_circle.setRadius(circleRadius);
+    m_circle.setRadius(SETTING_CIRCLE);
     m_circle.setFillColor(sf::Color(150,150,150));
-    m_circle.setOrigin(circleRadius, circleRadius);
+    m_circle.setOrigin(SETTING_CIRCLE, SETTING_CIRCLE);
     m_circle.setPosition(m_start.x, m_start.y);
-    m_type = sf::Text("", ResourcesManager::instance().getFont(), 60);
-    m_type.setPosition(boardPosition.x, m_start.y - position.y);
-    m_type.setOrigin(120, 10);
+    m_type = sf::Text("", ResourcesManager::instance().getFont(), SETTING_SIZE);
+    m_type.setPosition(WIDTH_CENTER, m_start.y - position.y);
+    m_type.setOrigin(WIDTH_CENTER / 10, (SETTING_CIRCLE - SETTING_SIZE) / 2);
     m_type.setFillColor(sf::Color(150,150,150));
     volumeToPosition();
 }

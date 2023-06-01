@@ -4,10 +4,9 @@
 sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    m_world = std::make_unique<b2World>(b2Vec2(0.0, WINDOW_HEIGHT * 0.1));
-    sf::Vector2f playerPosition(250, 700);
-    //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
-    m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
+    m_world = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
+    sf::Vector2f playerPosition(PLAYER_POS_X, 700);
+    m_tempPlayer = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
     m_floor = std::make_unique<Bound>(&m_world, true);
     m_ceiling = std::make_unique<Bound>(&m_world, false); 
 }
@@ -30,7 +29,7 @@ void PlayGame::createObjectMap() {
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
-            position = sf::Vector2f(WINDOW_WIDTH + 55 * row, 40 + 55 * col);
+            position = sf::Vector2f(WINDOW_WIDTH + WINDOW_WIDTH/20 * row, START_POINT + WINDOW_WIDTH/20 * col);
             switch (type) {
                 case COIN: {
                     m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position));
@@ -57,10 +56,9 @@ void PlayGame::createObjectMap() {
                         // Duplicate the sprite and set paired positions for the additional sprites
                         for (int i = 0; i < additionalSprites; ++i) {
                             sf::Vector2f newPosition = interpolatePosition(firstPosition, position,
-                                                                           static_cast<float>(i + 1) /
-                                                                           (additionalSprites + 1));
+                                                                   static_cast<float>(i + 1) / (additionalSprites + 1));
                             m_pairedObjects.push_back(
-                                    std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(),
+                                    std::make_unique<Obstacle>(ResourcesManager::instance().getLaserLine(),
                                                                newPosition));
                             m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
                             }
@@ -88,12 +86,14 @@ void PlayGame::run() {
                 case sf::Event::KeyPressed: {
                     if (event.key.code == sf::Keyboard::Space) {
                         spacePressed = true;
+                        m_tempPlayer->setSpace(true);
                     }
                     break;
                 }
                 case sf::Event::KeyReleased: {
                     if (event.key.code == sf::Keyboard::Space) {
                         spacePressed = false;
+                        m_tempPlayer->setSpace(false);
                     }
                     break;
                 }
@@ -106,9 +106,15 @@ void PlayGame::run() {
         }
         moveObjects();
         if (spacePressed) {
-            m_tempPlayer->space();
+            //here we check the pose of the player falling standing or lift
+            m_tempPlayer->move(0);
         }
-        m_tempPlayer->animate();
+        else {
+            m_tempPlayer->animate();
+        }
+        if (m_tempPlayer->getBody()->GetLinearVelocity().y > 0.0f && !spacePressed) {
+            m_tempPlayer->move(0);
+        }
         dealWithCollision();
         dealWithEvent();
         draw();
@@ -123,9 +129,9 @@ void PlayGame::dealWithCollision() {
     std::erase_if(m_singleObjects, [](const auto &item) { return item->getDelete(); });
 
     //check if the player collision with obstacles
-    for (auto &mypairObj: m_pairedObjects) {
-        m_tempPlayer->handleCollision(*mypairObj);
-        if (mypairObj->getCollided()) {
+    for (auto &myPeir: m_pairedObjects) {
+        m_tempPlayer->handleCollision(*myPeir);
+        if (myPeir->getCollided()) {
             m_isDead = true;
         }
     }
@@ -190,7 +196,7 @@ void PlayGame::draw() {
 }
 
 void PlayGame::moveObjects() {
-    float timeStep = 1.0f / 60;
+    float timeStep = TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);

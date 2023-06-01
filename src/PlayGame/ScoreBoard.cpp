@@ -13,23 +13,19 @@ ScoreBoard::~ScoreBoard() {}
 
 void ScoreBoard::draw(sf::RenderWindow *window) {
     float elapse = round(timer.getElapsedTime().asSeconds());
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < scoreBoard.size(); i++){
         m_str[i].str("");
     }
     m_str[0] << score;
     m_str[1] << elapse;
     m_str[2] << best;
 
-    for(int board = 0; board < 3; board++){
-        m_scoreBoard[board] = sf::Text(scoreBoard[board] + m_str[board].str().c_str(), ResourcesManager::instance().getFont(),50);
+    for(int board = 0; board < scoreBoard.size(); board++){
+        m_scoreBoard[board] = sf::Text(scoreBoard[board] + m_str[board].str().c_str(), ResourcesManager::instance().getFont(), SETTING_SIZE);
         m_scoreBoard[board].setFillColor(sf::Color::White);
-        m_scoreBoard[board].setPosition(30, 40 + 50 * board);
+        m_scoreBoard[board].setPosition(START_POINT, START_POINT + SETTING_SIZE * board);
         window->draw(m_scoreBoard[board]);
     }
-}
-
-int ScoreBoard::getScore() const {
-    return score;
 }
 
 void ScoreBoard::addPoints(int addToScore) {

@@ -19,7 +19,7 @@ public:
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Coin& coin) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
-
+    virtual void setSpace(bool) = 0;
 protected:
     sf::Vector2f m_pairsPosition;
 };

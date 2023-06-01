@@ -65,7 +65,7 @@ ResourcesManager::ResourcesManager() {
     if (!laiserLine->loadFromFile(PATH + "beam.png")) {
         throw OpenTextureFailed();
     }
-    m_laiserLine = laiserLine;
+    m_laserLine = laiserLine;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -126,7 +126,7 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
 }
 
-sf::Texture* ResourcesManager::getLiserLine() const
+sf::Texture* ResourcesManager::getLaserLine() const
 {
-    return m_laiserLine;
+    return m_laserLine;
 }

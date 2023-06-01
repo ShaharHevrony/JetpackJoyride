@@ -17,7 +17,7 @@ public:
     sf::Texture* getFirstBackground() const;
     sf::Texture* getBackground() const;
     sf::Texture* getBarryDeath(int index) const;
-    sf::Texture* getLiserLine() const;
+    sf::Texture* getLaserLine() const;
 
 private:
     ResourcesManager();
@@ -31,7 +31,5 @@ private:
     sf::Texture* m_firstBackground;
     sf::Texture* m_background;
     sf::Texture* m_barryDeath[2];
-    sf::Texture* m_laiserLine;
-
-
+    sf::Texture* m_laserLine;
 };
