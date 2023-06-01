@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons{
     PlayButton,
@@ -47,7 +47,7 @@ const int TOP_FIVE        = 5;
 const float SPEED         = 320.f;
 const float SCALE         = 30.0f;
 //const float TIME_STEP     = 1.f;
-const float TIME_STEP     = 120.f;
+const float TIME_STEP     = 60.f;
 
 
 const char SPACE          = '-';

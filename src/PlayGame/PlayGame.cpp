@@ -8,8 +8,8 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(250, 700);
     //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
     m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
-    m_floor = std::make_unique<Floor>(&m_world);
-    m_ceiling = std::make_unique<Ceiling>(&m_world);
+    m_floor = std::make_unique<Bound>(&m_world, true);
+    m_ceiling = std::make_unique<Bound>(&m_world, false); 
 }
 
 PlayGame::~PlayGame() {}

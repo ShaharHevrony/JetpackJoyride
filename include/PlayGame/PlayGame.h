@@ -14,7 +14,7 @@
 #include "Events/EventsQueue.h"
 
 #include "TempPlayer.h"
-#include "Floor.h"
+#include "Bound.h"
 
 class PlayGame {
 public:
