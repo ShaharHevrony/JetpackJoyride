@@ -75,7 +75,9 @@ ResourcesManager::~ResourcesManager() {
     delete m_coin;
     delete m_obstacle;
     delete m_title;
-    delete m_buttons[4];
+    for(int i = 0; i < 4; i++){
+        delete m_buttons[i];
+     }
 }
 
 ResourcesManager &ResourcesManager::instance() {

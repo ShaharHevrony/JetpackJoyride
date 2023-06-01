@@ -36,14 +36,13 @@ private:
     static sf::Clock gameTime;
     ControlGame m_control;
     sf::RenderWindow* m_window;
-    //Player m_player;
     std::unique_ptr<Object> m_tempPlayer;
     std::unique_ptr<Object> m_floor;
+    std::unique_ptr<Object> m_ceiling;
     Board m_board;
     ScoreBoard m_scoreBoard;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
     std::unique_ptr<Object> lastObject;
     bool m_isDead = false;
-    bool m_spacePressed = false;
 };

@@ -4,11 +4,12 @@
 sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    m_world = std::make_unique<b2World>(b2Vec2(0.0, 6));
-    sf::Vector2f playerPosition(250, 0);
+    m_world = std::make_unique<b2World>(b2Vec2(0.0, 6.0));
+    sf::Vector2f playerPosition(250, 700);
     //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
     m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
     m_floor = std::make_unique<Floor>(&m_world);
+    m_ceiling = std::make_unique<Ceiling>(&m_world);
 }
 
 PlayGame::~PlayGame() {}
@@ -76,6 +77,7 @@ void PlayGame::createObjectMap() {
 
 void PlayGame::run() {
     create();
+    bool spacePressed = false;
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -85,13 +87,13 @@ void PlayGame::run() {
                 }
                 case sf::Event::KeyPressed: {
                     if (event.key.code == sf::Keyboard::Space) {
-                        m_spacePressed = true;
+                        spacePressed = true;
                     }
                     break;
                 }
                 case sf::Event::KeyReleased: {
                     if (event.key.code == sf::Keyboard::Space) {
-                        m_spacePressed = false;
+                        spacePressed = false;
                     }
                     break;
                 }
@@ -103,7 +105,7 @@ void PlayGame::run() {
             createObjectMap();
         }
         moveObjects();
-        if (m_spacePressed) {
+        if (spacePressed) {
             m_tempPlayer->space();
         }
         m_tempPlayer->animate();
@@ -173,24 +175,26 @@ void PlayGame::draw() {
 
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
-            m_window->draw(m_pairedObjects[index]->getObject());
+            m_pairedObjects[index]->draw(m_window);
         }
     }
     for (int row = 0; row < m_singleObjects.size(); row++) {
-        m_window->draw(m_singleObjects[row]->getObject());
+        m_singleObjects[row]->draw(m_window);
     }
     m_scoreBoard.draw(m_window);
-    //m_window->draw(m_player.getObject());
     m_tempPlayer->draw(m_window);
     m_floor->draw(m_window);
+    m_ceiling->draw(m_window);
+
     m_window->display();
 }
 
 void PlayGame::moveObjects() {
-    float timeStep = 1.0f / 60.0f;
+    float timeStep = 1.0f / TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
+
     float time = gameTime.restart().asSeconds();
     lastObject->move(m_control.Time_t * m_control.Speed_t);
     for (int index = 0; index < m_pairedObjects.size(); index++) {

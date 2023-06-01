@@ -26,3 +26,7 @@ void Coin::handleCollision(Coin& coin) {}
 void Coin::handleCollision(Player& player) {
 //    player.handleCollision(*this);
 }
+
+void Coin::draw(sf::RenderWindow* window){
+    window->draw(m_object);
+}

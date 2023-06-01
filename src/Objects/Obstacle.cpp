@@ -26,3 +26,7 @@ void Obstacle::handleCollision(Obstacle& Obstacle) {}
 void Obstacle::handleCollision(Player& player) {
 //    player.handleCollision(*this);
 }
+
+void Obstacle::draw(sf::RenderWindow* window){
+    window->draw(m_object);
+}

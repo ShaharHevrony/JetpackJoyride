@@ -41,19 +41,11 @@ sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
-void Object::setSprite(sf::Sprite& obj)
-{
+void Object::setSprite(sf::Sprite& obj) {
     m_object = obj;
 }
 
 void Object::animate() {
     m_animation.Update();
     m_object.setTextureRect(m_animation.getObjRec());
-}
-
-void Object::draw(sf::RenderWindow *window) {
-    auto angle = m_body->GetAngle() * 180 / b2_pi;
-    m_object.setRotation(angle);
-    m_object.setPosition(sf::Vector2f(m_body->GetPosition().x,m_body->GetPosition().y));
-    window->draw(m_object);
 }

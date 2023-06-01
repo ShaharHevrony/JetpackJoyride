@@ -8,6 +8,7 @@ public:
     Coin();
     Coin(sf::Texture* texture, const sf::Vector2f& position);
     virtual ~Coin();
+    bool getSwitchCoins();
 
     virtual void space(){}
     virtual void move(float time);
@@ -15,5 +16,5 @@ public:
     virtual void handleCollision(Player& player);
     virtual void handleCollision(Obstacle& obstacle){}
     virtual void handleCollision(Coin& coin);
-    bool getSwitchCoins();
+    virtual void draw(sf::RenderWindow* window);
 };

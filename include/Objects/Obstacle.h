@@ -11,8 +11,9 @@ public:
 
     virtual void space(){}
     virtual void move(float time);
+    virtual void draw(sf::RenderWindow* window);
     virtual void handleCollision(Object& object);
     virtual void handleCollision(Player& player);
     virtual void handleCollision(Obstacle& obstacle);
-    virtual void handleCollision(Coin& coin) {}
+    virtual void handleCollision(Coin& coin){}
 };
