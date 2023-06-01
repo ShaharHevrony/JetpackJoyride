@@ -1,7 +1,6 @@
 #pragma once
 #include "PairedObject.h"
 #include "Coin.h"
-//#include "Player.h"
 
 class Obstacle: public PairedObject{
 public:

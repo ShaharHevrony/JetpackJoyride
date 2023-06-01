@@ -11,11 +11,11 @@ void Bound::create(b2World* world) {
     b2PolygonShape boxShape;
     if (m_floor) {
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
-        boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y);
+        boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 1.5);
     }
     else {
         bodyDef.position.Set(WIDTH_CENTER, 0.f); //Here the diff
-        boxShape.SetAsBox(WINDOW_WIDTH, -PLAYER_POS_Y/3); //Here the diff
+        boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 0.1); //Here the diff
     }
     m_body = world->CreateBody(&bodyDef);
     b2FixtureDef fixtureDef;

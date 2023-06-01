@@ -6,7 +6,7 @@ Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(
         m_object.setTexture(*texture);
     }
     m_object.setPosition(position);
-    m_object.setScale(SET_SCALE, SET_SCALE);
+    m_object.setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
     animate();
 }
 

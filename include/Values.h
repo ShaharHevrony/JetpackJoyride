@@ -38,6 +38,7 @@ const float PLAYER_POS_X   = WINDOW_WIDTH  / 10;
 const float PLAYER_POS_Y   = WINDOW_HEIGHT / 10;
 
 const float SET_SCALE      = WINDOW_HEIGHT / 1200;
+const float SET_OBJ_SCALE  = WINDOW_HEIGHT / 1000;
 const float TITLE_POSITION = WINDOW_HEIGHT / 4.7;
 const float MENU_GAP       = WINDOW_HEIGHT / 7.7;
 

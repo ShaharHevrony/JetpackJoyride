@@ -29,7 +29,7 @@ void PlayGame::createObjectMap() {
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
-            position = sf::Vector2f(WINDOW_WIDTH + WINDOW_WIDTH/20 * row, START_POINT + WINDOW_WIDTH/20 * col);
+            position = sf::Vector2f(WINDOW_WIDTH + WINDOW_WIDTH/30 * row, 5 * START_POINT + WINDOW_WIDTH/30 * col);
             switch (type) {
                 case COIN: {
                     m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position));
@@ -169,7 +169,6 @@ void PlayGame::draw() {
     float elapsedTime = m_control.Time_t;
     if (elapsedTime >= changeInterval) {
         m_control.Speed_t += 15.f;
-        //elapsedTime -= changeInterval;
     }
 
     m_control.LoopClock_t.restart();
@@ -209,24 +208,10 @@ void PlayGame::moveObjects() {
             m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         }
     }
-
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->animate();
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
-    /*
-    if (m_isDead) {
-        sf::Sprite tempSpr;
-        for (int index = 0; index < 2; index++) {
-            sf::Texture *tempTex = ResourcesManager::instance().getBarryDeath(index);
-            tempSpr.setTexture(*tempTex);
-            //m_player.setSprite(tempSpr);
-            //m_player.playAnimationOnce(tempTex);
-        }
-    } else {
-        //m_player.animate();
-        //m_player.move(time);
-    }*/
 }
 
 int PlayGame::randMap() {

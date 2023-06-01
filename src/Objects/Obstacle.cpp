@@ -1,4 +1,3 @@
-
 #include "Obstacle.h"
 
 Obstacle::Obstacle():PairedObject(){}
