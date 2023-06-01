@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons{
     PlayButton,
@@ -31,8 +31,8 @@ const std::vector<std::string> barryDeath = {"barryHit.png", "barryDed.png" };
 
 const std::string scoreBoard[3] = {"MONEY: ","TIME: ", "BEST: "};
 
-const int WINDOW_HEIGHT   = 920;
-const int WINDOW_WIDTH    = 1898;
+const int WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.8;
+const int WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.8;
 const int SCREEN_CENTER   = WINDOW_WIDTH / 2;
 const int MENU_START_ROW  = WINDOW_HEIGHT / 2;
 const int MENU_GAP        = 150;
@@ -46,8 +46,8 @@ const int COLLECTED_MONEY = 5;
 const int TOP_FIVE        = 5;
 const float SPEED         = 320.f;
 const float SCALE         = 30.0f;
-//const float TIME_STEP     = 1.f;
-const float TIME_STEP     = 120.f;
+const float TIME_STEP     = 1.f;
+//const float TIME_STEP     = 120.f;
 
 
 const char SPACE          = '-';
@@ -156,9 +156,9 @@ const std::vector<std::string> MAP = { "---***---***--\n"
                                        "-***------***-\n"
                                        "-----****-----\n"
                                        "-----****-----\n"
-                                       "-----****-----"  };
+                                       "-----****-----"  ,
 
-/*
+
                                        "--------------\n"
                                        "-<----******--\n"
                                        "----******----\n"
@@ -171,7 +171,8 @@ const std::vector<std::string> MAP = { "---***---***--\n"
                                        "--------------\n"
                                        "----------<---\n"
                                        "-----<--------\n"
-                                       "---*****----<-",
+                                       "---*****----<-"};
+/*
 
 const std::string MAP = "--------------\n"
                         "--------------\n"

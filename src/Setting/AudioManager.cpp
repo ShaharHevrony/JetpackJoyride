@@ -1,5 +1,6 @@
 
 #include "Setting/AudioManager.h"
+#include <cmath>
 
 AudioManager::AudioManager(int volume) :m_volume(volume) {}
 

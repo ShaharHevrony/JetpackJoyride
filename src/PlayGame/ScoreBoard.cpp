@@ -1,4 +1,5 @@
 #include "PlayGame/ScoreBoard.h"
+#include <cmath>
 
 sf::Clock ScoreBoard::timer;
 int ScoreBoard::score;

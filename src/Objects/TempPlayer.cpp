@@ -1,6 +1,6 @@
 
 #include "TempPlayer.h"
-
+#include "Values.h"
 TempPlayer::TempPlayer(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world) :Object(texture, position) {
     create(world->get(),109);
     //createSensor(world->get(), m_object.getGlobalBounds().height, 10, b2Vec2(0, m_object.getGlobalBounds().height), 1);
@@ -38,7 +38,7 @@ void TempPlayer::createSensor(b2World *world, float width, float height, b2Vec2 
 }
 
 void TempPlayer::space() {
-    float jumpVelocity = -30.0f; //Adjust the jump velocity as needed
+    float jumpVelocity = -WINDOW_HEIGHT * 0.1; //Adjust the jump velocity as needed
     b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
     bodyVelocity.y = jumpVelocity;
     m_body->SetLinearVelocity(bodyVelocity);
@@ -54,4 +54,38 @@ void TempPlayer::draw(sf::RenderWindow* window) {
     m_object.setRotation(angle);
     m_object.setPosition(sf::Vector2f(m_body->GetPosition().x,m_body->GetPosition().y));
     window->draw(m_object);
+}
+
+void TempPlayer::handleCollision(Object& object) {
+    if (&object == this) {
+        return;
+    }
+    else {
+        object.handleCollision(*this);
+    }
+}
+
+void TempPlayer::handleCollision(Player& player) {}
+
+void TempPlayer::handleCollision(Coin& Coins) {
+    if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        Coins.setDelete();
+        Event event = Event(CollectedMoney, COLLECTED_MONEY);
+        EventsQueue::instance().push(event);
+    }
+}
+
+/*
+void TempPlayer::playAnimationOnce(sf::Texture* tempTex) {
+    if (!m_animation.hasPlayed()) {
+        // Set the switch time to control the animation speed
+        float switchTime = 0.18f;
+        m_animation = Animation(tempTex, sf::Vector2u(3, 1), switchTime);
+    }
+}*/
+
+void TempPlayer::handleCollision(Obstacle& obstacle) {
+    if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        obstacle.setCollided();
+    }
 }

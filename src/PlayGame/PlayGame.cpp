@@ -4,7 +4,7 @@
 sf::Clock PlayGame::gameTime;
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    m_world = std::make_unique<b2World>(b2Vec2(0.0, 6.0));
+    m_world = std::make_unique<b2World>(b2Vec2(0.0, WINDOW_HEIGHT * 0.1));
     sf::Vector2f playerPosition(250, 700);
     //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
     m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
@@ -118,13 +118,13 @@ void PlayGame::run() {
 void PlayGame::dealWithCollision() {
     //check if the player collision with coins
     for (auto &mySingleObj: m_singleObjects) {
-        //m_player.handleCollision(*mySingleObj);
+        m_tempPlayer->handleCollision(*mySingleObj);
     }
     std::erase_if(m_singleObjects, [](const auto &item) { return item->getDelete(); });
 
     //check if the player collision with obstacles
     for (auto &mypairObj: m_pairedObjects) {
-        //m_player.handleCollision(*mypairObj);
+        m_tempPlayer->handleCollision(*mypairObj);
         if (mypairObj->getCollided()) {
             m_isDead = true;
         }
@@ -190,7 +190,7 @@ void PlayGame::draw() {
 }
 
 void PlayGame::moveObjects() {
-    float timeStep = 1.0f / TIME_STEP;
+    float timeStep = 1.0f / 60;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
