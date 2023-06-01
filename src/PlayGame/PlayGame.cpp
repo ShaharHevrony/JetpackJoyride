@@ -8,8 +8,8 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(250, 700);
     //m_player = Player(ResourcesManager::instance().getPlayer(), playerPosition);
     m_tempPlayer = std::make_unique<TempPlayer>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
-    m_floor = std::make_unique<Floor>(&m_world);
-    m_ceiling = std::make_unique<Ceiling>(&m_world);
+    m_floor = std::make_unique<Bound>(&m_world, true);
+    m_ceiling = std::make_unique<Bound>(&m_world, false); 
 }
 
 PlayGame::~PlayGame() {}
@@ -141,6 +141,14 @@ void PlayGame::dealWithEvent() {
                 break;
             }
             case Death: {
+                sf::Sprite tempSpr;
+                for (int index = 1; index < 2; index++) {
+                    sf::Texture* tempTex = ResourcesManager::instance().getBarryDeath(index);
+                    tempSpr.setTexture(*tempTex);
+                    m_tempPlayer->setSprite(tempSpr);
+                    m_tempPlayer->playAnimationOnce(tempTex);
+                    m_tempPlayer->moveRightDown();
+                }
                 break;
             }
         }
@@ -208,6 +216,7 @@ void PlayGame::moveObjects() {
         m_singleObjects[index]->animate();
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
+    /*
     if (m_isDead) {
         sf::Sprite tempSpr;
         for (int index = 0; index < 2; index++) {
@@ -219,7 +228,7 @@ void PlayGame::moveObjects() {
     } else {
         //m_player.animate();
         //m_player.move(time);
-    }
+    }*/
 }
 
 int PlayGame::randMap() {

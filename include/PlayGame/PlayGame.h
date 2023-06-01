@@ -14,7 +14,7 @@
 #include "Events/EventsQueue.h"
 
 #include "TempPlayer.h"
-#include "Floor.h"
+#include "Bound.h"
 
 class PlayGame {
 public:
@@ -36,7 +36,7 @@ private:
     static sf::Clock gameTime;
     ControlGame m_control;
     sf::RenderWindow* m_window;
-    std::unique_ptr<Object> m_tempPlayer;
+    std::unique_ptr<TempPlayer> m_tempPlayer;
     std::unique_ptr<Object> m_floor;
     std::unique_ptr<Object> m_ceiling;
     Board m_board;

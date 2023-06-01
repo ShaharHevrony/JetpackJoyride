@@ -75,17 +75,28 @@ void TempPlayer::handleCollision(Coin& Coins) {
     }
 }
 
-/*
+
 void TempPlayer::playAnimationOnce(sf::Texture* tempTex) {
     if (!m_animation.hasPlayed()) {
         // Set the switch time to control the animation speed
         float switchTime = 0.18f;
         m_animation = Animation(tempTex, sf::Vector2u(3, 1), switchTime);
     }
-}*/
+}
 
 void TempPlayer::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         obstacle.setCollided();
+        Event event = Event(Death, 0);
+        EventsQueue::instance().push(event);
     }
+}
+
+void TempPlayer::moveRightDown() {
+    float jumpVelocityX = 10.0f; // Adjust the horizontal jump velocity as needed
+    float jumpVelocityY = 10.0f; // Adjust the vertical jump velocity as needed
+    b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
+    bodyVelocity.x = jumpVelocityX;
+    bodyVelocity.y = jumpVelocityY;
+    m_body->SetLinearVelocity(bodyVelocity);
 }

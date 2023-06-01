@@ -38,11 +38,11 @@ void Ceiling::create(b2World *world) {
     //BodyDef
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
-    bodyDef.position.Set(WINDOW_WIDTH / 2, 0.f);
-    m_body = world->CreateBody(&bodyDef);
+    bodyDef.position.Set(WINDOW_WIDTH / 2, 0.f);//here the diff
 
     b2PolygonShape boxShape;
-    boxShape.SetAsBox(WINDOW_WIDTH, -40.f);
+    boxShape.SetAsBox(WINDOW_WIDTH, -40.f);//here the diff
+    m_body = world->CreateBody(&bodyDef);
 
     // FixtureDef
     b2FixtureDef fixtureDef;

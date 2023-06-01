@@ -11,6 +11,9 @@ public:
     virtual ~TempPlayer() = default;
     void create(b2World *world, float radius);
     void createSensor(b2World* world, float width, float height, b2Vec2 center, int data);
+    void playAnimationOnce(sf::Texture* tempTex);
+    void moveRightDown();
+
 
     virtual void space();
     virtual void move(float time) {}
