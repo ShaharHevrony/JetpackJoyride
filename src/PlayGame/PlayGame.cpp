@@ -19,9 +19,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    int random = randMap();
+    //int random = randMap();
     sf::Vector2f position;
-    //int random = 7;
+    int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -107,15 +107,19 @@ void PlayGame::run() {
             m_pairedObjects.clear();
             createObjectMap();
         }
-        moveObjects();
-        if (m_player->getSpace() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
-            //here we check the pose of the player falling standing or lift
-            m_player->move(TIME_STEP);
+        if(!m_player->getDeathStat()) {
+            moveObjects();
+            if (m_player->getSpace() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
+                //here we check the pose of the player falling standing or lift
+                m_player->move(TIME_STEP);
+            } else {
+                m_player->animate();
+            }
+            dealWithCollision();
+            dealWithEvent();
         } else {
-            m_player->animate();
+            deathMovement();
         }
-        dealWithCollision();
-        dealWithEvent();
         draw();
     }
 }
@@ -144,11 +148,12 @@ void PlayGame::dealWithEvent() {
             }
             case Death: {
                 //Add sound of death here
-                //m_player->setObject(ResourcesManager::instance().getBarryDeath(0));
+                //m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(3, 1));
                 b2Vec2 deathGravity(GRAV_DEATH_X, GRAVITATION_Y);
-                m_world = std::make_unique<b2World>(deathGravity);
+                //m_world.reset(new b2World(deathGravity));
+                m_world.get()->SetGravity(deathGravity);
                 m_bounds[0]->setDeath(m_world.get());
-                m_player->setDeath(m_world.get(), 100);
+                m_player->setDeath(m_world.get());
                 /*
                 for (int index = 1; index < 2; index++) {
                     sf::Texture* tempTex = ResourcesManager::instance().getBarryDeath(index);
@@ -176,12 +181,20 @@ void PlayGame::draw() {
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->draw(m_window);
     }
+
     m_scoreBoard.draw(m_window);
-    m_player->draw(m_window);
     m_bounds[0]->draw(m_window);
     m_bounds[1]->draw(m_window);
+    m_player->draw(m_window);
 
     m_window->display();
+}
+
+void PlayGame::deathMovement() {
+    float timeStep = 1.5 * TIME_STEP;
+    int32 velocityIterations = 6;
+    int32 positionIterations = 2;
+    m_world->Step(timeStep, velocityIterations, positionIterations);
 }
 
 void PlayGame::moveObjects() {

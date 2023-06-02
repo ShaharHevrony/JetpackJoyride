@@ -9,12 +9,13 @@ class Player: public Object {
 public:
     Player(sf::Texture* texture, sf::Vector2f position, std::unique_ptr<b2World>* world);
     virtual ~Player() = default;
-    void create(b2World *world, float radius);
-    void setDeath(b2World *world, float radius);
+    void create(b2World *world);
+    void setDeath(b2World *world);
     void playAnimationOnce(sf::Texture* tempTex);
     void moveRightDown();
     void setSpace(bool space);
-    bool getSpace();
+    bool getSpace() const;
+    bool getDeathStat() const;
 
     virtual void move(float time);
     virtual void handleCollision(Object& object);
@@ -25,4 +26,5 @@ public:
 
 private:
     bool m_space = false;
+    bool m_death = false;
 };

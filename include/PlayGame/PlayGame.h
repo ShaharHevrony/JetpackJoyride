@@ -26,6 +26,7 @@ public:
     void dealWithCollision();
     void dealWithEvent();
     void moveObjects();
+    void deathMovement();
     void draw();
     int randMap();
     double calculateDistance(double x1, double y1, double x2, double y2);

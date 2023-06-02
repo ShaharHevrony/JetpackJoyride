@@ -2,38 +2,48 @@
 #include "Values.h"
 
 Player::Player(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world) : Object(texture, position) {
-    create(world->get(),100);
+    create(world->get());
 }
 
-void Player::create(b2World *world, float radius) {
+void Player::create(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
+    bodyDef.linearDamping = 0.0f;
+    bodyDef.angularDamping = 0.4f;
     m_body = world->CreateBody(&bodyDef);
 
-    b2CircleShape circle;
-    circle.m_p.Set(0, 0);
-    circle.m_radius = radius;
+    b2PolygonShape shape;
+    shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
 
     //FixtureDef
     b2FixtureDef fixtureDef;
-    fixtureDef.shape = &circle;
+    fixtureDef.shape = &shape;
     fixtureDef.density = 0.3f;
     fixtureDef.friction = 0.3f;
     m_body->CreateFixture(&fixtureDef);
     m_body->SetUserData(this);
 }
 
-void Player::setDeath(b2World *world, float radius) {
-    b2CircleShape circle;
-    circle.m_p.Set(0, 0);
-    circle.m_radius = radius;
+void Player::setDeath(b2World *world) {
+    m_death = true;
 
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
+    //bodyDef.linearDamping = 0.0f;
+    //bodyDef.angularDamping = 0.0f;
+    m_body = world->CreateBody(&bodyDef);
+
+    b2PolygonShape shape;
+    shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
+
+    //FixtureDef
     b2FixtureDef objectFixtureDef;
-    objectFixtureDef.shape = &circle;
-    objectFixtureDef.density = 1.0f;
-    objectFixtureDef.friction = 0.4f;
-    objectFixtureDef.restitution = 0.5f;  // Add the restitution property
+    objectFixtureDef.shape = &shape;
+    objectFixtureDef.density = 1.f;
+    objectFixtureDef.friction = 1.f;
+    objectFixtureDef.restitution = 1.5f;  // Add the restitution property
     m_body->CreateFixture(&objectFixtureDef);
 }
 
@@ -107,6 +117,10 @@ void Player::setSpace(bool set) {
     m_space = set;
 }
 
-bool Player::getSpace() {
+bool Player::getSpace() const{
     return m_space;
+}
+
+bool Player::getDeathStat() const {
+    return m_death;
 }

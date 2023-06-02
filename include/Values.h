@@ -52,7 +52,7 @@ const float SET_BACKGROUND = WINDOW_HEIGHT / 900;
 const float OBJECT_MAP_POS = WINDOW_WIDTH  / 30;
 const float GRAVITATION_X  = 0.0;
 const float GRAVITATION_Y  = WINDOW_HEIGHT / 500;
-const float GRAV_DEATH_X   = WINDOW_WIDTH / 5000;
+const float GRAV_DEATH_X   = WINDOW_WIDTH  / 2500;
 const float TIME_STEP      = 1 / (7 * GRAVITATION_Y);
 
 const float RESIZE_BUTTONS = 1.15;

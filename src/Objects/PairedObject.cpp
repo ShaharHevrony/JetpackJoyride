@@ -1,10 +1,7 @@
 #include "PairedObject.h"
 #include <math.h>
 
-PairedObject::PairedObject() : Object() {}
-
-PairedObject::PairedObject(sf::Texture* texture, const sf::Vector2f& position)
-        : Object(texture, position) {
+PairedObject::PairedObject(sf::Texture* texture, const sf::Vector2f& position): Object(texture, position) {
     m_object.setOrigin(m_object.getTextureRect().width/2, m_object.getTextureRect().height/2);
 }
 

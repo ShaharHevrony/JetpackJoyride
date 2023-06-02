@@ -17,7 +17,7 @@ public:
     virtual ~Object();
     void animate();
     sf::Sprite getObject();
-    void setObject(sf::Texture* texture);
+    void setObject(sf::Texture* texture, sf::Vector2u imageCount);
     bool getCollided() const;
     bool getDelete() const;
     void setCollided();

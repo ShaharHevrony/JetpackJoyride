@@ -9,6 +9,7 @@ void Bound::create(b2World* world) {
     //BodyDef
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
+
     b2PolygonShape boxShape;
     if (m_floor) {
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
@@ -22,8 +23,6 @@ void Bound::create(b2World* world) {
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &boxShape;
-    fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.2f;
     m_body->CreateFixture(&fixtureDef);
     m_body->SetUserData(this);
 }
