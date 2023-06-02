@@ -3,13 +3,13 @@
 void CollisionListener::BeginContact(b2Contact *contact) {
     //Check fixture A
     void* bodyA = contact->GetFixtureA()->GetBody()->GetUserData();
-    auto objA   = static_cast<Object*>(bodyA);
-    void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
+    auto objA   = static_cast<Box2dObject*>(bodyA);
+    void* fixtureUserDataA = contact->GetFixtureA()->GetUserData(); //Help to find witch two object collided
 
     //Check fixture B
     void* bodyB = contact->GetFixtureB()->GetBody()->GetUserData();
-    auto objB  = static_cast<Object*>(bodyB);
-    void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
+    auto objB  = static_cast<Box2dObject*>(bodyB);
+    void* fixtureUserDataB = contact->GetFixtureB()->GetUserData(); //Help to find witch two object collided
 
     if (!objA | !objB) {
         return;
@@ -26,13 +26,13 @@ void CollisionListener::BeginContact(b2Contact *contact) {
 void CollisionListener::EndContact(b2Contact *contact) {
     //check fixture A
     void* bodyA = contact->GetFixtureA()->GetBody()->GetUserData();
-    auto objA   = static_cast<Object*>(bodyA);
-    void* fixtureUserDataA = contact->GetFixtureA()->GetUserData();
+    auto objA   = static_cast<Box2dObject*>(bodyA);
+    void* fixtureUserDataA = contact->GetFixtureA()->GetUserData(); //Help to find witch two object collided
 
     //check fixture B
     void* bodyB = contact->GetFixtureB()->GetBody()->GetUserData();
-    auto objB   = static_cast<Object*>(bodyB);
-    void* fixtureUserDataB = contact->GetFixtureB()->GetUserData();
+    auto objB   = static_cast<Box2dObject*>(bodyB);
+    void* fixtureUserDataB = contact->GetFixtureB()->GetUserData(); //Help to find witch two object collided
 
     if (!objA | !objB) {
         return;

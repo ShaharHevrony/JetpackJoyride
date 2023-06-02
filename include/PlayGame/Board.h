@@ -16,7 +16,7 @@ public:
     void readObjectFile(int index);
     void writeObjectFile();
     void moveBackgrounds(float time);
-    void draw(sf::RenderWindow* window, ControlGame& control);
+    void draw(sf::RenderWindow* window, ControlGame& control, int playerType);
 
     std::vector<std::string> getMap(int index) const;
     sf::Sprite getFirstBackground() const;

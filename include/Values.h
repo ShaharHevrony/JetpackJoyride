@@ -15,7 +15,15 @@ enum Buttons {
 
 enum EventsTypes {
     CollectedMoney,
-    Death,
+    DeathInTheAir,
+    DeadOnTheGround,
+};
+
+enum Box2Objects{
+    FloorType,
+    CeilingType,
+    PlayerType,
+    DeadPlayerType,
 };
 
 struct ControlGame {
@@ -50,10 +58,13 @@ const float SETTING_SIZE    = WINDOW_WIDTH  / 35;
 const float START_POINT     = WINDOW_WIDTH  / 100;
 const float SET_BACKGROUND  = WINDOW_HEIGHT / 900;
 const float OBJECT_MAP_POS  = WINDOW_WIDTH  / 30;
+
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 500;
 const float GRAVITATION_X   = 0.0;
 const float DEATH_GRAVITY_Y = WINDOW_HEIGHT / 1500;
 const float DEATH_GRAVITY_X = WINDOW_WIDTH  / 7500;
+const float BERRYS_MASS     = WINDOW_HEIGHT / 100;
+const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
 const float TIME_STEP       = 1 / (7 * GRAVITATION_Y);
 
 const float RESIZE_BUTTONS  = 1.15;
@@ -63,6 +74,8 @@ const int NUM_OF_OBJECTS    = 15;
 const int COLLECTED_MONEY   = 5;
 const int TOP_FIVE          = 5;
 const double PI             = 3.14159265358;
+
+const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "BEST: "};
@@ -214,21 +227,6 @@ const std::vector<std::string> MAP = { "--****---****--\n"
                                        "-----*****-----\n"
                                        "-----*****-----\n"
                                        "-----*****-----"  };
-
-/*
-                                       "--------------\n"
-                                       "-<----******--\n"
-                                       "----******----\n"
-                                       "-<----******--\n"
-                                       "----******---<\n"
-                                       "--------------\n"
-                                       "-------------<\n"
-                                       "--------------\n"
-                                       "--<------<----\n"
-                                       "--------------\n"
-                                       "----------<---\n"
-                                       "-----<--------\n"
-                                       "---*****----<-"};
 /*
 
 const std::string MAP = "--------------\n"

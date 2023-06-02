@@ -59,7 +59,7 @@ void Board::readObjectFile(int index) {
     readingFile.close();
 }
 
-void Board::draw(sf::RenderWindow* window, ControlGame& control) {
+void Board::draw(sf::RenderWindow* window, ControlGame& control, int playerType) {
     float changeInterval = 3.0f;
     //Calculate the elapsed time in seconds
     control.Time_t = control.LoopClock_t.getElapsedTime().asSeconds();
@@ -69,7 +69,9 @@ void Board::draw(sf::RenderWindow* window, ControlGame& control) {
     }
 
     control.LoopClock_t.restart();
-    moveBackgrounds(control.Time_t * control.Speed_t);
+    if(playerType != DeadPlayerType){
+        moveBackgrounds(control.Time_t * control.Speed_t);
+    }
     for (int i = 0; i < BACKGROUND; ++i) {
         window->draw(getBackgrounds()[i]);
     }

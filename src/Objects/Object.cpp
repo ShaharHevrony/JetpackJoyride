@@ -46,7 +46,3 @@ void Object::animate() {
     m_animation.Update();
     m_object.setTextureRect(m_animation.getObjRec());
 }
-
-b2Body* Object::getBody() {
-    return m_body;
-}

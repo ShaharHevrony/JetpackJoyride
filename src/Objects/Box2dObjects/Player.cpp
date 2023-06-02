@@ -1,10 +1,12 @@
 #include "Player.h"
 #include "Values.h"
 
-Player::Player(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world) : Object(texture, position) {
+Player::Player(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world, int type)
+                :Box2dObject(texture, position, world, type) {
     create(world->get());
 }
 
+//--------------- create the box2d values ---------------
 void Player::create(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -22,18 +24,25 @@ void Player::create(b2World *world) {
     fixtureDef.density = 0.3f;
     fixtureDef.friction = 0.3f;
     m_body->CreateFixture(&fixtureDef);
+
+    b2MassData mass;
+    mass.center = m_body->GetLocalCenter();
+    mass.mass = BERRYS_MASS;
+    mass.I = m_object.getOrigin().y;
+    m_body->SetMassData(&mass);
+
     m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
 }
 
 void Player::setDeath(b2World *world) {
-    m_death = true;
+    m_type = DeadPlayerType;
 
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    //bodyDef.linearDamping = 0.0f;
-    //bodyDef.angularDamping = 0.0f;
+    bodyDef.linearDamping = 0.0f;
+    bodyDef.angularDamping = 1.5f;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
@@ -42,12 +51,38 @@ void Player::setDeath(b2World *world) {
     //FixtureDef
     b2FixtureDef objectFixtureDef;
     objectFixtureDef.shape = &shape;
-    objectFixtureDef.density = 0.1f;
-    objectFixtureDef.friction = 100.f;
-    objectFixtureDef.restitution = 2.f;  // Add the restitution property
+    objectFixtureDef.density = BERRYS_FRICTION;
+    objectFixtureDef.friction = BERRYS_FRICTION;
+    objectFixtureDef.restitution = 0.8f;  // Add the restitution property
     m_body->CreateFixture(&objectFixtureDef);
+
+    b2MassData mass;
+    mass.center = m_body->GetLocalCenter();
+    mass.mass = BERRYS_MASS;
+    mass.I = m_object.getOrigin().y;
+    m_body->SetMassData(&mass);
+
     m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
+}
+
+//------------- SFML functions on window -------------
+void Player::move(float time) {
+    float length = m_object.getTexture()->getSize().x/4;
+    if (m_type) {
+        float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
+        b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
+        bodyVelocity.y = jumpVelocity;
+        m_body->SetLinearVelocity(bodyVelocity);
+        b2Vec2 bodyPosition = m_body->GetPosition();
+        float bodyAngle = m_body->GetAngle();
+        m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
+        m_object.setPosition(bodyPosition.x, bodyPosition.y);
+        m_object.setRotation(bodyAngle * 180.0f / b2_pi);
+    }
+    else {
+        m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
+    }
 }
 
 void Player::draw(sf::RenderWindow* window) {
@@ -57,6 +92,7 @@ void Player::draw(sf::RenderWindow* window) {
     window->draw(m_object);
 }
 
+//-------------- handle all collisions --------------
 void Player::handleCollision(Object& object) {
     if (&object == this) {
         return;
@@ -74,56 +110,10 @@ void Player::handleCollision(Coin& Coins) {
     }
 }
 
-void Player::playAnimationOnce(sf::Texture* tempTex) {
-    if (!m_animation.hasPlayed()) {
-        // Set the switch time to control the animation speed
-        float switchTime = 0.18f;
-        m_animation = Animation(tempTex, sf::Vector2u(3, 1), switchTime);
-    }
-}
-
 void Player::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         obstacle.setCollided();
-        Event event = Event(Death, 0);
+        Event event = Event(DeathInTheAir, 0);
         EventsQueue::instance().push(event);
     }
-}
-
-void Player::moveRightDown() {
-    float jumpVelocityX = 10.0f; // Adjust the horizontal jump velocity as needed
-    float jumpVelocityY = 10.0f; // Adjust the vertical jump velocity as needed
-    b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-    bodyVelocity.x = jumpVelocityX;
-    bodyVelocity.y = jumpVelocityY;
-    m_body->SetLinearVelocity(bodyVelocity);
-}
-
-void Player::move(float time) {
-    float length = m_object.getTexture()->getSize().x/4;
-    if (m_space) {
-        float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
-        b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-        bodyVelocity.y = jumpVelocity;
-        m_body->SetLinearVelocity(bodyVelocity);
-        b2Vec2 bodyPosition = m_body->GetPosition();
-        float bodyAngle = m_body->GetAngle();
-        m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
-        m_object.setPosition(bodyPosition.x, bodyPosition.y);
-        m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-    }
-    else {
-        m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
-    }
-}
-void Player::setSpace(bool set) {
-    m_space = set;
-}
-
-bool Player::getSpace() const{
-    return m_space;
-}
-
-bool Player::getDeathStat() const {
-    return m_death;
 }

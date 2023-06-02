@@ -5,7 +5,7 @@
 class Obstacle: public PairedObject {
 public:
     Obstacle();
-    Obstacle(sf::Texture* texture, const sf::Vector2f& position);
+    Obstacle(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Obstacle() = default;
 
     virtual void move(float time);

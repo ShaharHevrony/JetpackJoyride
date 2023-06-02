@@ -2,12 +2,13 @@
 #include "PlayGame/PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    m_world = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
-    m_world->SetContactListener(&m_collisionBox2D);
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y/100);
-    m_player = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
-    m_bounds.push_back(std::make_unique<Bound>(&m_world, true));  //Create the floor of the game
-    m_bounds.push_back(std::make_unique<Bound>(&m_world, false)); //Create the ceiling of the game
+
+    m_world   = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
+    m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world, PlayerType);
+    m_floor   = std::make_unique<Bound>(&m_world, FloorType);  //Create the floor of the game
+    m_ceiling = std::make_unique<Bound>(&m_world, CeilingType); //Create the ceiling of the game
+    m_world->SetContactListener(&m_collisionBox2D);
 }
 
 PlayGame::~PlayGame() {}
@@ -76,11 +77,13 @@ void PlayGame::createBeam() {
     }
 
     //Calculate the distance between the two positions
-    float distance = m_pairedObjects[m_pairedObjects.size() - 1]->calculateDistance();
+    float distance = m_pairedObjects[m_pairedObjects.size()-1]->calculateDistance();
 }
 
 void PlayGame::run() {
     create();
+    bool alreadyDead = false;
+
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -90,13 +93,13 @@ void PlayGame::run() {
                 }
                 case sf::Event::KeyPressed: {
                     if (event.key.code == sf::Keyboard::Space) {
-                        m_player->setSpace(true);
+                        m_player->setSpacePressed(true);
                     }
                     break;
                 }
                 case sf::Event::KeyReleased: {
                     if (event.key.code == sf::Keyboard::Space) {
-                        m_player->setSpace(false);
+                        m_player->setSpacePressed(false);
                     }
                     break;
                 }
@@ -107,9 +110,9 @@ void PlayGame::run() {
             m_pairedObjects.clear();
             createObjectMap();
         }
-        if(!m_player->getDeathStat()) {
+        if(m_player->getType() != DeadPlayerType) {
             moveObjects();
-            if (m_player->getSpace() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
+            if (m_player->getSpacePressed()) {
                 //here we check the pose of the player falling standing or lift
                 m_player->move(TIME_STEP);
             } else {
@@ -118,7 +121,7 @@ void PlayGame::run() {
             dealWithCollision();
             dealWithEvent();
         } else {
-            deathMovement();
+            deathMovement(alreadyDead);
         }
         draw();
     }
@@ -146,23 +149,18 @@ void PlayGame::dealWithEvent() {
                 m_scoreBoard.addPoints(event.getPoints());
                 break;
             }
-            case Death: {
+            case DeathInTheAir: {
                 //Add sound of death here
-                //m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(3, 1));
+                m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(3, 1));
                 b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
                 m_world.get()->SetGravity(deathGravity);
-                m_bounds[0]->setDeath(m_world.get());
+                m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
                 m_collisionBox2D.setContactCount(0);
-                /*
-                for (int index = 1; index < 2; index++) {
-                    sf::Texture* tempTex = ResourcesManager::instance().getBarryDeath(index);
-                    tempSpr.setTexture(*tempTex);
-                    m_player->setSprite(tempSpr);
-                    m_player->playAnimationOnce(tempTex);
-                    m_player->moveRightDown();
-                }
-                */
+                break;
+            }
+            case DeadOnTheGround:{
+                m_player->setObject(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(2, 1));
                 break;
             }
         }
@@ -171,7 +169,7 @@ void PlayGame::dealWithEvent() {
 
 void PlayGame::draw() {
     m_window->clear();
-    m_board.draw(m_window, m_control);
+    m_board.draw(m_window, m_control, m_player->getType());
 
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
@@ -181,26 +179,29 @@ void PlayGame::draw() {
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->draw(m_window);
     }
-
     m_scoreBoard.draw(m_window);
-    m_bounds[0]->draw(m_window);
-    m_bounds[1]->draw(m_window);
+    m_floor->draw(m_window);
+    m_ceiling->draw(m_window);
     m_player->draw(m_window);
 
     m_window->display();
 }
 
-void PlayGame::deathMovement() {
+void PlayGame::deathMovement(bool& alreadyDead) {
     float timeStep = 1.5 * TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
+    m_player->animate();
 
-    if(m_collisionBox2D.getConnected()) {
-        std::cout << "connected, num: " << m_collisionBox2D.getContactCount() << "\n";
-    }
-    if(m_collisionBox2D.getContactCount() > 3) {
-        m_player->getBody()->SetLinearVelocity(b2Vec2(0,0));
+    float velocityDeltaX = 3/WINDOW_HEIGHT;
+    float velocityDeltaY = 3/WINDOW_HEIGHT;
+    if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDeltaX
+    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDeltaY && !alreadyDead){
+        alreadyDead = true;
+        Event event = Event(DeadOnTheGround, 0);
+        EventsQueue::instance().push(event);
+        dealWithEvent();
     }
 }
 

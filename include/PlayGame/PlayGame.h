@@ -11,10 +11,9 @@
 #include "Obstacle.h"
 #include "ScoreBoard.h"
 #include "EventsQueue.h"
-#include "CollisionListener.h"
-
 #include "Player.h"
 #include "Bound.h"
+#include "CollisionListener.h"
 
 class PlayGame {
 public:
@@ -27,11 +26,11 @@ public:
     void dealWithCollision();
     void dealWithEvent();
     void moveObjects();
-    void deathMovement();
+    void deathMovement(bool& berryState);
     void draw();
     int randMap();
-    double calculateDistance(double x1, double y1, double x2, double y2);
-    sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
+    //double calculateDistance(double x1, double y1, double x2, double y2);
+    //sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
 
 private:
     Board m_board;
@@ -39,12 +38,14 @@ private:
     ControlGame m_control;
 
     sf::RenderWindow* m_window;
-    std::unique_ptr<b2World> m_world;
-    std::unique_ptr<Player> m_player;
+
     std::unique_ptr<Object> lastObject;
-    std::vector<std::unique_ptr<Bound>> m_bounds;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
 
+    std::unique_ptr<b2World> m_world;
+    std::unique_ptr<Box2dObject> m_player;
+    std::unique_ptr<Box2dObject> m_floor;
+    std::unique_ptr<Box2dObject> m_ceiling;
     CollisionListener m_collisionBox2D;
 };

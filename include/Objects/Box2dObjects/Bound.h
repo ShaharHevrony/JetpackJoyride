@@ -1,14 +1,14 @@
 #pragma once
 #include <box2d/box2d.h>
+#include "Box2dObject.h"
 
-#include "Object.h"
-
-class Bound: public Object {
+class Bound: public Box2dObject{
 public:
-    Bound(std::unique_ptr<b2World>* world, bool floor);
+    Bound(std::unique_ptr<b2World>* world = nullptr, int type = 0);
     virtual ~Bound() = default;
-    void create(b2World* world);
-    void setDeath(b2World* world);
+
+    virtual void create(b2World *world);
+    virtual void setDeath(b2World* world);
 
     virtual void move(float time) {}
     virtual void handleCollision(Object& object) {}
@@ -16,8 +16,5 @@ public:
     virtual void handleCollision(Obstacle& obstacle) {}
     virtual void handleCollision(Coin& coin) {}
     virtual void draw(sf::RenderWindow* window);
-
-private:
-    bool m_floor = false;
 };
 

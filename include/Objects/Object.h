@@ -1,18 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <box2d/box2d.h>
 
 #include "ResourcesManager.h"
 #include "Animation.h"
 #include "EventsQueue.h"
 
 class Player;
-class Obstacle;
 class Coin;
+class Obstacle;
 
 class Object {
 public:
-    Object(sf::Texture* texture = nullptr, const sf::Vector2f& position = sf::Vector2f(0,0));
+    Object(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     Object(Object& other);
     virtual ~Object() = default;
     void animate();
@@ -22,7 +21,6 @@ public:
     bool getDelete() const;
     void setCollided();
     void setDelete();
-    b2Body* getBody();
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
@@ -34,7 +32,6 @@ public:
 protected:
     sf::Sprite m_object;
     Animation m_animation;
-    b2Body* m_body;
 
 private:
     bool m_isDelete = false;

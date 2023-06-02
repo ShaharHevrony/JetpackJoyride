@@ -1,6 +1,6 @@
 #pragma once
 #include "box2d/box2d.h"
-#include "Object.h"
+#include "Box2dObject.h"
 
 class CollisionListener: public b2ContactListener {
 public:

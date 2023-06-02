@@ -7,7 +7,7 @@ class Obstacle;
 class Coin: public Object{
 public:
     Coin();
-    Coin(sf::Texture* texture, const sf::Vector2f& position);
+    Coin(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Coin() = default;
     bool getSwitchCoins();
 
@@ -16,5 +16,6 @@ public:
     virtual void handleCollision(Player& player);
     virtual void handleCollision(Obstacle& obstacle){}
     virtual void handleCollision(Coin& coin);
+
     virtual void draw(sf::RenderWindow* window);
 };

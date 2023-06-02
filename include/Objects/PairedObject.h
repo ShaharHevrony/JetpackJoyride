@@ -1,13 +1,14 @@
 #pragma once
 #include <cmath>
-
 #include "Object.h"
 
-#define _USE_MATH_DEFINES
+class Player;
+class Coin;
+class Obstacle;
 
 class PairedObject: public Object {
 public:
-    PairedObject(sf::Texture* texture = nullptr, const sf::Vector2f& position  = sf::Vector2f(0,0));
+    PairedObject(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~PairedObject() = default;
     void calculateAngle();
     float calculateDistance();
