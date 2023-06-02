@@ -10,7 +10,7 @@ void Player::create(b2World *world) {
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
     bodyDef.linearDamping = 0.0f;
-    bodyDef.angularDamping = 0.4f;
+    bodyDef.angularDamping = 1.f;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
@@ -22,6 +22,7 @@ void Player::create(b2World *world) {
     fixtureDef.density = 0.3f;
     fixtureDef.friction = 0.3f;
     m_body->CreateFixture(&fixtureDef);
+    m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
 }
 
@@ -41,10 +42,12 @@ void Player::setDeath(b2World *world) {
     //FixtureDef
     b2FixtureDef objectFixtureDef;
     objectFixtureDef.shape = &shape;
-    objectFixtureDef.density = 1.f;
-    objectFixtureDef.friction = 1.f;
-    objectFixtureDef.restitution = 1.5f;  // Add the restitution property
+    objectFixtureDef.density = 0.1f;
+    objectFixtureDef.friction = 100.f;
+    objectFixtureDef.restitution = 2.f;  // Add the restitution property
     m_body->CreateFixture(&objectFixtureDef);
+    m_body->SetFixedRotation(true);
+    m_body->SetUserData(this);
 }
 
 void Player::draw(sf::RenderWindow* window) {

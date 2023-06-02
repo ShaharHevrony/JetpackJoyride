@@ -2,9 +2,10 @@
 #include "PlayGame/PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    m_world  = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
+    m_world = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
+    m_world->SetContactListener(&m_collisionBox2D);
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y/100);
-    m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
+    m_player = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world);
     m_bounds.push_back(std::make_unique<Bound>(&m_world, true));  //Create the floor of the game
     m_bounds.push_back(std::make_unique<Bound>(&m_world, false)); //Create the ceiling of the game
 }
@@ -68,11 +69,10 @@ void PlayGame::createObjectMap() {
 }
 
 void PlayGame::createBeam() {
-    sf::Sprite tempBeams;
-    for(int index = 0; index < 3; index++){
-        tempBeams.setTexture(*ResourcesManager::instance().getLaserBeam(index));
-        tempBeams.setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
-        std::cout << "temp get texture get size: "  << tempBeams.getTexture()->getSize().y << "\ttemp get scale: " << tempBeams.getScale().y << "\n";
+    sf::Sprite tempBeams[3];
+    for(int index = 0; index < 3; index++) {
+        tempBeams[index].setTexture(*ResourcesManager::instance().getLaserBeam(index));
+        tempBeams[index].setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
     }
 
     //Calculate the distance between the two positions
@@ -149,11 +149,11 @@ void PlayGame::dealWithEvent() {
             case Death: {
                 //Add sound of death here
                 //m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(3, 1));
-                b2Vec2 deathGravity(GRAV_DEATH_X, GRAVITATION_Y);
-                //m_world.reset(new b2World(deathGravity));
+                b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
                 m_world.get()->SetGravity(deathGravity);
                 m_bounds[0]->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
+                m_collisionBox2D.setContactCount(0);
                 /*
                 for (int index = 1; index < 2; index++) {
                     sf::Texture* tempTex = ResourcesManager::instance().getBarryDeath(index);
@@ -195,6 +195,13 @@ void PlayGame::deathMovement() {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
+
+    if(m_collisionBox2D.getConnected()) {
+        std::cout << "connected, num: " << m_collisionBox2D.getContactCount() << "\n";
+    }
+    if(m_collisionBox2D.getContactCount() > 3) {
+        m_player->getBody()->SetLinearVelocity(b2Vec2(0,0));
+    }
 }
 
 void PlayGame::moveObjects() {

@@ -8,7 +8,7 @@ class Coin: public Object{
 public:
     Coin();
     Coin(sf::Texture* texture, const sf::Vector2f& position);
-    virtual ~Coin();
+    virtual ~Coin() = default;
     bool getSwitchCoins();
 
     virtual void move(float time);

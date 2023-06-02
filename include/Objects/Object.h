@@ -14,7 +14,7 @@ class Object {
 public:
     Object(sf::Texture* texture = nullptr, const sf::Vector2f& position = sf::Vector2f(0,0));
     Object(Object& other);
-    virtual ~Object();
+    virtual ~Object() = default;
     void animate();
     sf::Sprite getObject();
     void setObject(sf::Texture* texture, sf::Vector2u imageCount);

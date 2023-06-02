@@ -16,8 +16,6 @@ Object::Object(Object& other) {
     m_object.setRotation(other.getObject().getRotation());
 }
 
-Object::~Object() {}
-
 bool Object::getCollided() const {
     return m_collided;
 }

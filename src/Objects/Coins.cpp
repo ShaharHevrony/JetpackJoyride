@@ -4,8 +4,6 @@ Coin::Coin(): Object() {}
 
 Coin::Coin(sf::Texture* texture, const sf::Vector2f &position): Object(texture, position) {}
 
-Coin::~Coin() {}
-
 void Coin::move(float time) {
     animate();
     sf::Vector2f direction(-1,0);

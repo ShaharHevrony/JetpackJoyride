@@ -10,7 +10,8 @@
 #include "Coin.h"
 #include "Obstacle.h"
 #include "ScoreBoard.h"
-#include "Events/EventsQueue.h"
+#include "EventsQueue.h"
+#include "CollisionListener.h"
 
 #include "Player.h"
 #include "Bound.h"
@@ -44,5 +45,6 @@ private:
     std::vector<std::unique_ptr<Bound>> m_bounds;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
-    //bool m_isDead = false;
+
+    CollisionListener m_collisionBox2D;
 };
