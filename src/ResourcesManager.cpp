@@ -53,19 +53,35 @@ ResourcesManager::ResourcesManager() {
     }
     m_firstBackground = backgroundStartTex;
 
-    for (int index = 0; index < 2; index++) {
-        sf::Texture* tempDed = new sf::Texture();
-        if (!tempDed->loadFromFile(PATH + barryDeath[index])) {
-            throw OpenTextureFailed();
-        }
-        m_barryDeath[index] = tempDed;
-    }
-
-    sf::Texture* laiserLine = new sf::Texture();
-    if (!laiserLine->loadFromFile(PATH + "beam.png")) {
+    sf::Texture* berryHit = new sf::Texture();
+    if (!berryHit->loadFromFile(PATH + "BerryHit.png")) {
         throw OpenTextureFailed();
     }
-    m_laserLine = laiserLine;
+    m_barryDeath[0] = berryHit;
+
+    sf::Texture* berryDead = new sf::Texture();
+    if (!berryDead->loadFromFile(PATH + "BerryDead.png")) {
+        throw OpenTextureFailed();
+    }
+    m_barryDeath[1] = berryDead;
+
+    sf::Texture* laseBeam0 = new sf::Texture();
+    if (!laseBeam0->loadFromFile(PATH + "Beam0.png")) {
+        throw OpenTextureFailed();
+    }
+    m_laserBeam[0] = laseBeam0;
+
+    sf::Texture* laseBeam1 = new sf::Texture();
+    if (!laseBeam1->loadFromFile(PATH + "Beam1.png")) {
+        throw OpenTextureFailed();
+    }
+    m_laserBeam[1] = laseBeam1;
+
+    sf::Texture* laseBeam2 = new sf::Texture();
+    if (!laseBeam1->loadFromFile(PATH + "Beam2.png")) {
+        throw OpenTextureFailed();
+    }
+    m_laserBeam[2] = laseBeam2;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -126,7 +142,6 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
 }
 
-sf::Texture* ResourcesManager::getLaserLine() const
-{
-    return m_laserLine;
+sf::Texture* ResourcesManager::getLaserBeam(int index) const{
+    return m_laserBeam[index];
 }

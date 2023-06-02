@@ -9,13 +9,14 @@ configure_file ("Hall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("coin.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Lasers.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Zappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Beam0.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Beam1.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Beam2.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("BerryDeathElec.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("barryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("beam.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("barryDed.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("BerryFlies.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)

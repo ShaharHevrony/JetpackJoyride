@@ -21,6 +21,7 @@ public:
     ~PlayGame();
     void create();
     void createObjectMap();
+    void createBeam();
     void run();
     void dealWithCollision();
     void dealWithEvent();
@@ -31,17 +32,16 @@ public:
     sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
 
 private:
-    std::unique_ptr<b2World> m_world;
-    static sf::Clock gameTime;
-    ControlGame m_control;
-    sf::RenderWindow* m_window;
-    std::unique_ptr<Player> m_tempPlayer;
-    std::unique_ptr<Object> m_floor;
-    std::unique_ptr<Object> m_ceiling;
     Board m_board;
     ScoreBoard m_scoreBoard;
+    ControlGame m_control;
+
+    sf::RenderWindow* m_window;
+    std::unique_ptr<b2World> m_world;
+    std::unique_ptr<Player> m_player;
+    std::unique_ptr<Object> lastObject;
+    std::vector<std::unique_ptr<Bound>> m_bounds;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
-    std::unique_ptr<Object> lastObject;
-    bool m_isDead = false;
+    //bool m_isDead = false;
 };

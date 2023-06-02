@@ -1,13 +1,18 @@
-#include "PlayGame/Animation.h"
-#include "iostream"
+#include "Animation.h"
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
-        :m_imageCount(imageCount), m_switchTime(switchTime) {
+Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) :m_imageCount(imageCount), m_switchTime(switchTime) {
     if(texture == nullptr) return;
     animationClock.restart().asSeconds();
     m_totalTime = 0.f;
     m_currentImage.x = 0;
 
+    m_objRec.width  = texture->getSize().x / float(imageCount.x);
+    m_objRec.height = texture->getSize().y / float(imageCount.y);
+}
+
+Animation::~Animation() {}
+
+void Animation::setAnimation(sf::Texture* texture, sf::Vector2u imageCount) {
     m_objRec.width  = texture->getSize().x / float(imageCount.x);
     m_objRec.height = texture->getSize().y / float(imageCount.y);
 }

@@ -3,7 +3,6 @@
 
 Player::Player(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world) : Object(texture, position) {
     create(world->get(),100);
-    //createSensor(world->get(), m_object.getGlobalBounds().height, 10, b2Vec2(0, m_object.getGlobalBounds().height), 1);
 }
 
 void Player::create(b2World *world, float radius) {
@@ -25,28 +24,17 @@ void Player::create(b2World *world, float radius) {
     m_body->SetUserData(this);
 }
 
-void Player::createSensor(b2World *world, float width, float height, b2Vec2 center, int data) {
-    b2PolygonShape shape;
-    shape.SetAsBox(width, height, center, 0);
+void Player::setDeath(b2World *world, float radius) {
+    b2CircleShape circle;
+    circle.m_p.Set(0, 0);
+    circle.m_radius = radius;
 
-    b2FixtureDef fixture;
-    fixture.shape = &shape;
-    fixture.density = 1.0f;
-    fixture.friction = 0.1f;
-    fixture.isSensor = true;
-    m_body->CreateFixture(&fixture)->SetUserData((void *) data);
-}
-
-void Player::space() {
-    float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
-    b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-    bodyVelocity.y = jumpVelocity;
-    m_body->SetLinearVelocity(bodyVelocity);
-    b2Vec2 bodyPosition = m_body->GetPosition();
-    float bodyAngle = m_body->GetAngle();
-    m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
-    m_object.setPosition(bodyPosition.x * SCALE, bodyPosition.y * SCALE);
-    m_object.setRotation(bodyAngle * 180.0f / b2_pi);
+    b2FixtureDef objectFixtureDef;
+    objectFixtureDef.shape = &circle;
+    objectFixtureDef.density = 1.0f;
+    objectFixtureDef.friction = 0.4f;
+    objectFixtureDef.restitution = 0.5f;  // Add the restitution property
+    m_body->CreateFixture(&objectFixtureDef);
 }
 
 void Player::draw(sf::RenderWindow* window) {
@@ -64,8 +52,6 @@ void Player::handleCollision(Object& object) {
         object.handleCollision(*this);
     }
 }
-
-void Player::handleCollision(Player& player) {}
 
 void Player::handleCollision(Coin& Coins) {
     if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
@@ -101,6 +87,7 @@ void Player::moveRightDown() {
 }
 
 void Player::move(float time) {
+    float length = m_object.getTexture()->getSize().x/4;
     if (m_space) {
         float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
@@ -108,14 +95,18 @@ void Player::move(float time) {
         m_body->SetLinearVelocity(bodyVelocity);
         b2Vec2 bodyPosition = m_body->GetPosition();
         float bodyAngle = m_body->GetAngle();
-        m_object.setTextureRect(sf::IntRect(110*3,0,110,150));
-        m_object.setPosition(bodyPosition.x * SCALE, bodyPosition.y * SCALE);
+        m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
+        m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     }
     else {
-        m_object.setTextureRect(sf::IntRect(110 * 2, 0, 110, 150));
+        m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
     }
 }
 void Player::setSpace(bool set) {
     m_space = set;
+}
+
+bool Player::getSpace() {
+    return m_space;
 }

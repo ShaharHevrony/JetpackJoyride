@@ -59,6 +59,23 @@ void Board::readObjectFile(int index) {
     readingFile.close();
 }
 
+void Board::draw(sf::RenderWindow* window, ControlGame& control) {
+    float changeInterval = 3.0f;
+    //Calculate the elapsed time in seconds
+    control.Time_t = control.LoopClock_t.getElapsedTime().asSeconds();
+    float elapsedTime = control.Time_t;
+    if (elapsedTime >= changeInterval) {
+        control.Speed_t += 15.f;
+    }
+
+    control.LoopClock_t.restart();
+    moveBackgrounds(control.Time_t * control.Speed_t);
+    for (int i = 0; i < BACKGROUND; ++i) {
+        window->draw(getBackgrounds()[i]);
+    }
+    window->draw(getFirstBackground());
+}
+
 void Board::moveBackgrounds(float time) {
     sf::Vector2f direction(-1,0);
     m_firstBackground.move(direction*time);
