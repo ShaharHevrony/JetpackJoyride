@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -65,7 +65,7 @@ const float DEATH_GRAVITY_Y = WINDOW_HEIGHT / 1500;
 const float DEATH_GRAVITY_X = WINDOW_WIDTH  / 7500;
 const float BERRYS_MASS     = WINDOW_HEIGHT / 100;
 const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
-const float TIME_STEP       = 1 / (7 * GRAVITATION_Y);
+const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
 
 const float RESIZE_BUTTONS  = 1.15;
 const int NUM_OF_BUTTONS    = 4;

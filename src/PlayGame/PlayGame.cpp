@@ -2,7 +2,7 @@
 #include "PlayGame/PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y/100);
+    sf::Vector2f playerPosition(PLAYER_POS_X, 500);
 
     m_world   = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world, PlayerType);
@@ -21,9 +21,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    //int random = randMap();
+    int random = randMap();
     sf::Vector2f position;
-    int random = 7;
+    //int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -82,7 +82,7 @@ void PlayGame::run() {
     create();
     bool alreadyDead = false;
 
-    while (m_window->isOpen()) {
+    while (m_window->isOpen() && !m_restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed: {
@@ -119,8 +119,22 @@ void PlayGame::run() {
             }
             dealWithCollision();
             dealWithEvent();
-        } else {
+        }else {
             deathMovement(alreadyDead);
+            if (alreadyDead && !m_gameOver) {
+                // Start the timer when the player is dead and the game over screen is not displayed yet
+                m_timer.restart();
+                m_gameOver = true;
+            }
+        }
+        if (m_gameOver) {
+            // Check if 2 seconds have elapsed since the player's death
+            sf::Time elapsed = m_timer.getElapsedTime();
+            if (elapsed.asSeconds() >= 2.0) {
+                // Display the game over screen and freeze the window
+                displayGameOverScreen();
+                continue;  // Skip the rest of the loop until the window is closed
+            }
         }
         draw();
     }
@@ -156,6 +170,7 @@ void PlayGame::dealWithEvent() {
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
                 //m_collisionBox2D.setContactCount(0);
+               // m_scoreBoard.timer;
                 break;
             }
             case DeadOnTheGround:{
@@ -247,3 +262,76 @@ sf::Vector2f PlayGame::interpolatePosition(const sf::Vector2f &position1, const 
     float y = position1.y + t * (position2.y - position1.y);
     return sf::Vector2f(x, y);
 }
+
+void PlayGame::displayGameOverScreen() {
+    sf::RectangleShape overlay(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    overlay.setFillColor(sf::Color(0, 0, 0, 128));  // Semi-transparent black overlay
+
+    // Create the game over box
+    sf::RectangleShape gameOverBox(sf::Vector2f(400, 200));
+    gameOverBox.setFillColor(sf::Color(150,150,150));
+    gameOverBox.setOutlineThickness(2);
+    gameOverBox.setOutlineColor(sf::Color::Black);
+    gameOverBox.setPosition((WINDOW_WIDTH - gameOverBox.getSize().x) / 2, (WINDOW_HEIGHT - gameOverBox.getSize().y) / 2);
+
+    // Add text for options
+    sf::Font font;
+    if (!font.loadFromFile("Jetpackia.ttf")) {
+        // Handle font loading error
+    }
+
+    sf::Text restartText;
+    restartText.setFont(font);
+    restartText.setCharacterSize(24);
+    restartText.setFillColor(sf::Color::Black);
+    restartText.setString("Restart");
+    restartText.setPosition(gameOverBox.getPosition() + sf::Vector2f(20, 20));
+
+    sf::Text quitText;
+    quitText.setFont(font);
+    quitText.setCharacterSize(24);
+    quitText.setFillColor(sf::Color::Black);
+    quitText.setString("Quit");
+    quitText.setPosition(gameOverBox.getPosition() + sf::Vector2f(20, 80));
+
+    while (m_window->isOpen()) {
+        if (auto event = sf::Event{}; m_window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                m_window->close();
+                return;
+            }
+            if (event.type == sf::Event::MouseButtonReleased) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*m_window);
+                sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+                if (restartText.getGlobalBounds().contains(mousePosF)) {
+                    // Restart the game
+                    m_restartGame = true;
+                    return;
+                }
+                if (quitText.getGlobalBounds().contains(mousePosF)) {
+                    // Quit the game
+                    m_window->close();
+                    return;
+                }
+            }
+        }
+
+        m_window->clear();
+
+        // Draw the game over screen
+        m_board.draw(m_window, m_control, m_player->getType());
+
+        // Draw the overlay
+        m_window->draw(overlay);
+
+        // Draw the game over box and options
+        m_window->draw(gameOverBox);
+        m_window->draw(restartText);
+        m_window->draw(quitText);
+
+        // Display the window content
+        m_window->display();
+    }
+}
+
+

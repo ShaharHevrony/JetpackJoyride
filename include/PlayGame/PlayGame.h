@@ -31,8 +31,14 @@ public:
     int randMap();
     double calculateDistance(double x1, double y1, double x2, double y2);
     sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
+    void displayGameOverScreen();
+
 
 private:
+    sf::Clock m_timer;          // Timer to track elapsed time
+    bool m_gameOver = false;    // Flag to indicate if the game is over
+
+    bool m_restartGame = false;
     Board m_board;
     ScoreBoard m_scoreBoard;
     ControlGame m_control;
