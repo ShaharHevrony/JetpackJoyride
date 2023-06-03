@@ -45,19 +45,8 @@ void PlayGame::createObjectMap() {
                         if (lastObject == nullptr || position.x > lastObject->getObject().getPosition().x) {
                             lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
                         }
-                        createBeam();
-                       /*
-                        //Calculate the number of additional sprites needed to cover the distance
-                        int additionalSprites = static_cast<int>(distance) - 1;
-
-                        //Duplicate the sprite and set paired positions for the additional sprites
-                        for (int i = 0; i < additionalSprites; ++i) {
-                            sf::Vector2f newPosition = interpolatePosition(otherPosition, position,
-                                                                   static_cast<float>(i + 1) / (additionalSprites + 1));
-                            m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLaserLine(),newPosition));
-                            m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
-                        }
-                        */
+                        createBeam(position);
+                       //------------------------------------------------------------
                     }
                     break;
                 }
@@ -69,15 +58,24 @@ void PlayGame::createObjectMap() {
     }
 }
 
-void PlayGame::createBeam() {
-    sf::Sprite tempBeams[3];
+void PlayGame::createBeam(sf::Vector2f position) {
+    /*sf::Sprite tempBeams[3];
     for(int index = 0; index < 3; index++) {
         tempBeams[index].setTexture(*ResourcesManager::instance().getLaserBeam(index));
         tempBeams[index].setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
-    }
+    }*/
 
-    //Calculate the distance between the two positions
-    float distance = m_pairedObjects[m_pairedObjects.size()-1]->calculateDistance();
+    sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition();
+    float distance = m_pairedObjects[m_pairedObjects.size() - 1]->calculateDistance();
+    int additionalSprites = static_cast<int>(distance) - 1;
+
+    for (int i = 0; i < additionalSprites; ++i) {
+        sf::Vector2f newPosition = interpolatePosition(firstPosition, position, static_cast<float>(i + 1) / (additionalSprites + 1));
+        //m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(), newPosition));
+        m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
+        m_pairedObjects[m_pairedObjects.size() - 1]->getObject().setScale(0.5f, 0.5f);
+    }
+    
 }
 
 void PlayGame::run() {
@@ -112,7 +110,7 @@ void PlayGame::run() {
         }
         if(m_player->getType() != DeadPlayerType) {
             moveObjects();
-            if (m_player->getSpacePressed()) {
+            if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
                 //here we check the pose of the player falling standing or lift
                 m_player->move(TIME_STEP);
             } else {
@@ -236,7 +234,7 @@ int PlayGame::randMap() {
     return random;
 }
 
-/*
+
 double PlayGame::calculateDistance(double x1, double y1, double x2, double y2) {
     double deltaX = x2 - x1;
     double deltaY = y2 - y1;
@@ -249,4 +247,3 @@ sf::Vector2f PlayGame::interpolatePosition(const sf::Vector2f &position1, const 
     float y = position1.y + t * (position2.y - position1.y);
     return sf::Vector2f(x, y);
 }
-*/

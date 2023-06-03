@@ -69,7 +69,7 @@ void Player::setDeath(b2World *world) {
 //------------- SFML functions on window -------------
 void Player::move(float time) {
     float length = m_object.getTexture()->getSize().x/4;
-    if (m_type) {
+    if (m_spacePressed) {
         float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
         bodyVelocity.y = jumpVelocity;

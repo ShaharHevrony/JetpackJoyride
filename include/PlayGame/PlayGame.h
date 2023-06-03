@@ -21,7 +21,7 @@ public:
     ~PlayGame();
     void create();
     void createObjectMap();
-    void createBeam();
+    void createBeam(sf::Vector2f position);
     void run();
     void dealWithCollision();
     void dealWithEvent();
@@ -29,8 +29,8 @@ public:
     void deathMovement(bool& berryState);
     void draw();
     int randMap();
-    //double calculateDistance(double x1, double y1, double x2, double y2);
-    //sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
+    double calculateDistance(double x1, double y1, double x2, double y2);
+    sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
 
 private:
     Board m_board;

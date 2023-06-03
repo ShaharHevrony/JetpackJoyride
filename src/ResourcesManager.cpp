@@ -65,24 +65,31 @@ ResourcesManager::ResourcesManager() {
     }
     m_barryDeath[1] = berryDead;
 
-    sf::Texture* laseBeam0 = new sf::Texture();
-    if (!laseBeam0->loadFromFile(PATH + "Beam0.png")) {
-        throw OpenTextureFailed();
-    }
-    m_laserBeam[0] = laseBeam0;
+    //sf::Texture* laseBeam0 = new sf::Texture();
+    //if (!laseBeam0->loadFromFile(PATH + "Beam0.png")) {
+    //    throw OpenTextureFailed();
+    //}
+    //m_laserBeam[0] = laseBeam0;
 
-    sf::Texture* laseBeam1 = new sf::Texture();
-    if (!laseBeam1->loadFromFile(PATH + "Beam1.png")) {
-        throw OpenTextureFailed();
-    }
-    m_laserBeam[1] = laseBeam1;
+    //sf::Texture* laseBeam1 = new sf::Texture();
+    //if (!laseBeam1->loadFromFile(PATH + "Beam1.png")) {
+    //    throw OpenTextureFailed();
+    //}
+    //m_laserBeam[1] = laseBeam1;
 
-    sf::Texture* laseBeam2 = new sf::Texture();
-    if (!laseBeam1->loadFromFile(PATH + "Beam2.png")) {
+    //sf::Texture* laseBeam2 = new sf::Texture();
+    //if (!laseBeam1->loadFromFile(PATH + "Beam2.png")) {
+    //    throw OpenTextureFailed();
+    //}
+    //m_laserBeam[2] = laseBeam2;
+    sf::Texture* laiserLine = new sf::Texture();
+    if (!laiserLine->loadFromFile(PATH + "Beam2.png")) {
         throw OpenTextureFailed();
     }
-    m_laserBeam[2] = laseBeam2;
+    m_laiserLine = laiserLine;
+    
 }
+
 
 ResourcesManager::~ResourcesManager() {
     delete m_player;
@@ -144,4 +151,8 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
 
 sf::Texture* ResourcesManager::getLaserBeam(int index) const{
     return m_laserBeam[index];
+}
+sf::Texture* ResourcesManager::getLiserLine() const
+{
+    return m_laiserLine;
 }
