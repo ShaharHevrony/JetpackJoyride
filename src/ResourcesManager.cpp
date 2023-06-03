@@ -65,29 +65,11 @@ ResourcesManager::ResourcesManager() {
     }
     m_barryDeath[1] = berryDead;
 
-    //sf::Texture* laseBeam0 = new sf::Texture();
-    //if (!laseBeam0->loadFromFile(PATH + "Beam0.png")) {
-    //    throw OpenTextureFailed();
-    //}
-    //m_laserBeam[0] = laseBeam0;
-
-    //sf::Texture* laseBeam1 = new sf::Texture();
-    //if (!laseBeam1->loadFromFile(PATH + "Beam1.png")) {
-    //    throw OpenTextureFailed();
-    //}
-    //m_laserBeam[1] = laseBeam1;
-
-    //sf::Texture* laseBeam2 = new sf::Texture();
-    //if (!laseBeam1->loadFromFile(PATH + "Beam2.png")) {
-    //    throw OpenTextureFailed();
-    //}
-    //m_laserBeam[2] = laseBeam2;
-    sf::Texture* laiserLine = new sf::Texture();
-    if (!laiserLine->loadFromFile(PATH + "Beam2.png")) {
+    sf::Texture* beam = new sf::Texture();
+    if (!beam->loadFromFile(PATH + "Beam.png")) {
         throw OpenTextureFailed();
     }
-    m_laiserLine = laiserLine;
-    
+    m_laserBeam = beam;
 }
 
 
@@ -149,10 +131,6 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
 }
 
-sf::Texture* ResourcesManager::getLaserBeam(int index) const{
-    return m_laserBeam[index];
-}
-sf::Texture* ResourcesManager::getLiserLine() const
-{
-    return m_laiserLine;
+sf::Texture* ResourcesManager::getLaserBeam() const{
+    return m_laserBeam;
 }

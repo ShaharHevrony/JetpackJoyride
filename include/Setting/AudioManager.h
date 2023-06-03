@@ -4,7 +4,7 @@
 
 class AudioManager {
 public:
-    AudioManager(int volume = 0);
+    AudioManager();
     ~AudioManager();
     void create(int index);
     void positionToVolume();
@@ -21,7 +21,7 @@ public:
     void setGrabbed(bool grabbed);
 
 private:
-    int m_volume;
+    int m_volume = 0;
     sf::Vector2f m_start;
     sf::Vector2f m_end;
     sf::CircleShape m_circle;

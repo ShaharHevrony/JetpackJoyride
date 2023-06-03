@@ -155,8 +155,7 @@ void PlayGame::dealWithEvent() {
                 m_world.get()->SetGravity(deathGravity);
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
-                m_player->setType(DeadPlayerType);
-                m_collisionBox2D.setContactCount(0);
+                //m_collisionBox2D.setContactCount(0);
                 break;
             }
             case DeadOnTheGround:{
@@ -194,10 +193,9 @@ void PlayGame::deathMovement(bool& alreadyDead) {
     m_world->Step(timeStep, velocityIterations, positionIterations);
     m_player->animate();
 
-    float velocityDeltaX = 3/WINDOW_HEIGHT;
-    float velocityDeltaY = 3/WINDOW_HEIGHT;
-    if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDeltaX
-    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDeltaY && !alreadyDead){
+    float velocityDelta = 3/WINDOW_HEIGHT;
+    if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDelta
+    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta && !alreadyDead){
         alreadyDead = true;
         Event event = Event(DeadOnTheGround, 0);
         EventsQueue::instance().push(event);

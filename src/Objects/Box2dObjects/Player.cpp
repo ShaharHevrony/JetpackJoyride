@@ -11,7 +11,6 @@ void Player::create(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.linearDamping = 0.0f;
     bodyDef.angularDamping = 1.f;
     m_body = world->CreateBody(&bodyDef);
 
@@ -41,8 +40,7 @@ void Player::setDeath(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.linearDamping = 0.0f;
-    bodyDef.angularDamping = 1.5f;
+    bodyDef.angularDamping = SET_OBJ_SCALE;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
@@ -53,7 +51,7 @@ void Player::setDeath(b2World *world) {
     objectFixtureDef.shape = &shape;
     objectFixtureDef.density = BERRYS_FRICTION;
     objectFixtureDef.friction = BERRYS_FRICTION;
-    objectFixtureDef.restitution = 0.8f;  // Add the restitution property
+    objectFixtureDef.restitution = SET_OBJ_SCALE/2;  // Add the restitution property
     m_body->CreateFixture(&objectFixtureDef);
 
     b2MassData mass;
@@ -61,7 +59,6 @@ void Player::setDeath(b2World *world) {
     mass.mass = BERRYS_MASS;
     mass.I = m_object.getOrigin().y;
     m_body->SetMassData(&mass);
-
     m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
 }
