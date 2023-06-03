@@ -110,7 +110,8 @@ void PlayGame::run() {
         }
         if(m_player->getType() != DeadPlayerType) {
             moveObjects();
-            if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
+            if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f ||
+                m_player->getObject().getPosition().y * SET_OBJ_SCALE < m_floor->getObject().getPosition().y) {
                 //here we check the pose of the player falling standing or lift
                 m_player->move(TIME_STEP);
             } else {
@@ -154,6 +155,7 @@ void PlayGame::dealWithEvent() {
                 m_world.get()->SetGravity(deathGravity);
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
+                m_player->setType(DeadPlayerType);
                 m_collisionBox2D.setContactCount(0);
                 break;
             }

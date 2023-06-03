@@ -12,6 +12,7 @@ void Bound::create(b2World *world) {
     bodyDef.type = b2_staticBody;
     if (m_type == FloorType) {  //If this bound is a floor then:
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
+        m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
         boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 1.5);
     }
     else {                      //If this bound in a ceiling then:
