@@ -17,7 +17,13 @@ void ScoreBoard::draw(sf::RenderWindow *window) {
         m_str[i].str("");
     }
     m_str[0] << score;
-    m_str[1] << elapse;
+    if (!m_dead) {
+        m_str[1] << elapse;
+        m_lastTime = elapse;
+    }
+    else {
+        m_str[1] << m_lastTime;
+    }
     m_str[2] << best;
 
     for(int board = 0; board < scoreBoard.size(); board++){
@@ -37,4 +43,7 @@ void ScoreBoard::addPoints(int addToScore) {
 
 int ScoreBoard::getBest() const {
     return best;
+}
+void ScoreBoard::setDead() {
+    m_dead = true;
 }

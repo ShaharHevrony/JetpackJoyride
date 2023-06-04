@@ -167,6 +167,7 @@ void PlayGame::dealWithEvent() {
                 m_world.get()->SetGravity(deathGravity);
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
+                m_scoreBoard.setDead();
                 //m_collisionBox2D.setContactCount(0);
                // m_scoreBoard.timer;
                 break;

@@ -14,12 +14,15 @@ public:
     int getScore() const;
     void addPoints(int addToScore);
     int getBest() const;
+    void setDead();
 
     static sf::Clock timer;
     static int score;
     static int best;
 
 private:
+    bool m_dead = false;
+    float m_lastTime;
     std::stringstream m_str[3];
     sf::Text m_scoreBoard[3];
 };
