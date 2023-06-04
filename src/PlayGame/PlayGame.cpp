@@ -177,7 +177,7 @@ void PlayGame::dealWithEvent() {
                 // Rotate the player to lay on the floor
                 b2Body* playerBody = m_player->getBody();
                 playerBody->SetTransform(playerBody->GetPosition(), 0.5f * b2_pi); // Set rotation to 90 degrees
-                m_player->getObject().setOrigin(-50, -50);
+                m_player->getObject().setOrigin(-50, 150);
                 break;
             }
         }
@@ -240,7 +240,8 @@ void PlayGame::moveObjects() {
 
 int PlayGame::randMap() {
     srand(time(nullptr));
-    int random = rand() % MAP.size();
+    //int random = rand() % MAP.size();
+    int random = 7;
     if (m_control.RandomCount_t.size() != MAP.size()) {
         while (m_control.RandomCount_t.contains(random)) {
             random = rand() % MAP.size();
