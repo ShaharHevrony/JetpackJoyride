@@ -45,10 +45,15 @@ private:
 
     std::unique_ptr<Object> lastObject;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
+    std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
     std::unique_ptr<b2World> m_world;
     std::unique_ptr<Box2dObject> m_player;
     std::unique_ptr<Box2dObject> m_floor;
     std::unique_ptr<Box2dObject> m_ceiling;
     CollisionListener m_collisionBox2D;
+
+    bool m_missileState;        // Tracks the current state of the missile
+    float m_currPosition;
+    
 };

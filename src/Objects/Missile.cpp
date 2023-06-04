@@ -13,3 +13,23 @@ void Missile::draw(sf::RenderWindow* window) {
 
 }
 
+sf::Clock Missile::getTime()
+{
+    return m_missileTimer;
+}
+
+void Missile::restartTime()
+{
+    m_missileTimer.restart();
+}
+
+float Missile::getCurrPositionX()
+{
+    return m_currPosition;
+}
+
+void Missile::setCurrPositionX(float x)
+{
+    m_currPosition = x;
+}
+

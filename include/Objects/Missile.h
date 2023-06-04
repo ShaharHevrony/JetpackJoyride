@@ -14,4 +14,12 @@ public:
     virtual void handleCollision(Obstacle& obstacle) {}
     virtual void handleCollision(Coin& coin) {}
     virtual void handleCollision(Beam& beam) {}
+
+    sf::Clock getTime();
+    void restartTime();
+    float getCurrPositionX();
+    void setCurrPositionX(float x);
+
+    sf::Clock m_missileTimer;   // Timer for tracking the time
+    float m_currPosition;
 };
