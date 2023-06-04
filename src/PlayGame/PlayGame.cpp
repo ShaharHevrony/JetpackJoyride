@@ -2,7 +2,7 @@
 #include "PlayGame/PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
-    sf::Vector2f playerPosition(PLAYER_POS_X, 500);
+    sf::Vector2f playerPosition(PLAYER_POS_X+30, 500);
 
     m_world   = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world, PlayerType);
@@ -23,7 +23,7 @@ void PlayGame::create() {
 void PlayGame::createObjectMap() {
     int random = randMap();
     sf::Vector2f position;
-    //int random = 7;
+    //int random = 8;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];

@@ -85,7 +85,7 @@ void Board::moveBackgrounds(float time) {
         m_backgrounds[index].move(direction * time);
         if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
             sf::Vector2f position = m_backgrounds[(index + 2) % BACKGROUND].getPosition();
-            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width;
+            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width-10;
             m_backgrounds[index].setPosition(position);
         }
     }
