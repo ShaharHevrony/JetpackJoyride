@@ -21,9 +21,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    //int random = randMap();
+    int random = randMap();
     sf::Vector2f position;
-    int random = 7;
+    //int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
