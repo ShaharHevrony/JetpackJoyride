@@ -19,4 +19,8 @@ configure_file ("BerryFlies.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)
 
+configure_file ("missile.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("missile_incoming.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("missile_warning.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 

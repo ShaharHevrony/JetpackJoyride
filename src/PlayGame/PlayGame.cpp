@@ -21,9 +21,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    int random = randMap();
+    //int random = randMap();
     sf::Vector2f position;
-    //int random = 8;
+    int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -51,6 +51,18 @@ void PlayGame::createObjectMap() {
                     break;
                 }
                 case SPACE: {
+                    break;
+                }
+                case MISSILE: {
+                    //position = sf::Vector2f(WINDOW_WIDTH+200, m_player->getObject().getPosition().x);
+                    //m_singleObjects.push_back(std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position));
+
+                    position = sf::Vector2f(WINDOW_WIDTH, m_player->getObject().getPosition().y);
+                    auto missile = std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position);
+                    m_singleObjects.insert(m_singleObjects.begin(), std::move(missile));
+                    m_singleObjects[0]->setObject(ResourcesManager::instance().getMissile(0), sf::Vector2u(3, 1));
+
+
                     break;
                 }
             }
@@ -237,6 +249,9 @@ void PlayGame::moveObjects() {
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
     lastObject->move(m_control.Time_t * m_control.Speed_t);
+
+    m_singleObjects[0]->getObject().setPosition(WINDOW_WIDTH-100,m_player->getObject().getPosition().y);
+
 }
 
 int PlayGame::randMap() {

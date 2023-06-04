@@ -36,6 +36,8 @@ struct ControlGame {
 const char SPACE    = '-';
 const char COIN     = '*';
 const char OBSTACLE = '<';
+const char MISSILE  = '!';
+
 
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
 const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
@@ -79,6 +81,8 @@ const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "BEST: "};
+const std::vector<std::string> missile = { "missile_warning.png","missile_incoming.png", "missile.png" };
+
 
 const std::vector<std::string> MAP = { "--****---****--\n"
                                        "--****---****--\n"
@@ -199,7 +203,7 @@ const std::vector<std::string> MAP = { "--****---****--\n"
                                        "---<----------\n"
                                        "--------------\n"
                                        "--------------\n"
-                                       "----------<---\n"
+                                       "---!------<---\n"
                                        "--------------",
 
                                        "--------------\n"

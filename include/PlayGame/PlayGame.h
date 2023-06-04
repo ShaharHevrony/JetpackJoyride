@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "Bound.h"
 #include "CollisionListener.h"
+#include "Missile.h"
 
 class PlayGame {
 public:

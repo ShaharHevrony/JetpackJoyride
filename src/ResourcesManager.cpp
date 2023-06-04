@@ -70,6 +70,15 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     m_laserBeam = beam;
+
+
+    for (int index = 0; index < 3; index++) {
+        sf::Texture* tempMissile = new sf::Texture();
+        if (!tempMissile->loadFromFile(PATH + missile[index])) {
+            throw OpenTextureFailed();
+        }
+        m_missile[index] = tempMissile;
+    }
 }
 
 
@@ -133,4 +142,9 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
 
 sf::Texture* ResourcesManager::getLaserBeam() const{
     return m_laserBeam;
+}
+
+sf::Texture* ResourcesManager::getMissile(int index) const
+{
+    return m_missile[index];
 }

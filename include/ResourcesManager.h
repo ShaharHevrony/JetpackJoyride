@@ -18,6 +18,8 @@ public:
     sf::Texture* getBackground() const;
     sf::Texture* getBarryDeath(int index) const;
     sf::Texture* getLaserBeam() const;
+    sf::Texture* getMissile(int index) const;
+
 
 private:
     ResourcesManager();
@@ -32,4 +34,5 @@ private:
     sf::Texture* m_firstBackground;
     sf::Texture* m_background;
     sf::Texture* m_barryDeath[2];
+    sf::Texture* m_missile[3];
 };
