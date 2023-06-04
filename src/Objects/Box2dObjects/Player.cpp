@@ -16,7 +16,6 @@ void Player::create(b2World *world) {
 
     b2PolygonShape shape;
     shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
-
     //FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
@@ -83,10 +82,23 @@ void Player::move(float time) {
 }
 
 void Player::draw(sf::RenderWindow* window) {
+
     auto angle = m_body->GetAngle() * 180 / b2_pi;
     m_object.setRotation(angle);
-    m_object.setPosition(sf::Vector2f(m_body->GetPosition().x,m_body->GetPosition().y));
+    m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
     window->draw(m_object);
+    
+    /*
+    // Draw a red rectangle on the body
+    sf::RectangleShape bodyShape;
+    bodyShape.setSize(sf::Vector2f(m_object.getGlobalBounds().width, m_object.getGlobalBounds().height));
+    bodyShape.setFillColor(sf::Color::Red);
+    bodyShape.setOrigin(m_object.getOrigin());
+    bodyShape.setRotation(angle);
+    bodyShape.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
+    window->draw(bodyShape);
+    */
+    
 }
 
 //-------------- handle all collisions --------------

@@ -21,9 +21,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    int random = randMap();
+    //int random = randMap();
     sf::Vector2f position;
-    //int random = 7;
+    int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -73,7 +73,6 @@ void PlayGame::createBeam(sf::Vector2f position) {
         sf::Vector2f newPosition = interpolatePosition(firstPosition, position, static_cast<float>(i + 1) / (additionalSprites + 1));
         //m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(), newPosition));
         m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
-        m_pairedObjects[m_pairedObjects.size() - 1]->getObject().setScale(0.5f, 0.5f);
     }
     
 }
@@ -108,10 +107,9 @@ void PlayGame::run() {
             m_pairedObjects.clear();
             createObjectMap();
         }
-        if(m_player->getType() != DeadPlayerType) {
+        if (m_player->getType() != DeadPlayerType) {
             moveObjects();
-            if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f ||
-                m_player->getObject().getPosition().y * SET_OBJ_SCALE < m_floor->getObject().getPosition().y) {
+            if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f){
                 //here we check the pose of the player falling standing or lift
                 m_player->move(TIME_STEP);
             } else {
@@ -174,7 +172,12 @@ void PlayGame::dealWithEvent() {
                 break;
             }
             case DeadOnTheGround:{
-                m_player->setObject(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(2, 1));
+                m_player->setObject(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 2));
+
+                // Rotate the player to lay on the floor
+                b2Body* playerBody = m_player->getBody();
+                playerBody->SetTransform(playerBody->GetPosition(), 0.5f * b2_pi); // Set rotation to 90 degrees
+                m_player->getObject().setOrigin(-50, -50);
                 break;
             }
         }

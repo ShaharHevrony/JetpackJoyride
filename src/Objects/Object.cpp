@@ -32,7 +32,7 @@ bool Object::getDelete() const {
     return m_isDelete;
 }
 
-sf::Sprite Object::getObject() {
+sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
