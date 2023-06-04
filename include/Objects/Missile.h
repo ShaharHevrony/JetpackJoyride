@@ -7,12 +7,11 @@ public:
     Missile(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Missile() = default;
     virtual void move(float time);
+    virtual void draw(sf::RenderWindow* window);
 
     virtual void handleCollision(Object& object) {}
     virtual void handleCollision(Player& player) {}
     virtual void handleCollision(Obstacle& obstacle) {}
     virtual void handleCollision(Coin& coin) {}
-    virtual void draw(sf::RenderWindow* window);
-private:
-
+    virtual void handleCollision(Beam& beam) {}
 };

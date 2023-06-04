@@ -1,14 +1,11 @@
 #pragma once
+#include "Object.h"
 #include "Player.h"
 
-class Player;
-class Obstacle;
-
-class Coin: public Object{
+class Beam : public Object{
 public:
-    Coin(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
-    virtual ~Coin() = default;
-    bool getSwitchCoins();
+    Beam(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC, float rotate = 0.f);
+    virtual ~Beam() = default;
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);
@@ -17,6 +14,8 @@ public:
     virtual void handleCollision(Player& player);
     virtual void handleCollision(Obstacle& obstacle){}
     virtual void handleCollision(Coin& coin);
-    virtual void handleCollision(Beam& beam) {}
+    virtual void handleCollision(Beam& beam){}
 
+private:
+    float m_rotate;
 };

@@ -4,6 +4,7 @@
 #include "Box2dObject.h"
 #include "Coin.h"
 #include "Obstacle.h"
+#include "Beam.h"
 
 class Player: public Box2dObject {
 public:
@@ -14,9 +15,11 @@ public:
     virtual void setDeath(b2World* world);
 
     virtual void move(float time);
+    virtual void draw(sf::RenderWindow* window);
+
     virtual void handleCollision(Object& object);
     virtual void handleCollision(Player& player) {}
     virtual void handleCollision(Obstacle& obstacle);
     virtual void handleCollision(Coin& coin);
-    virtual void draw(sf::RenderWindow* window);
+    virtual void handleCollision(Beam& beam);
 };

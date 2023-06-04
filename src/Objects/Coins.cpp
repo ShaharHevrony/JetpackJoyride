@@ -1,7 +1,5 @@
 #include "Coin.h"
 
-Coin::Coin(): Object() {}
-
 Coin::Coin(sf::Texture* texture, const sf::Vector2f &position): Object(texture, position) {}
 
 void Coin::move(float time) {

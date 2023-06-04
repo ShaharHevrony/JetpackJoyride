@@ -46,3 +46,7 @@ void Object::animate() {
     m_animation.Update();
     m_object.setTextureRect(m_animation.getObjRec());
 }
+
+Animation Object::getAnimation() const {
+    return m_animation;
+}

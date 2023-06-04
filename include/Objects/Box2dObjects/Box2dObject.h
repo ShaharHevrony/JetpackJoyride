@@ -23,10 +23,12 @@ public:
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
+
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Coin& coin) = 0;
+    virtual void handleCollision(Beam& beam) {}
 
 protected:
     int m_type = 0;

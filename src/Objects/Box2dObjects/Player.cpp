@@ -126,3 +126,11 @@ void Player::handleCollision(Obstacle& obstacle) {
         EventsQueue::instance().push(event);
     }
 }
+
+void Player::handleCollision(Beam &beam) {
+    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        beam.setCollided();
+        Event event = Event(DeathInTheAir, 0);
+        EventsQueue::instance().push(event);
+    }
+}

@@ -1,12 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include "PlayGame/PlayGame.h"
+#include "PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(PLAYER_POS_X+30, 500);
 
     m_world   = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world, PlayerType);
-    m_floor   = std::make_unique<Bound>(&m_world, FloorType);  //Create the floor of the game
+    m_floor   = std::make_unique<Bound>(&m_world, FloorType);   //Create the floor of the game
     m_ceiling = std::make_unique<Bound>(&m_world, CeilingType); //Create the ceiling of the game
     m_world->SetContactListener(&m_collisionBox2D);
 }
@@ -21,9 +21,9 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    //int random = randMap();
+    int random = randMap();
     sf::Vector2f position;
-    int random = 7;
+    //int random = 8;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -45,8 +45,11 @@ void PlayGame::createObjectMap() {
                         if (lastObject == nullptr || position.x > lastObject->getObject().getPosition().x) {
                             lastObject = std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position);
                         }
-                        createBeam(position);
-                       //------------------------------------------------------------
+                        float distance = m_pairedObjects[m_pairedObjects.size()-1]->calculateDistance();
+                        float angle = m_pairedObjects[m_pairedObjects.size()-2]->calculateAngle();
+
+                        m_singleObjects.push_back(std::make_unique<Beam>(ResourcesManager::instance().getLaserBeam(), position, angle));
+                        m_singleObjects[m_singleObjects.size()-1]->getObject().setScale(1.f, distance/ResourcesManager::instance().getLaserBeam()->getSize().y);
                     }
                     break;
                 }
@@ -68,25 +71,6 @@ void PlayGame::createObjectMap() {
             }
         }
     }
-}
-
-void PlayGame::createBeam(sf::Vector2f position) {
-    /*sf::Sprite tempBeams[3];
-    for(int index = 0; index < 3; index++) {
-        tempBeams[index].setTexture(*ResourcesManager::instance().getLaserBeam(index));
-        tempBeams[index].setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
-    }*/
-
-    sf::Vector2f firstPosition = m_pairedObjects[m_pairedObjects.size() - 2]->getObject().getPosition();
-    float distance = m_pairedObjects[m_pairedObjects.size() - 1]->calculateDistance();
-    int additionalSprites = static_cast<int>(distance) - 1;
-
-    for (int i = 0; i < additionalSprites; ++i) {
-        sf::Vector2f newPosition = interpolatePosition(firstPosition, position, static_cast<float>(i + 1) / (additionalSprites + 1));
-        //m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLiserLine(), newPosition));
-        m_pairedObjects[m_pairedObjects.size() - 1]->setPaired(newPosition);
-    }
-    
 }
 
 void PlayGame::run() {
@@ -179,7 +163,6 @@ void PlayGame::dealWithEvent() {
                 m_world.get()->SetGravity(deathGravity);
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
-                m_scoreBoard.setDead();
                 //m_collisionBox2D.setContactCount(0);
                // m_scoreBoard.timer;
                 break;
@@ -201,13 +184,13 @@ void PlayGame::draw() {
     m_window->clear();
     m_board.draw(m_window, m_control, m_player->getType());
 
+    for (int index = 0; index < m_singleObjects.size(); index++) {
+        m_singleObjects[index]->draw(m_window);
+    }
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
             m_pairedObjects[index]->draw(m_window);
         }
-    }
-    for (int index = 0; index < m_singleObjects.size(); index++) {
-        m_singleObjects[index]->draw(m_window);
     }
     m_scoreBoard.draw(m_window);
     m_floor->draw(m_window);
@@ -245,6 +228,7 @@ void PlayGame::moveObjects() {
             m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         }
     }
+
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
@@ -256,8 +240,7 @@ void PlayGame::moveObjects() {
 
 int PlayGame::randMap() {
     srand(time(nullptr));
-    //int random = rand() % MAP.size();
-    int random = 7;
+    int random = rand() % MAP.size();
     if (m_control.RandomCount_t.size() != MAP.size()) {
         while (m_control.RandomCount_t.contains(random)) {
             random = rand() % MAP.size();
@@ -267,20 +250,6 @@ int PlayGame::randMap() {
         m_control.RandomCount_t.clear();
     }
     return random;
-}
-
-
-double PlayGame::calculateDistance(double x1, double y1, double x2, double y2) {
-    double deltaX = x2 - x1;
-    double deltaY = y2 - y1;
-    double distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    return distance;
-}
-
-sf::Vector2f PlayGame::interpolatePosition(const sf::Vector2f &position1, const sf::Vector2f &position2, float t) {
-    float x = position1.x + t * (position2.x - position1.x);
-    float y = position1.y + t * (position2.y - position1.y);
-    return sf::Vector2f(x, y);
 }
 
 void PlayGame::displayGameOverScreen() {
@@ -294,21 +263,15 @@ void PlayGame::displayGameOverScreen() {
     gameOverBox.setOutlineColor(sf::Color::Black);
     gameOverBox.setPosition((WINDOW_WIDTH - gameOverBox.getSize().x) / 2, (WINDOW_HEIGHT - gameOverBox.getSize().y) / 2);
 
-    // Add text for options
-    sf::Font font;
-    if (!font.loadFromFile("Jetpackia.ttf")) {
-        // Handle font loading error
-    }
-
     sf::Text restartText;
-    restartText.setFont(font);
+    restartText.setFont(ResourcesManager::instance().getFont());
     restartText.setCharacterSize(24);
     restartText.setFillColor(sf::Color::Black);
     restartText.setString("Restart");
     restartText.setPosition(gameOverBox.getPosition() + sf::Vector2f(20, 20));
 
     sf::Text quitText;
-    quitText.setFont(font);
+    quitText.setFont(ResourcesManager::instance().getFont());
     quitText.setCharacterSize(24);
     quitText.setFillColor(sf::Color::Black);
     quitText.setString("Quit");
@@ -353,5 +316,3 @@ void PlayGame::displayGameOverScreen() {
         m_window->display();
     }
 }
-
-

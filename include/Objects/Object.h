@@ -8,6 +8,7 @@
 class Player;
 class Coin;
 class Obstacle;
+class Beam;
 
 class Object {
 public:
@@ -15,6 +16,7 @@ public:
     Object(Object& other);
     virtual ~Object() = default;
     void animate();
+    Animation getAnimation() const;
     sf::Sprite& getObject();
     void setObject(sf::Texture* texture, sf::Vector2u imageCount);
     bool getCollided() const;
@@ -24,10 +26,12 @@ public:
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
+
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Coin& coin) = 0;
+    virtual void handleCollision(Beam& beam) = 0;
 
 protected:
     sf::Sprite m_object;

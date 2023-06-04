@@ -13,6 +13,7 @@
 #include "EventsQueue.h"
 #include "Player.h"
 #include "Bound.h"
+#include "Beam.h"
 #include "CollisionListener.h"
 #include "Missile.h"
 
@@ -22,7 +23,6 @@ public:
     ~PlayGame();
     void create();
     void createObjectMap();
-    void createBeam(sf::Vector2f position);
     void run();
     void dealWithCollision();
     void dealWithEvent();
@@ -30,14 +30,11 @@ public:
     void deathMovement(bool& berryState);
     void draw();
     int randMap();
-    double calculateDistance(double x1, double y1, double x2, double y2);
-    sf::Vector2f interpolatePosition(const sf::Vector2f& position1, const sf::Vector2f& position2, float t);
     void displayGameOverScreen();
 
-
 private:
-    sf::Clock m_timer;          // Timer to track elapsed time
-    bool m_gameOver = false;    // Flag to indicate if the game is over
+    sf::Clock m_timer;          //Timer to track elapsed time
+    bool m_gameOver = false;    //Flag to indicate if the game is over
 
     bool m_restartGame = false;
     Board m_board;
@@ -49,7 +46,6 @@ private:
     std::unique_ptr<Object> lastObject;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
-
     std::unique_ptr<b2World> m_world;
     std::unique_ptr<Box2dObject> m_player;
     std::unique_ptr<Box2dObject> m_floor;

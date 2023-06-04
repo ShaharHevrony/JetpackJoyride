@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -28,16 +28,15 @@ enum Box2Objects{
 
 struct ControlGame {
     std::unordered_set<int> RandomCount_t;
-    sf::Clock LoopClock_t = sf::Clock(); //Clock to measure loop time
+    sf::Clock LoopClock_t = sf::Clock();  //Clock to measure loop time
     float Speed_t = 320.f;
-    float Time_t = 0.f;
+    float Time_t  = 0.f;
 };
 
 const char SPACE    = '-';
 const char COIN     = '*';
 const char OBSTACLE = '<';
 const char MISSILE  = '!';
-
 
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
 const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
