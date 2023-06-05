@@ -3,9 +3,10 @@
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window), m_missileState(false) {
     sf::Vector2f playerPosition(PLAYER_POS_X+30, 500);
-
     m_world   = std::make_unique<b2World>(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, &m_world, PlayerType);
+    m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
+    m_flame->setObject(ResourcesManager::instance().getFlame(), sf::Vector2u(6, 1));
     m_floor   = std::make_unique<Bound>(&m_world, FloorType);   //Create the floor of the game
     m_ceiling = std::make_unique<Bound>(&m_world, CeilingType); //Create the ceiling of the game
     m_world->SetContactListener(&m_collisionBox2D);
@@ -21,10 +22,10 @@ void PlayGame::create() {
 }
 
 void PlayGame::createObjectMap() {
-    //m_missile.clear();
-    //int random = randMap();
+    m_missile.clear();
+    int random = randMap();
     sf::Vector2f position;
-    int random = 7;
+    //int random = 7;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -60,7 +61,6 @@ void PlayGame::createObjectMap() {
                 case MISSILE: {
                     position = sf::Vector2f(WINDOW_WIDTH+200, m_player->getObject().getPosition().x);
                     m_missile.push_back(std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position));
-
                     m_missile[m_missile.size()-1]->setObject(ResourcesManager::instance().getMissile(0), sf::Vector2u(3, 1));
                     // Start the timer for the missile
                     m_missile[m_missile.size() - 1]->restartTime();
@@ -87,12 +87,14 @@ void PlayGame::run() {
                 case sf::Event::KeyPressed: {
                     if (event.key.code == sf::Keyboard::Space) {
                         m_player->setSpacePressed(true);
+                        m_flame->setFlying(true);
                     }
                     break;
                 }
                 case sf::Event::KeyReleased: {
                     if (event.key.code == sf::Keyboard::Space) {
                         m_player->setSpacePressed(false);
+                        m_flame->setFlying(false);
                     }
                     break;
                 }
@@ -163,12 +165,10 @@ void PlayGame::dealWithEvent() {
                 m_world.get()->SetGravity(deathGravity);
                 m_floor->setDeath(m_world.get());
                 m_player->setDeath(m_world.get());
-                //m_collisionBox2D.setContactCount(0);
                 break;
             }
             case DeadOnTheGround:{
                 m_player->setObject(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 2));
-
                 // Rotate the player to lay on the floor
                 b2Body* playerBody = m_player->getBody();
                 playerBody->SetTransform(playerBody->GetPosition(), 0.5f * b2_pi); // Set rotation to 90 degrees
@@ -199,7 +199,9 @@ void PlayGame::draw() {
     m_floor->draw(m_window);
     m_ceiling->draw(m_window);
     m_player->draw(m_window);
-
+    if (m_flame->getFlying()) {
+        m_flame->draw(m_window);
+    }
     m_window->display();
 }
 
@@ -231,85 +233,41 @@ void PlayGame::moveObjects() {
             m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         }
     }
-
     for (int index = 0; index < m_singleObjects.size(); index++) {
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
     }
     lastObject->move(m_control.Time_t * m_control.Speed_t);
 
-    /*
+    if(m_flame->getFlying()){
+        sf::Vector2f playerPosition = m_player->getObject().getPosition();
+        sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
+        m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * SET_OBJ_SCALE) - 10));
+        m_flame->move(TIME_STEP);
+    }
+
     if (!m_missile.empty()) {
-        // Check the time since the missile was created
-        sf::Time elapsed = m_missileTimer.getElapsedTime();
-        if (elapsed.asSeconds() <= 3 ) {
-            //m_missileState = true;
-            for (int index = 0; index < m_missile.size(); index++) {
+        for (int index = 0; index < m_missile.size(); index++) {
+            if (m_missile[index]->getTime().getElapsedTime().asSeconds() <= 3) {
                 m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
                 m_missile[index]->getObject().setPosition(WINDOW_WIDTH - 100, m_player->getObject().getPosition().y + (index * 90));
-            }
-        
-        }else if (elapsed.asSeconds() >= 3 ) {
-            // After 5 seconds, change the missile to the second state
-            //m_missileState = true;
-            for (int index = 0; index < m_missile.size(); index++) {
-
+                m_missile[index]->setCurrPositionX(m_player->getObject().getPosition().y + (index * 90));
+            } else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 3 &&
+                      m_missile[index]->getTime().getElapsedTime().asSeconds() < 5) {
                 m_missile[index]->setObject(ResourcesManager::instance().getMissile(1), sf::Vector2u(2, 1));
-            }
-        }
-        else if (elapsed.asSeconds() >= 5 ) {
-            // After 2 more seconds (total 7 seconds), change the missile to the third state
-            //m_missileState = false;
-            for (int index = 0; index < m_missile.size(); index++) {
-
+                m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
+            } else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 5) {
                 m_missile[index]->setObject(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1));
-                m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_player->getObject().getPosition().y);
+                m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
+                m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_missile[index]->getCurrPositionX());
             }
-
         }
         for (int index = 0; index < m_missile.size(); index++) {
-            // Check if the missile has gone outside the window
             if (m_missile[index]->getObject().getPosition().x < -100) {
                 m_missile.erase(m_missile.begin() + index);
                 index--; // Decrement the index since the vector size has decreased
             }
         }
-        
-
-    }*/
-    if (!m_missile.empty()) {
-        // Check the time since the missile was created
-        //sf::Time elapsed = m_missileTimer.getElapsedTime();
-            for (int index = 0; index < m_missile.size(); index++) {
-
-                if (m_missile[index]->getTime().getElapsedTime().asSeconds() <= 3) {
-
-                    m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-                    m_missile[index]->getObject().setPosition(WINDOW_WIDTH - 100, m_player->getObject().getPosition().y + (index * 90));
-                    m_missile[index]->setCurrPositionX(m_player->getObject().getPosition().y + (index * 90));
-                    //m_currPosition = m_player->getObject().getPosition().y + (index * 90);
-
-                }else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 3 &&
-                          m_missile[index]->getTime().getElapsedTime().asSeconds() < 5) {
-
-                    m_missile[index]->setObject(ResourcesManager::instance().getMissile(1), sf::Vector2u(2, 1));
-                    m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-                }
-                else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 5) {
-                    m_missile[index]->setObject(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1));
-                    m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-                    m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_missile[index]->getCurrPositionX());
-                }
-            
-            }
-            for (int index = 0; index < m_missile.size(); index++) {
-
-                if (m_missile[index]->getObject().getPosition().x < -100) {
-                    m_missile.erase(m_missile.begin() + index);
-                    index--; // Decrement the index since the vector size has decreased
-                }
-            }
     }
-
 }
 
 int PlayGame::randMap() {

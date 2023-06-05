@@ -9,6 +9,7 @@ class Player;
 class Coin;
 class Obstacle;
 class Beam;
+class Piggy;
 
 class Object {
 public:

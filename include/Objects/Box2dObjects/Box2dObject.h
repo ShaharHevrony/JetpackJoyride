@@ -28,8 +28,8 @@ public:
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Coin& coin) = 0;
-    virtual void handleCollision(Beam& beam) {}
-
+    virtual void handleCollision(Beam& beam) = 0;
+    virtual void handleCollision (Piggy& piggy) = 0;
 protected:
     int m_type = 0;
     bool m_spacePressed = false;

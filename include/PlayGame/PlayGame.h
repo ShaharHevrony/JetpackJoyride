@@ -16,6 +16,8 @@
 #include "Beam.h"
 #include "CollisionListener.h"
 #include "Missile.h"
+#include "Piggy.h"
+#include "Flame.h"
 
 class PlayGame {
 public:
@@ -44,6 +46,7 @@ private:
     sf::RenderWindow* m_window;
 
     std::unique_ptr<Object> lastObject;
+    std::unique_ptr<Flame> m_flame;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;

@@ -71,7 +71,6 @@ ResourcesManager::ResourcesManager() {
     }
     m_laserBeam = beam;
 
-
     for (int index = 0; index < 3; index++) {
         sf::Texture* tempMissile = new sf::Texture();
         if (!tempMissile->loadFromFile(PATH + missile[index])) {
@@ -79,6 +78,12 @@ ResourcesManager::ResourcesManager() {
         }
         m_missile[index] = tempMissile;
     }
+
+    sf::Texture* flame = new sf::Texture();
+    if (!flame->loadFromFile(PATH + "Exhaust.png")) {
+        throw OpenTextureFailed();
+    }
+    m_flame = flame;
 }
 
 
@@ -104,7 +109,7 @@ ResourcesManager &ResourcesManager::instance() {
     }
 }
 
-sf::Font& ResourcesManager::getFont(){
+sf::Font& ResourcesManager::getFont() {
     return m_font;
 }
 
@@ -112,7 +117,7 @@ sf::Texture* ResourcesManager::getTitle() const {
     return m_title;
 }
 
-sf::Texture* ResourcesManager::getPlayer() const{
+sf::Texture* ResourcesManager::getPlayer() const {
     return m_player;
 }
 
@@ -120,19 +125,19 @@ sf::Texture* ResourcesManager::getButtons(int index) const {
     return m_buttons[index];
 }
 
-sf::Texture* ResourcesManager::getBackground() const{
+sf::Texture* ResourcesManager::getBackground() const {
     return m_background;
 }
 
-sf::Texture* ResourcesManager::getFirstBackground() const{
+sf::Texture* ResourcesManager::getFirstBackground() const {
     return m_firstBackground;
 }
 
-sf::Texture* ResourcesManager::getCoin() const{
+sf::Texture* ResourcesManager::getCoin() const {
     return m_coin;
 }
 
-sf::Texture* ResourcesManager::getObstacle() const{
+sf::Texture* ResourcesManager::getObstacle() const {
     return m_obstacle;
 }
 
@@ -140,11 +145,14 @@ sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
 }
 
-sf::Texture* ResourcesManager::getLaserBeam() const{
+sf::Texture* ResourcesManager::getLaserBeam() const {
     return m_laserBeam;
 }
 
-sf::Texture* ResourcesManager::getMissile(int index) const
-{
+sf::Texture* ResourcesManager::getMissile(int index) const {
     return m_missile[index];
+}
+
+sf::Texture* ResourcesManager::getFlame() const {
+    return m_flame;
 }
