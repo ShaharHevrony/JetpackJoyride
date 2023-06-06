@@ -1,9 +1,8 @@
 #include "Flame.h"
 
-
-Flame::Flame() : Object() {}
-
-Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {}
+Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
+    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.18f);
+}
 
 
 void Flame::move(float time) {
@@ -17,12 +16,4 @@ void Flame::draw(sf::RenderWindow* window) {
 
 void Flame::setPlayerPos(sf::Vector2f pos) {
     m_playerLoc = pos;
-}
-
-void Flame::setFlying(bool flying) {
-    m_flying = flying;
-}
-
-bool Flame::getFlying() {
-    return m_flying;
 }

@@ -69,7 +69,7 @@ void Board::draw(sf::RenderWindow* window, ControlGame& control, int playerType)
     }
 
     control.LoopClock_t.restart();
-    if(playerType != DeadPlayerType){
+    if(playerType == PlayerType){
         moveBackgrounds(control.Time_t * control.Speed_t);
     }
     for (int i = 0; i < BACKGROUND; ++i) {

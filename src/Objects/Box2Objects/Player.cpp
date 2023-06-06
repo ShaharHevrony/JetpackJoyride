@@ -1,9 +1,8 @@
 #include "Player.h"
-#include "Values.h"
 
-Player::Player(sf::Texture *texture, sf::Vector2f position, std::unique_ptr<b2World>* world, int type)
-                :Box2dObject(texture, position, world, type) {
-    create(world->get());
+Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type)
+        : Box2Object(texture, position, world, 1.f, type) {
+    create(world);
 }
 
 //--------------- create the box2d values ---------------
@@ -15,9 +14,12 @@ void Player::create(b2World *world) {
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
-    shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
+    shape.SetAsBox(m_object.getGlobalBounds().width/4, m_object.getGlobalBounds().height/4);
+
     //FixtureDef
     b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = false;
+    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.3f;
     fixtureDef.friction = 0.3f;
@@ -33,9 +35,8 @@ void Player::create(b2World *world) {
     m_body->SetUserData(this);
 }
 
-void Player::setDeath(b2World *world) {
+void Player::setChange(b2World *world) {
     m_type = DeadPlayerType;
-
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
@@ -46,12 +47,14 @@ void Player::setDeath(b2World *world) {
     shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
 
     //FixtureDef
-    b2FixtureDef objectFixtureDef;
-    objectFixtureDef.shape = &shape;
-    objectFixtureDef.density = BERRYS_FRICTION;
-    objectFixtureDef.friction = BERRYS_FRICTION;
-    objectFixtureDef.restitution = SET_OBJ_SCALE/2;  // Add the restitution property
-    m_body->CreateFixture(&objectFixtureDef);
+    b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = false;
+    m_sensor = fixtureDef.isSensor;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = BERRYS_FRICTION;
+    fixtureDef.friction = BERRYS_FRICTION;
+    fixtureDef.restitution = SET_OBJ_SCALE/2; //Add the restitution property
+    m_body->CreateFixture(&fixtureDef);
 
     b2MassData mass;
     mass.center = m_body->GetLocalCenter();
@@ -82,23 +85,10 @@ void Player::move(float time) {
 }
 
 void Player::draw(sf::RenderWindow* window) {
-
     auto angle = m_body->GetAngle() * 180 / b2_pi;
     m_object.setRotation(angle);
     m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
     window->draw(m_object);
-    
-    /*
-    // Draw a red rectangle on the body
-    sf::RectangleShape bodyShape;
-    bodyShape.setSize(sf::Vector2f(m_object.getGlobalBounds().width, m_object.getGlobalBounds().height));
-    bodyShape.setFillColor(sf::Color::Red);
-    bodyShape.setOrigin(m_object.getOrigin());
-    bodyShape.setRotation(angle);
-    bodyShape.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
-    window->draw(bodyShape);
-    */
-    
 }
 
 //-------------- handle all collisions --------------
@@ -111,9 +101,12 @@ void Player::handleCollision(Object& object) {
     }
 }
 
-void Player::handleCollision(Coin& Coins) {
-    if (Coins.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
-        Coins.setDelete();
+void Player::handleCollision(Player &player) {}
+
+void Player::handleCollision(Coin& Coin) {
+    if (Coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !Coin.getCollided()) {
+        Coin.setCollided();
+        Coin.setObject(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
     }
@@ -121,16 +114,31 @@ void Player::handleCollision(Coin& Coins) {
 
 void Player::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
-        obstacle.setCollided();
-        Event event = Event(DeathInTheAir, 0);
+        Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
     }
 }
 
 void Player::handleCollision(Beam &beam) {
     if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
-        beam.setCollided();
-        Event event = Event(DeathInTheAir, 0);
+        Event event = Event(DeathInTheAir);
+        EventsQueue::instance().push(event);
+    }
+}
+
+void Player::handleCollision(Piggy& piggy) {
+    if (piggy.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        piggy.setDelete();
+        Event event = Event(CollectedPiggy, 0, piggy.getObject().getPosition());
+        EventsQueue::instance().push(event);
+    }
+}
+
+void Player::handleCollision (Box2Coin& box2Coin) {
+    if (box2Coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !box2Coin.getCollided()) {
+        box2Coin.setCollided();
+        box2Coin.setObject(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
+        Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
     }
 }

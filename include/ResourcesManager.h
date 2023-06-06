@@ -14,12 +14,15 @@ public:
     sf::Texture* getCoin() const;
     sf::Texture* getObstacle() const;
     sf::Texture* getButtons(int index) const;
+    sf::Texture* getGameSetting() const;
     sf::Texture* getFirstBackground() const;
     sf::Texture* getBackground() const;
     sf::Texture* getBarryDeath(int index) const;
     sf::Texture* getLaserBeam() const;
     sf::Texture* getMissile(int index) const;
     sf::Texture* getFlame() const;
+    sf::Texture* getPiggy() const;
+    sf::Texture* getGlitter() const;
 
 private:
     ResourcesManager();
@@ -29,11 +32,14 @@ private:
     sf::Texture* m_coin;
     sf::Texture* m_obstacle;
     sf::Texture* m_laserBeam;
+    sf::Texture* m_piggy;
     sf::Texture* m_title;
     sf::Texture* m_buttons[4];
+    sf::Texture* m_gameSetting;
     sf::Texture* m_firstBackground;
     sf::Texture* m_background;
     sf::Texture* m_barryDeath[2];
     sf::Texture* m_missile[3];
     sf::Texture* m_flame;
+    sf::Texture* m_glitter;
 };

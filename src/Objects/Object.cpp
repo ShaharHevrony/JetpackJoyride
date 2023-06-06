@@ -16,14 +16,6 @@ Object::Object(Object& other) {
     m_object.setRotation(other.getObject().getRotation());
 }
 
-bool Object::getCollided() const {
-    return m_collided;
-}
-
-void Object::setCollided() {
-    m_collided = !m_collided;
-}
-
 void Object::setDelete() {
     m_isDelete = !m_isDelete;
 }
@@ -32,13 +24,29 @@ bool Object::getDelete() const {
     return m_isDelete;
 }
 
+void Object::setInUse(bool inUse) {
+    m_inUse = inUse;
+}
+
+bool Object::getInUse() const{
+    return m_inUse;
+}
+
+void Object::setCollided() {
+    m_collided = !m_collided;
+}
+
+bool Object::getCollided() const{
+    return m_collided;
+}
+
 sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
-void Object::setObject(sf::Texture* texture, sf::Vector2u imageCount) {
+void Object::setObject(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) {
     m_object.setTexture(*texture);
-    m_animation.setAnimation(texture, imageCount);
+    m_animation.setAnimation(texture, imageCount, switchTime);
     animate();
 }
 

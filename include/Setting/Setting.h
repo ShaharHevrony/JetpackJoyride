@@ -24,7 +24,7 @@ public:
 
 private:
     sf::RenderWindow* m_window;
-    sf::RenderTexture m_renderTexture;
+    sf::RectangleShape m_overlay;
     sf::RectangleShape m_settingBoard;
 
     sf::Text m_topText[5];

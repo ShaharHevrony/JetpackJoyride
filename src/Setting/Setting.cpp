@@ -1,9 +1,7 @@
 
-#include "Setting/Setting.h"
+#include "Setting.h"
 
-Setting::Setting(sf::RenderWindow &window):m_window(&window) {
-    m_renderTexture.create(window.getSize().x, window.getSize().y);
-}
+Setting::Setting(sf::RenderWindow &window):m_window(&window) {}
 
 void Setting::run() {
     create();
@@ -46,10 +44,10 @@ void Setting::run() {
 }
 
 void Setting::draw() {
-    m_renderTexture.clear(sf::Color(220, 220, 220, 1));
-    m_renderTexture.display();
-    sf::Sprite renderSprite(m_renderTexture.getTexture());
-    m_window->draw(renderSprite);
+    //FIXME: Add background below the overlay.
+    m_overlay = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    m_overlay.setFillColor(sf::Color(0, 0, 0, 128));  // Semi-transparent black overlay
+    m_window->draw(m_overlay);
     m_window->draw(m_settingBoard);
 
     for(int index = 0; index < TOP_FIVE; index++){

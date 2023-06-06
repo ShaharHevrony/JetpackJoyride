@@ -1,8 +1,8 @@
 #include "Missile.h"
 
-Missile::Missile() : Object() {}
-
-Missile::Missile(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {}
+Missile::Missile(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
+    m_animation.setAnimation(texture, sf::Vector2u(3, 1), 0.18f);
+}
 
 void Missile::move(float time) {
     animate();
@@ -10,26 +10,21 @@ void Missile::move(float time) {
 
 void Missile::draw(sf::RenderWindow* window) {
     window->draw(m_object);
-
 }
 
-sf::Clock Missile::getTime()
-{
+sf::Clock Missile::getTime() {
     return m_missileTimer;
 }
 
-void Missile::restartTime()
-{
+void Missile::restartTime() {
     m_missileTimer.restart();
 }
 
-float Missile::getCurrPositionX()
-{
+float Missile::getCurrPositionX() {
     return m_currPosition;
 }
 
-void Missile::setCurrPositionX(float x)
-{
+void Missile::setCurrPositionX(float x) {
     m_currPosition = x;
 }
 

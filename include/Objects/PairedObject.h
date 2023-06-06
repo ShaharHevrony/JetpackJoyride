@@ -16,6 +16,7 @@ public:
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
+    virtual void updateCollisionTime(float time){}
 
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
@@ -23,6 +24,8 @@ public:
     virtual void handleCollision(Coin& coin) = 0;
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
+    virtual void handleCollision (Box2Coin& box2Coin) = 0;
+
 protected:
     sf::Vector2f m_pairPosition;
 };

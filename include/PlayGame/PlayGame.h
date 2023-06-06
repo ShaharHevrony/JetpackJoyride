@@ -4,9 +4,9 @@
 #include <filesystem>
 #include <vector>
 #include <ctime>
+#include <box2d/box2d.h>
 
-#include "box2d/box2d.h"
-#include "Board.h"
+#include "GameSettings.h"
 #include "Coin.h"
 #include "Obstacle.h"
 #include "ScoreBoard.h"
@@ -32,31 +32,29 @@ public:
     void deathMovement(bool& berryState);
     void draw();
     int randMap();
-    void displayGameOverScreen();
 
 private:
-    sf::Clock m_timer;          //Timer to track elapsed time
-    bool m_gameOver = false;    //Flag to indicate if the game is over
+    sf::RenderWindow* m_window;
 
-    bool m_restartGame = false;
+    sf::Clock m_timer; //Timer to track elapsed time
+    sf::Clock m_collisionTimer;
+
     Board m_board;
     ScoreBoard m_scoreBoard;
     ControlGame m_control;
+    CollisionListener m_collisionBox2D;
+    sf::Sprite m_settingButton;
+    sf::Vector2f m_lastObject = sf::Vector2f(0.f, 0.f);
+    sf::Vector2f m_lastCoin   = sf::Vector2f(0.f, 0.f);
 
-    sf::RenderWindow* m_window;
-
-    std::unique_ptr<Object> lastObject;
-    std::unique_ptr<Flame> m_flame;
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
-    std::unique_ptr<b2World> m_world;
-    std::unique_ptr<Box2dObject> m_player;
-    std::unique_ptr<Box2dObject> m_floor;
-    std::unique_ptr<Box2dObject> m_ceiling;
-    CollisionListener m_collisionBox2D;
+    std::unique_ptr<Flame> m_flame;
 
-    bool m_missileState;        // Tracks the current state of the missile
-    float m_currPosition;
-    
+    b2World* m_world;
+    std::unique_ptr<Box2Object> m_player;
+    std::unique_ptr<Box2Object> m_floor;
+    std::unique_ptr<Box2Object> m_ceiling;
+    std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
 };

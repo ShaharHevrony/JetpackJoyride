@@ -41,6 +41,12 @@ ResourcesManager::ResourcesManager() {
         m_buttons[index] = tempButton;
     }
 
+    sf::Texture* gameSettingButton = new sf::Texture();
+    if (!gameSettingButton->loadFromFile(PATH + "GameSettingButton.png")) {
+        throw OpenTextureFailed();
+    }
+    m_gameSetting = gameSettingButton;
+
     sf::Texture* backgroundTex = new sf::Texture();
     if (!backgroundTex->loadFromFile(PATH + "Hall.png")) {
         throw OpenTextureFailed();
@@ -84,6 +90,18 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     m_flame = flame;
+
+    sf::Texture* piggy = new sf::Texture();
+    if (!piggy->loadFromFile(PATH + "Piggy.png")) {
+        throw OpenTextureFailed();
+    }
+    m_piggy = piggy;
+
+    sf::Texture* glitter = new sf::Texture();
+    if (!glitter->loadFromFile(PATH + "Glitter.png")) {
+        throw OpenTextureFailed();
+    }
+    m_glitter = glitter;
 }
 
 
@@ -125,6 +143,10 @@ sf::Texture* ResourcesManager::getButtons(int index) const {
     return m_buttons[index];
 }
 
+sf::Texture* ResourcesManager::getGameSetting() const {
+    return m_gameSetting;
+}
+
 sf::Texture* ResourcesManager::getBackground() const {
     return m_background;
 }
@@ -155,4 +177,12 @@ sf::Texture* ResourcesManager::getMissile(int index) const {
 
 sf::Texture* ResourcesManager::getFlame() const {
     return m_flame;
+}
+
+sf::Texture* ResourcesManager::getPiggy() const {
+    return m_piggy;
+}
+
+sf::Texture* ResourcesManager::getGlitter() const {
+    return m_glitter;
 }

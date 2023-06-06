@@ -14,8 +14,9 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switch
 
 Animation::~Animation() {}
 
-void Animation::setAnimation(sf::Texture* texture, sf::Vector2u imageCount) {
+void Animation::setAnimation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) {
     m_imageCount = imageCount;
+    m_switchTime = switchTime;
     m_currentImage.x = 0;
     m_objRec.width  = texture->getSize().x / float(imageCount.x);
     m_objRec.height = texture->getSize().y / float(imageCount.y);

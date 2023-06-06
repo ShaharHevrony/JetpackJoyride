@@ -1,7 +1,7 @@
 #include "Bound.h"
 
-Bound::Bound(std::unique_ptr<b2World>* world, int type) : Box2dObject(world, type) {
-    create(world->get());
+Bound::Bound(b2World *world,float scale, int type) :Box2Object(world, scale, type){
+    create(world);
 }
 
 void Bound::create(b2World *world) {
@@ -13,15 +13,17 @@ void Bound::create(b2World *world) {
     if (m_type == FloorType) {  //If this bound is a floor then:
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
         m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
-        boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 1.5);
+        boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 1.5);
     }
     else {                      //If this bound in a ceiling then:
         bodyDef.position.Set(WIDTH_CENTER, 0.f);
-        boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 0.1);
+        boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 0.1);
     }
     m_body = world->CreateBody(&bodyDef);
 
     b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = false;
+    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &boxShape;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.2f;
@@ -29,16 +31,18 @@ void Bound::create(b2World *world) {
     m_body->SetUserData(this);
 }
 
-void Bound::setDeath(b2World* world) {
+void Bound::setChange(b2World* world) {
     b2BodyDef bodyDef;
     b2PolygonShape boxShape;
 
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
-    boxShape.SetAsBox(WINDOW_WIDTH, PLAYER_POS_Y * 1.5);
+    boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 1.5);
     m_body = world->CreateBody(&bodyDef);
 
     b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = false;
+    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &boxShape;
     fixtureDef.density = BERRYS_FRICTION;
     fixtureDef.friction = BERRYS_FRICTION;

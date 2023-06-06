@@ -1,19 +1,15 @@
 #pragma once
-
 #include "Object.h"
 
-
 class Flame : public Object {
-
 public:
-    Flame();
     Flame(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Flame() = default;
-    virtual void move(float time);
     void setPlayerPos(sf::Vector2f pos);
-    void draw(sf::RenderWindow* window);
-    void setFlying(bool);
-    bool getFlying();
+
+    virtual void move(float time);
+    virtual void draw(sf::RenderWindow* window);
+    virtual void updateCollisionTime(float time){}
 
     virtual void handleCollision(Object& object) {}
     virtual void handleCollision(Player& player) {}
@@ -21,9 +17,8 @@ public:
     virtual void handleCollision(Coin& coin) {}
     virtual void handleCollision(Beam& beam){}
     virtual void handleCollision (Piggy& piggy) {}
+    virtual void handleCollision (Box2Coin& box2Coin) {}
 
 private:
     sf::Vector2f m_playerLoc;
-
-    bool m_flying = false;
 };

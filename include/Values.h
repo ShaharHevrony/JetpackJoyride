@@ -17,6 +17,7 @@ enum EventsTypes {
     CollectedMoney,
     DeathInTheAir,
     DeadOnTheGround,
+    CollectedPiggy,
 };
 
 enum Box2Objects{
@@ -24,6 +25,8 @@ enum Box2Objects{
     CeilingType,
     PlayerType,
     DeadPlayerType,
+    GameOverType,
+    FallingCoinType,
 };
 
 struct ControlGame {
@@ -37,14 +40,18 @@ const char SPACE    = '-';
 const char COIN     = '*';
 const char OBSTACLE = '<';
 const char MISSILE  = '!';
+const char PIGGY    = '$';
 
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
 const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
 
 const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
-const float PLAYER_POS_X    = WINDOW_WIDTH  / 10;
-const float PLAYER_POS_Y    = WINDOW_HEIGHT / 10;
+const float PLAYER_POS_X    = WINDOW_WIDTH  / 8;
+const float PLAYER_POS_Y    = WINDOW_HEIGHT / 2;
+const float BOUNDS_POS_Y    = WINDOW_HEIGHT / 10;
+const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
+const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float SET_SCALE       = WINDOW_HEIGHT / 1200;
 const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1000;
@@ -65,12 +72,14 @@ const float GRAVITATION_X   = 0.0;
 const float DEATH_GRAVITY_Y = WINDOW_HEIGHT / 1500;
 const float DEATH_GRAVITY_X = WINDOW_WIDTH  / 7500;
 const float BERRYS_MASS     = WINDOW_HEIGHT / 100;
+const float COINS_MASS      = WINDOW_HEIGHT / 1000;
 const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
 const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
 
 const float RESIZE_BUTTONS  = 1.15;
 const int NUM_OF_BUTTONS    = 4;
 const int BACKGROUND        = 3;
+const int GAME_SETTINGS     = 3;
 const int NUM_OF_OBJECTS    = 15;
 const int COLLECTED_MONEY   = 5;
 const int TOP_FIVE          = 5;
@@ -80,10 +89,17 @@ const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "BEST: "};
-const std::vector<std::string> missile = { "missile_warning.png","missile_incoming.png", "missile.png" };
+const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
+const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
 
+const std::vector<std::string> settingManager = {"74 55\n49583 39204 39202 29483 14844" };
 
-const std::vector<std::string> MAP = { "--****---****--\n"
+const std::vector<std::string> MAP = { "-------*-------\n"
+                                       "-------*-------\n"
+                                       "-------*-------\n"
+                                       "-------$-------",
+
+                                       "--****---****--\n"
                                        "--****---****--\n"
                                        "--****---****--\n"
                                        "--****---****--\n"
@@ -95,7 +111,8 @@ const std::vector<std::string> MAP = { "--****---****--\n"
                                        "----*******----\n"
                                        "-----*****-----\n"
                                        "------***------\n"
-                                       "-------*-------",
+                                       "-------*-------\n"
+                                       "-------$-------",
 
                                        "----***--------\n"
                                        "---*****-------\n"
