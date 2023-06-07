@@ -1,7 +1,7 @@
 
 #include "GameSettings.h"
 
-GameSettings::GameSettings(sf::RenderWindow &window, Board& board, ControlGame& control)
+GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& control)
             :m_window(&window), m_board(board) , m_control(control){
     create();
 }

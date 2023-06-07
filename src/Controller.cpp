@@ -72,8 +72,8 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case ShopButton: {
-                    Shop shop = Shop();
-                    shop.run();
+                    //Shop shop = Shop(m_window);
+                    //shop.run();
                     break;
                 }
                 case SettingButton:{

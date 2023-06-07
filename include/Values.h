@@ -6,6 +6,14 @@
 const std::string PATH = "../../../";
 //const std::string PATH = "";
 
+struct GameControllerInfo {
+    int TopScore[5] = {0};
+    int MusicVolume = 0;
+    int SoundVolume = 0;
+    int CollectedSum = 0;
+    int ChosenCharacter = 0;
+};
+
 enum Buttons {
     PlayButton,
     ShopButton,
@@ -29,7 +37,7 @@ enum Box2Objects{
     FallingCoinType,
 };
 
-struct ControlGame {
+struct Control {
     std::unordered_set<int> RandomCount_t;
     sf::Clock LoopClock_t = sf::Clock();  //Clock to measure loop time
     float Speed_t = 320.f;

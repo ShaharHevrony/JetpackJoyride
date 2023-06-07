@@ -10,7 +10,7 @@
 
 class GameSettings {
 public:
-    GameSettings(sf::RenderWindow& window, Board& board, ControlGame& control);
+    GameSettings(sf::RenderWindow& window, Board& board, Control& control);
     ~GameSettings();
     void create();
     bool run(int playerType);
@@ -21,5 +21,5 @@ private:
     sf::RectangleShape m_setting;
     sf::Text m_gameSettings[3];
     Board m_board;
-    ControlGame m_control;
+    Control m_control;
 };

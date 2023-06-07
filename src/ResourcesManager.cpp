@@ -104,7 +104,6 @@ ResourcesManager::ResourcesManager() {
     m_glitter = glitter;
 }
 
-
 ResourcesManager::~ResourcesManager() {
     delete m_player;
     delete m_firstBackground;
@@ -112,9 +111,21 @@ ResourcesManager::~ResourcesManager() {
     delete m_coin;
     delete m_obstacle;
     delete m_title;
+    delete m_laserBeam;
+    delete m_piggy;
+    delete m_gameSetting;
+    delete m_flame;
+    delete m_glitter;
+
     for(int i = 0; i < 4; i++){
         delete m_buttons[i];
-     }
+    }
+    for(int i = 0; i < 2; i++){
+        delete m_barryDeath[i];
+    }
+    for(int i = 0; i < 3; i++){
+        delete m_missile[i];
+    }
 }
 
 ResourcesManager &ResourcesManager::instance() {

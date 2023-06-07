@@ -59,7 +59,7 @@ void Board::readObjectFile(int index) {
     readingFile.close();
 }
 
-void Board::draw(sf::RenderWindow* window, ControlGame& control, int playerType) {
+void Board::draw(sf::RenderWindow* window, Control& control, int playerType) {
     float changeInterval = 3.0f;
     //Calculate the elapsed time in seconds
     control.Time_t = control.LoopClock_t.getElapsedTime().asSeconds();

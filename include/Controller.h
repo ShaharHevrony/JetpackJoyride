@@ -13,6 +13,7 @@ public:
 
 private:
     sf::RenderWindow m_window;
+    GameControllerInfo m_gameController;
     sf::Sprite m_title;
     std::vector<sf::Sprite> m_buttonSpr;
     int m_buttonToScale = 0;

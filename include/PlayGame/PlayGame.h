@@ -41,7 +41,7 @@ private:
 
     Board m_board;
     ScoreBoard m_scoreBoard;
-    ControlGame m_control;
+    Control m_control;
     CollisionListener m_collisionBox2D;
     sf::Sprite m_settingButton;
     sf::Vector2f m_lastObject = sf::Vector2f(0.f, 0.f);
