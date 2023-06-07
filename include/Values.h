@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 struct GameControllerInfo {
     int TopScore[5] = {0};

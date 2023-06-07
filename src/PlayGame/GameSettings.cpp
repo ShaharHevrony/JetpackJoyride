@@ -55,7 +55,7 @@ bool GameSettings::run(int playerType) {
         m_window->draw(m_overlay);
         // Draw the game over box and options
         m_window->draw(m_setting);
-        if(playerType != DeadPlayerType) {
+        if(playerType != DeadPlayerType && playerType!= GameOverType) {
             m_window->draw(m_gameSettings[0]);
         }
         m_window->draw(m_gameSettings[1]);

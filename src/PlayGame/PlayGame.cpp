@@ -29,7 +29,6 @@ void PlayGame::create() {
 void PlayGame::createObjectMap() {
     m_singleObjects.clear();
     m_pairedObjects.clear();
-    m_missile.clear();
 
     int random = randMap();
     sf::Vector2f position;
@@ -329,7 +328,8 @@ void PlayGame::moveObjects() {
 
 int PlayGame::randMap() {
     srand(time(nullptr));
-    int random = rand() % MAP.size();
+    //int random = rand() % MAP.size();
+    int random = 1;
     if (m_control.RandomCount_t.size() != MAP.size()) {
         while (m_control.RandomCount_t.contains(random)) {
             random = rand() % MAP.size();
