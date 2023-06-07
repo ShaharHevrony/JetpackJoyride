@@ -102,6 +102,12 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     m_glitter = glitter;
+
+    sf::Texture* scientist = new sf::Texture();
+    if (!scientist->loadFromFile(PATH + "scientist.png")) {
+        throw OpenTextureFailed();
+    }
+    m_scientist = scientist;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -196,4 +202,8 @@ sf::Texture* ResourcesManager::getPiggy() const {
 
 sf::Texture* ResourcesManager::getGlitter() const {
     return m_glitter;
+}
+
+sf::Texture* ResourcesManager::getScientist() const {
+    return m_scientist;
 }

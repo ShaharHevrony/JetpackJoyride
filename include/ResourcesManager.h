@@ -23,6 +23,7 @@ public:
     sf::Texture* getFlame() const;
     sf::Texture* getPiggy() const;
     sf::Texture* getGlitter() const;
+    sf::Texture* getScientist() const;
 
 private:
     ResourcesManager();
@@ -42,4 +43,6 @@ private:
     sf::Texture* m_missile[3];
     sf::Texture* m_flame;
     sf::Texture* m_glitter;
+    sf::Texture* m_scientist;
+
 };

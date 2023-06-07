@@ -17,9 +17,8 @@ public:
 
 private:
     sf::RenderWindow* m_window;
-    sf::RectangleShape m_overlay;
+    sf::Sprite m_overlay;
     sf::RectangleShape m_setting;
     sf::Text m_gameSettings[3];
-    Board m_board;
     Control m_control;
 };

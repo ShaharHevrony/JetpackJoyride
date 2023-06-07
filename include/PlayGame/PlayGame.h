@@ -18,6 +18,7 @@
 #include "Missile.h"
 #include "Piggy.h"
 #include "Flame.h"
+#include "Scientist.h"
 
 class PlayGame {
 public:

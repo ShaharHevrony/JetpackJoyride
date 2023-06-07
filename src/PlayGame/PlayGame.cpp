@@ -29,10 +29,10 @@ void PlayGame::create() {
 void PlayGame::createObjectMap() {
     m_singleObjects.clear();
     m_pairedObjects.clear();
-
-    int random = randMap();
+    
+    //int random = randMap();
     sf::Vector2f position;
-    //int random = 6;
+    int random = 9;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -76,6 +76,13 @@ void PlayGame::createObjectMap() {
                     }
                     break;
                 }
+                case SCIENTIST: {
+                    m_singleObjects.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
+                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
+                    sf::Vector2f pos = m_singleObjects[m_singleObjects.size() - 1]->getObject().getPosition();
+                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y * 1.65);
+                }
+
                 case SPACE: {
                     break;
                 }
@@ -114,6 +121,7 @@ void PlayGame::run() {
                 case sf::Event::MouseButtonReleased: {
                     if (m_settingButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         restartGame = setting.run(m_player->getType());
+                        m_control.LoopClock_t.restart();
                     }
                 }
             }
@@ -250,6 +258,7 @@ void PlayGame::draw() {
 }
 
 void PlayGame::deathMovement(bool& alreadyDead) {
+    m_flame->setInUse(false);
     float timeStep = 1.5 * TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
