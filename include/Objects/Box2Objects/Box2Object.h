@@ -32,7 +32,7 @@ public:
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
     virtual void handleCollision (Box2Coin& box2Coin) = 0;
-
+    virtual void handleCollision(Missile& missile) = 0;
 
 protected:
     int m_type = 0;

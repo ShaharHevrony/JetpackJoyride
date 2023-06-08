@@ -113,7 +113,7 @@ void Player::handleCollision(Coin& Coin) {
 }
 
 void Player::handleCollision(Obstacle& obstacle) {
-    if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+    if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
         Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
     }
@@ -139,6 +139,13 @@ void Player::handleCollision (Box2Coin& box2Coin) {
         box2Coin.setCollided();
         box2Coin.setObject(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
+        EventsQueue::instance().push(event);
+    }
+}
+
+void Player::handleCollision(Missile &missile) {
+    if (missile.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
+        Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
     }
 }

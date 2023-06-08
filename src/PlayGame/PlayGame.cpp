@@ -177,6 +177,11 @@ void PlayGame::dealWithCollision() {
     for (auto &myPair: m_pairedObjects) {
         m_player->handleCollision(*myPair);
     }
+
+    //check if the player collision with missile
+    for (auto &myMissile: m_missile) {
+        m_player->handleCollision(*myMissile);
+    }
 }
 
 void PlayGame::dealWithEvent() {

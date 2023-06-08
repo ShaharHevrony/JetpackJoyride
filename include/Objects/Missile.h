@@ -21,6 +21,7 @@ public:
     virtual void handleCollision(Beam& beam) {}
     virtual void handleCollision (Piggy& piggy) {}
     virtual void handleCollision (Box2Coin& box2Coin) {}
+    virtual void handleCollision(Missile& missile) {}
 
 protected:
     sf::Clock m_missileTimer;   // Timer for tracking the time
