@@ -24,6 +24,8 @@ public:
     sf::Texture* getPiggy() const;
     sf::Texture* getGlitter() const;
     sf::Texture* getScientist() const;
+    sf::Texture* getSuperPower(int index) const;
+
    /*
     sf::Texture* getNext() const;
     sf::Texture* getPrev() const;
@@ -50,6 +52,8 @@ private:
     sf::Texture* m_flame;
     sf::Texture* m_glitter;
     sf::Texture* m_scientist;
+    sf::Texture* m_superPower[3];
+
 
     sf::Texture* m_prev;
     sf::Texture* m_next;

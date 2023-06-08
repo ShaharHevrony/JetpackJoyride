@@ -12,6 +12,7 @@ class Beam;
 class Piggy;
 class Box2Coin;
 class Missile;
+class SuperPower;
 
 class Object {
 public:

@@ -132,6 +132,14 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     m_unlocked = unlocked;*/
+
+    for (int index = 0; index < 2; index++) {
+        sf::Texture* tempSuper = new sf::Texture();
+        if (!tempSuper->loadFromFile(PATH + superPower[index])) {
+            throw OpenTextureFailed();
+        }
+        m_superPower[index] = tempSuper;
+    }
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -230,4 +238,9 @@ sf::Texture* ResourcesManager::getGlitter() const {
 
 sf::Texture* ResourcesManager::getScientist() const{
     return m_scientist;
+}
+
+sf::Texture* ResourcesManager::getSuperPower(int index) const
+{
+    return m_superPower[index];
 }

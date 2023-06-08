@@ -34,5 +34,8 @@ configure_file ("Prev.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Locked.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Unlocked.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
+configure_file ("superPower.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("powerupBox.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 

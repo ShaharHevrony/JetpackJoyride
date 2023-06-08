@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 struct GameControllerInfo {
     GameControllerInfo();
@@ -51,6 +51,8 @@ const char OBSTACLE = '<';
 const char MISSILE  = '!';
 const char PIGGY    = '$';
 const char SCIENTIST= 'S';
+const char SUPERPOWER = '@';
+
 
 
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
@@ -102,6 +104,8 @@ const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png"
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
+const std::vector<std::string> superPower = { "Resume", "Restart", "Quit" };
+
 
 const std::vector<std::string> settingManager = {"74 55\n49583 39204 39202 29483 14844" };
 
@@ -252,7 +256,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "-****-----****-\n"
                                        "!-<--*****-----\n"
                                        "-----*****----S\n"
-                                       "-----*****-----\n"
+                                       "---@-*****-----\n"
                                        "-****--<--****-\n"
                                        "-****-----****-\n"
                                        "-*<**---!-****-\n"

@@ -30,9 +30,9 @@ void PlayGame::createObjectMap() {
     m_singleObjects.clear();
     m_pairedObjects.clear();
     
-    int random = randMap();
+    //int random = randMap();
     sf::Vector2f position;
-    //int random = 9;
+    int random = 9;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -81,6 +81,11 @@ void PlayGame::createObjectMap() {
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
                     sf::Vector2f pos = m_singleObjects[m_singleObjects.size() - 1]->getObject().getPosition();
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y * 1.65);
+                }
+                case SUPERPOWER: {
+                    //position = sf::Vector2f(WINDOW_WIDTH + 200, m_player->getObject().getPosition().x);
+                    m_superPower.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(0), position));
+                    break;
                 }
 
                 case SPACE: {
@@ -247,6 +252,9 @@ void PlayGame::draw() {
     for (int index = 0; index < m_missile.size(); index++) {
         m_missile[index]->draw(m_window);
     }
+    for (int index = 0; index < m_superPower.size(); index++) {
+        m_superPower[index]->draw(m_window);
+    }
     for (int index = 0; index < m_fallingCoins.size(); index++) {
         m_fallingCoins[index]->draw(m_window);
     }
@@ -301,6 +309,12 @@ void PlayGame::moveObjects() {
         m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
         if (lastPosition.x <= 0.f || m_singleObjects[index]->getObject().getPosition().x > lastPosition.x) {
             lastPosition = m_singleObjects[index]->getObject().getPosition();
+        }
+    }
+    for (int index = 0; index < m_superPower.size(); index++) {
+        m_superPower[index]->move(m_control.Time_t * m_control.Speed_t);
+        if (lastPosition.x <= 0.f || m_superPower[index]->getObject().getPosition().x > lastPosition.x) {
+            lastPosition = m_superPower[index]->getObject().getPosition();
         }
     }
     for (int index = 0; index < m_fallingCoins.size(); index++) {

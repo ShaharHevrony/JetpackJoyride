@@ -19,6 +19,7 @@
 #include "Piggy.h"
 #include "Flame.h"
 #include "Scientist.h"
+#include "SuperPower.h"
 
 class PlayGame {
 public:
@@ -51,6 +52,7 @@ private:
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
+    std::vector<std::unique_ptr<SuperPower>> m_superPower;
     std::unique_ptr<Flame> m_flame;
 
     b2World* m_world;
