@@ -16,7 +16,7 @@ ResourcesManager::ResourcesManager() {
     m_player = playerTex;
 
     sf::Texture* coinTex = new sf::Texture();
-    if (!coinTex->loadFromFile(PATH + "coin.png")) {
+    if (!coinTex->loadFromFile(PATH + "Coin.png")) {
         throw OpenTextureFailed();
     }
     m_coin = coinTex;
@@ -104,10 +104,34 @@ ResourcesManager::ResourcesManager() {
     m_glitter = glitter;
 
     sf::Texture* scientist = new sf::Texture();
-    if (!scientist->loadFromFile(PATH + "scientist.png")) {
+    if (!scientist->loadFromFile(PATH + "Scientist.png")) {
         throw OpenTextureFailed();
     }
     m_scientist = scientist;
+
+    /*sf::Texture* prev = new sf::Texture();
+    if (!prev->loadFromFile(PATH + "Prev.png")) {
+        throw OpenTextureFailed();
+    }
+    m_prev = prev;
+
+    sf::Texture* next = new sf::Texture();
+    if (!next->loadFromFile(PATH + "Next.png")) {
+        throw OpenTextureFailed();
+    }
+    m_next = next;
+
+    sf::Texture* locked = new sf::Texture();
+    if (!locked->loadFromFile(PATH + "Locked.png")) {
+        throw OpenTextureFailed();
+    }
+    m_locked = locked;
+
+    sf::Texture* unlocked = new sf::Texture();
+    if (!unlocked->loadFromFile(PATH + "Unlocked.png")) {
+        throw OpenTextureFailed();
+    }
+    m_unlocked = unlocked;*/
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -204,6 +228,6 @@ sf::Texture* ResourcesManager::getGlitter() const {
     return m_glitter;
 }
 
-sf::Texture* ResourcesManager::getScientist() const {
+sf::Texture* ResourcesManager::getScientist() const{
     return m_scientist;
 }

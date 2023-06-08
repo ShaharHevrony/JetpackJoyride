@@ -3,15 +3,16 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 struct GameControllerInfo {
-    int TopScore[5] = {0};
-    int MusicVolume = 0;
-    int SoundVolume = 0;
-    int CollectedSum = 0;
-    int ChosenCharacter = 0;
+    GameControllerInfo();
+    int TopScore[5];
+    int MusicVolume;
+    int SoundVolume;
+    int CollectedSum;
+    int ChosenCharacter;
 };
 
 enum Buttons {
@@ -98,7 +99,7 @@ const double PI             = 3.14159265358;
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};
-const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "BEST: "};
+const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
 

@@ -8,6 +8,16 @@
 #include "Setting.h"
 #include "Help.h"
 
+GameControllerInfo::GameControllerInfo() {
+    ChosenCharacter = 0;
+    CollectedSum = 0;
+    MusicVolume = 0;
+    SoundVolume = 0;
+    for(int top = 0; top < TOP_FIVE; top++){
+        TopScore[top] = 0;
+    }
+}
+
 Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride") {
     create();
 }
@@ -15,6 +25,8 @@ Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "
 Controller::~Controller() {}
 
 void Controller::create() {
+    m_gameController = GameControllerInfo();
+
     m_window.clear(sf::Color(150, 150, 150));
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
@@ -53,8 +65,17 @@ void Controller::run() {
                 }
             }
         }
-        create();
+        draw();
     }
+}
+
+void Controller::draw() {
+    m_window.clear(sf::Color(150, 150, 150));
+    m_window.draw(m_title);
+    for(int index = 0; index < NUM_OF_BUTTONS; index++){
+        m_window.draw(m_buttonSpr[index]);
+    }
+    m_window.display();
 }
 
 void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
@@ -72,8 +93,9 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case ShopButton: {
-                    //Shop shop = Shop(m_window);
-                    //shop.run();
+                    m_gameController.CollectedSum = 10000;
+                    Shop* shop = new Shop(m_window);
+                    shop->run(m_gameController);
                     break;
                 }
                 case SettingButton:{
@@ -107,4 +129,12 @@ void Controller::handleMouseMoved(sf::Event::MouseMoveEvent& event) {
             m_buttonToScale = row;
         }
     }
+}
+
+void Controller::setGameControllerInfo(GameControllerInfo gameController) {
+    m_gameController = gameController;
+}
+
+GameControllerInfo Controller::getGameControllerInfo() {
+    return m_gameController;
 }

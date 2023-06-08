@@ -24,6 +24,12 @@ public:
     sf::Texture* getPiggy() const;
     sf::Texture* getGlitter() const;
     sf::Texture* getScientist() const;
+   /*
+    sf::Texture* getNext() const;
+    sf::Texture* getPrev() const;
+    sf::Texture* getLock() const;
+    sf::Texture* getUnlock() const;
+    */
 
 private:
     ResourcesManager();
@@ -45,4 +51,8 @@ private:
     sf::Texture* m_glitter;
     sf::Texture* m_scientist;
 
+    sf::Texture* m_prev;
+    sf::Texture* m_next;
+    sf::Texture* m_locked;
+    sf::Texture* m_unlocked;
 };

@@ -14,6 +14,7 @@ public:
     int getScore() const;
     void addPoints(int addToScore);
     int getBest() const;
+    void setBest(int newBest);
     void setDead();
 
     static sf::Clock timer;

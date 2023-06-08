@@ -44,6 +44,11 @@ void ScoreBoard::addPoints(int addToScore) {
 int ScoreBoard::getBest() const {
     return best;
 }
+
+void ScoreBoard::setBest(int newBest) {
+    best = newBest;
+}
+
 void ScoreBoard::setDead() {
     m_dead = true;
 }

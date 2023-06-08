@@ -45,7 +45,6 @@ void Setting::run() {
 
 void Setting::draw() {
     //FIXME: Add background below the overlay.
-    m_overlay = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     m_overlay.setFillColor(sf::Color(0, 0, 0, 128));  // Semi-transparent black overlay
     m_window->draw(m_overlay);
     m_window->draw(m_settingBoard);
@@ -80,6 +79,7 @@ void Setting::create() {
     sort();
     int music = 1;
     int sound = 2;
+    m_overlay = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     m_settingBoard.setSize(sf::Vector2f(SETTING_WIDTH ,SETTING_HEIGHT));
     m_settingBoard.setPosition(WIDTH_CENTER, HEIGHT_CENTER);
     m_settingBoard.setOrigin(SETTING_WIDTH/2, SETTING_HEIGHT/2);

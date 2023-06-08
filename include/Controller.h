@@ -8,8 +8,11 @@ public:
     ~Controller();
     void run();
     void create();
+    void draw();
     void handleMouseButton(sf::Event::MouseButtonEvent& event);
     void handleMouseMoved(sf::Event::MouseMoveEvent& event);
+    void setGameControllerInfo(GameControllerInfo gameController);
+    GameControllerInfo getGameControllerInfo();
 
 private:
     sf::RenderWindow m_window;
