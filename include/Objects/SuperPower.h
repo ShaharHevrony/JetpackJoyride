@@ -3,7 +3,7 @@
 
 class SuperPower : public Object {
 public:
-    SuperPower(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC){}
+    SuperPower(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~SuperPower() = default;
 
     virtual void move(float time){}
@@ -18,7 +18,4 @@ public:
     virtual void handleCollision(Piggy& piggy) {}
     virtual void handleCollision(Box2Coin& box2Coin) {}
     virtual void handleCollision(Missile& missile) {}
-
-protected:
-    //float m_currPosition;
 };
