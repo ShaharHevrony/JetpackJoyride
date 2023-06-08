@@ -36,6 +36,13 @@ configure_file ("Unlocked.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("SuperPower.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("PowerUpBox.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("SuperPowerFly.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("JetpackJoyrideMusic.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Coin.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("ZapperSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("missileLaunch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("alarmMissile.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 

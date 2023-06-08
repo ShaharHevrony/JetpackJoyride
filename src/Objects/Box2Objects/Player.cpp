@@ -3,6 +3,9 @@
 Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type)
         : Box2Object(texture, position, world, 1.f, type) {
     create(world);
+    m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
+    m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
+
 }
 
 //--------------- create the box2d values ---------------
@@ -67,20 +70,28 @@ void Player::setChange(b2World *world) {
 
 //------------- SFML functions on window -------------
 void Player::move(float time) {
-    float length = m_object.getTexture()->getSize().x/4;
-    if (m_spacePressed) {
+    float length = m_object.getTexture()->getSize().x / 4;
+    
+     if (m_spacePressed) {
         float jumpVelocity = - 10 * GRAVITATION_Y; //Adjust the jump velocity as needed
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
         bodyVelocity.y = jumpVelocity;
         m_body->SetLinearVelocity(bodyVelocity);
         b2Vec2 bodyPosition = m_body->GetPosition();
         float bodyAngle = m_body->GetAngle();
-        m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
+        if (m_type == SuperPowerType) {
+             setObject(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
+        }else {
+            m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
+        }
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-    }
-    else {
+    } else if (m_type == PlayerType) {
         m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
+    }else {
+        setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
+        float length = m_object.getTexture()->getSize().x / 2;
+        m_object.setTextureRect(sf::IntRect(length, 0, length, m_object.getTexture()->getSize().y));
     }
 }
 
@@ -109,6 +120,8 @@ void Player::handleCollision(Coin& Coin) {
         Coin.setObject(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
+        m_CoinCollect.play();
+
     }
 }
 
@@ -116,13 +129,15 @@ void Player::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
         Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
+        m_ZapperSound.play();
     }
 }
 
 void Player::handleCollision(Beam &beam) {
-    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
         Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
+        m_ZapperSound.play();
     }
 }
 
@@ -131,6 +146,7 @@ void Player::handleCollision(Piggy& piggy) {
         piggy.setDelete();
         Event event = Event(CollectedPiggy, 0, piggy.getObject().getPosition());
         EventsQueue::instance().push(event);
+        m_CoinCollect.play();
     }
 }
 
@@ -144,8 +160,25 @@ void Player::handleCollision (Box2Coin& box2Coin) {
 }
 
 void Player::handleCollision(Missile &missile) {
-    if (missile.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
-        Event event = Event(DeathInTheAir);
+    if (missile.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) ){
+            missile.setDelete();
+          if (m_type == PlayerType) {
+            Event event = Event(DeathInTheAir);
+            EventsQueue::instance().push(event);
+        }
+        else if (m_type == SuperPowerType) {
+            Event event = Event(ReturnRegular);
+            EventsQueue::instance().push(event);
+        }
+    }
+}
+
+void Player::handleCollision(SuperPower& SuperPower)
+{
+    if (SuperPower.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !SuperPower.getCollided()) {
+        SuperPower.setCollided();
+        SuperPower.setDelete();
+        Event event = Event(startSuperPower);
         EventsQueue::instance().push(event);
     }
 }

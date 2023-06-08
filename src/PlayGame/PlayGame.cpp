@@ -10,6 +10,7 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, PlayerType);
     m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
+
 }
 
 PlayGame::~PlayGame() {}
@@ -32,7 +33,7 @@ void PlayGame::createObjectMap() {
     
     //int random = randMap();
     sf::Vector2f position;
-    int random = 9;
+    int random = 0;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -81,13 +82,15 @@ void PlayGame::createObjectMap() {
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
                     sf::Vector2f pos = m_singleObjects[m_singleObjects.size() - 1]->getObject().getPosition();
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y * 1.65);
-                }
-                case SUPERPOWER: {
-                    //position = sf::Vector2f(WINDOW_WIDTH + 200, m_player->getObject().getPosition().x);
-                    m_superPower.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(0), position));
                     break;
                 }
-
+                case SUPERPOWER: {
+                    m_singleObjects.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(0), position));
+                    if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                        m_lastObject = position;
+                    }
+                    break;
+                }
                 case SPACE: {
                     break;
                 }
@@ -101,6 +104,13 @@ void PlayGame::run() {
     bool alreadyDead = false;
     GameSettings setting = GameSettings(*m_window, m_board, m_control);
     bool restartGame = false;
+    /*
+    if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
+        // Error loading music file
+    }
+        m_music.play();
+        m_music.setLoop(true); // set the music to loop
+    */
     while (m_window->isOpen() && !restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -137,7 +147,7 @@ void PlayGame::run() {
         if (m_lastCoin.x <= 0.f){
             m_fallingCoins.clear();
         }
-        if (m_player->getType() == PlayerType) {
+        if (m_player->getType() == PlayerType || m_player->getType() == SuperPowerType) {
             moveObjects();
             if (m_player->getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
                 //Here we check the pose of the player falling standing or lift
@@ -147,7 +157,7 @@ void PlayGame::run() {
             }
             dealWithCollision();
             dealWithEvent();
-        } else {
+        } else if(m_player->getType() != SuperPowerType){
             deathMovement(alreadyDead);
             if (alreadyDead) {
                 sf::Time elapsed = m_timer.getElapsedTime();
@@ -158,6 +168,8 @@ void PlayGame::run() {
         }
         draw();
     }
+    //m_music.stop();
+
 }
 
 void PlayGame::dealWithCollision() {
@@ -187,6 +199,8 @@ void PlayGame::dealWithCollision() {
     for (auto &myMissile: m_missile) {
         m_player->handleCollision(*myMissile);
     }
+    std::erase_if(m_missile, [](const auto& item) { return item->getDelete(); });
+
 }
 
 void PlayGame::dealWithEvent() {
@@ -211,6 +225,22 @@ void PlayGame::dealWithEvent() {
                         m_lastCoin = position;
                     }
                 }
+                break;
+            }
+            case startSuperPower: {
+                //Add sound of money here
+                //set screen to be slower
+                //set life to 1 
+                m_player->setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
+                m_player->setType(SuperPowerType);
+                break;
+            }
+            case ReturnRegular: {
+                //Add sound of money here
+                //set screen to be slower
+                //set life to 1 
+                m_player->setObject(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
+                m_player->setType(PlayerType);
                 break;
             }
             case DeathInTheAir: {
@@ -251,9 +281,6 @@ void PlayGame::draw() {
     }
     for (int index = 0; index < m_missile.size(); index++) {
         m_missile[index]->draw(m_window);
-    }
-    for (int index = 0; index < m_superPower.size(); index++) {
-        m_superPower[index]->draw(m_window);
     }
     for (int index = 0; index < m_fallingCoins.size(); index++) {
         m_fallingCoins[index]->draw(m_window);
@@ -311,12 +338,7 @@ void PlayGame::moveObjects() {
             lastPosition = m_singleObjects[index]->getObject().getPosition();
         }
     }
-    for (int index = 0; index < m_superPower.size(); index++) {
-        m_superPower[index]->move(m_control.Time_t * m_control.Speed_t);
-        if (lastPosition.x <= 0.f || m_superPower[index]->getObject().getPosition().x > lastPosition.x) {
-            lastPosition = m_superPower[index]->getObject().getPosition();
-        }
-    }
+
     for (int index = 0; index < m_fallingCoins.size(); index++) {
         m_fallingCoins[index]->move(m_control.Time_t * m_control.Speed_t);
     }
@@ -328,7 +350,6 @@ void PlayGame::moveObjects() {
         m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * SET_OBJ_SCALE) - 10));
         m_flame->move(TIME_STEP);
     }
-
     if (!m_missile.empty()) {
         for (int index = 0; index < m_missile.size(); index++) {
             if (m_missile[index]->getTime().getElapsedTime().asSeconds() <= 3) {
@@ -342,14 +363,16 @@ void PlayGame::moveObjects() {
             } else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 5) {
                 m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
                 m_missile[index]->setObject(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1), 0.18f);
-                m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_missile[index]->getCurrPositionX());
+                m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_missile[index]->getCurrPositionX());                
             }
+            m_missile[index]->updateCollisionTime(timeStep);
         }
         for (int index = 0; index < m_missile.size(); index++) {
             if (m_missile[index]->getObject().getPosition().x < -100) {
                 m_missile.erase(m_missile.begin() + index);
                 index--; //Decrement the index since the vector size has decreased
             }
+
         }
     }
 }

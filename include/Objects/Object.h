@@ -41,6 +41,8 @@ public:
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Box2Coin& box2Coin) = 0;
     virtual void handleCollision(Missile& missile) = 0;
+    virtual void handleCollision(SuperPower& SuperPower) = 0;
+
 
 protected:
     sf::Sprite m_object;

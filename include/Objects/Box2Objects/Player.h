@@ -7,6 +7,7 @@
 #include "Piggy.h"
 #include "Box2Coin.h"
 #include "Missile.h"
+#include "SuperPower.h"
 
 class Player: public Box2Object {
 public:
@@ -27,4 +28,11 @@ public:
     virtual void handleCollision (Piggy& piggy);
     virtual void handleCollision (Box2Coin& box2Coin);
     virtual void handleCollision(Missile& missile);
+    virtual void handleCollision(SuperPower& SuperPower);
+
+private:
+    sf::Sound m_CoinCollect;
+    sf::Sound m_ZapperSound;
+
+
 };

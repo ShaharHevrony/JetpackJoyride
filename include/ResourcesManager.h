@@ -26,6 +26,12 @@ public:
     sf::Texture* getScientist() const;
     sf::Texture* getSuperPower(int index) const;
 
+    sf::SoundBuffer& getSoundCoin();
+    sf::SoundBuffer& getSoundZapper();
+    sf::SoundBuffer& getSoundMissileLaunch();
+    sf::SoundBuffer& getSoundMissileAlarm();
+
+
    /*
     sf::Texture* getNext() const;
     sf::Texture* getPrev() const;
@@ -53,6 +59,12 @@ private:
     sf::Texture* m_glitter;
     sf::Texture* m_scientist;
     sf::Texture* m_superPower[3];
+
+    sf::SoundBuffer m_soundCoin;
+    sf::SoundBuffer m_soundZapper;
+    sf::SoundBuffer m_soundMissileSound;
+    sf::SoundBuffer m_soundMissileAlarm;
+
 
 
     sf::Texture* m_prev;

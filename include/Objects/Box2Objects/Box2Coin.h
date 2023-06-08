@@ -22,4 +22,6 @@ public:
     virtual void handleCollision (Piggy& piggy) {}
     virtual void handleCollision (Box2Coin& box2Coin);
     virtual void handleCollision(Missile& missile) {}
+    virtual void handleCollision(SuperPower& SuperPower) {}
+
 };

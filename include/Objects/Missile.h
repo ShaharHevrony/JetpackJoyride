@@ -12,7 +12,7 @@ public:
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);
-    virtual void updateCollisionTime(float time){}
+    virtual void updateCollisionTime(float time);
 
     virtual void handleCollision(Object& object) {}
     virtual void handleCollision(Player& player) {}
@@ -22,8 +22,13 @@ public:
     virtual void handleCollision (Piggy& piggy) {}
     virtual void handleCollision (Box2Coin& box2Coin) {}
     virtual void handleCollision(Missile& missile) {}
+    virtual void handleCollision(SuperPower& SuperPower) {}
+
 
 protected:
     sf::Clock m_missileTimer;   // Timer for tracking the time
     float m_currPosition;
+    sf::Sound m_soundMilssileLaunch;
+    sf::Sound m_soundMissileAlarm;
+
 };

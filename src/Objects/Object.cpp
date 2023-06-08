@@ -33,7 +33,7 @@ bool Object::getInUse() const{
 }
 
 void Object::setCollided() {
-    m_collided = !m_collided;
+    m_collided = true;
 }
 
 bool Object::getCollided() const{

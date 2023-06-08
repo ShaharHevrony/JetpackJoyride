@@ -133,13 +133,41 @@ ResourcesManager::ResourcesManager() {
     }
     m_unlocked = unlocked;*/
 
-    for (int index = 0; index < 2; index++) {
+    for (int index = 0; index < 3; index++) {
         sf::Texture* tempSuper = new sf::Texture();
         if (!tempSuper->loadFromFile(PATH + superPower[index])) {
             throw OpenTextureFailed();
         }
         m_superPower[index] = tempSuper;
     }
+
+    //load pacman death sound
+    sf::SoundBuffer soundCoin;
+    if (!soundCoin.loadFromFile(PATH + "Coin.wav")) {
+        // Error loading sound file
+    }
+    m_soundCoin = soundCoin;
+
+    //load pacman death sound
+    sf::SoundBuffer soundZapper;
+    if (!soundZapper.loadFromFile(PATH + "ZapperSound.wav")) {
+        // Error loading sound file
+    }
+    m_soundZapper = soundZapper;
+
+    //load pacman death sound
+    sf::SoundBuffer soundMissileLaunch;
+    if (!soundMissileLaunch.loadFromFile(PATH + "missileLaunch.wav")) {
+        // Error loading sound file
+    }
+    m_soundMissileSound = soundMissileLaunch;
+
+    //load pacman death sound
+    sf::SoundBuffer soundMissileAlarm;
+    if (!soundMissileAlarm.loadFromFile(PATH + "missileAlarm.wav")) {
+        // Error loading sound file
+    }
+    m_soundMissileAlarm = soundMissileAlarm;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -243,4 +271,20 @@ sf::Texture* ResourcesManager::getScientist() const{
 sf::Texture* ResourcesManager::getSuperPower(int index) const
 {
     return m_superPower[index];
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundCoin() {
+    return m_soundCoin;
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundZapper() {
+    return m_soundZapper;
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundMissileLaunch() {
+    return m_soundMissileSound;
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundMissileAlarm() {
+    return m_soundMissileAlarm;
 }

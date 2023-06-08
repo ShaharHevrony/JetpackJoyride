@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 struct GameControllerInfo {
     GameControllerInfo();
@@ -27,12 +27,15 @@ enum EventsTypes {
     DeathInTheAir,
     DeadOnTheGround,
     CollectedPiggy,
+    startSuperPower,
+    ReturnRegular,
 };
 
 enum Box2Objects{
     FloorType,
     CeilingType,
     PlayerType,
+    SuperPowerType,
     DeadPlayerType,
     GameOverType,
     FallingCoinType,
@@ -67,7 +70,7 @@ const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float SET_SCALE       = WINDOW_HEIGHT / 1200;
-const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1000;
+const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1100;
 const float TITLE_POSITION  = WINDOW_HEIGHT / 4.7;
 const float MENU_GAP        = WINDOW_HEIGHT / 7.7;
 
@@ -104,19 +107,24 @@ const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png"
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
-const std::vector<std::string> superPower = {"SuperPower.png", "PowerUpBox.png"};
+const std::vector<std::string> superPower = {"PowerUpBox.png", "SuperPower.png" ,"SuperPowerFly.png"};
 
 
 const std::vector<std::string> settingManager = {"74 55\n49583 39204 39202 29483 14844" };
 
-const std::vector<std::string> MAP = { "-------*-------\n"
+const std::vector<std::string> MAP = { "-------@---!---\n"
+                                       "---------------\n"
+                                       "--------------S\n"
+                                       "-------@-------",
+    
+                                       "-------*-------\n"
                                        "-------*-------\n"
                                        "-------*------S\n"
                                        "-------$-------",
 
                                        "--****---****--\n"
                                        "--****---****--\n"
-                                       "--****---****--\n"
+                                       "--****@--****--\n"
                                        "--****---****--\n"
                                        "--****---****--\n"
                                        "***************\n"
@@ -136,7 +144,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "**-------**----\n"
                                        "**--------**---\n"
                                        "-**--------**--\n"
-                                       "--**--------**-\n"
+                                       "--**----@---**-\n"
                                        "---**--------**\n"
                                        "--**--------**-\n"
                                        "-**--------**--\n"
@@ -163,7 +171,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "---**----------\n"
                                        "-------**----**\n"
                                        "-------**----**\n"
-                                       "-------**----**\n"
+                                       "-@-----**----**\n"
                                        "-------**----**\n"
                                        "--------**--**-\n"
                                        "---------****--\n"
@@ -177,27 +185,27 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "---**----------",
 
                                        "----------*****\n"
-                                       "---------*****-\n"
+                                       "--@------*****-\n"
                                        "--------*****--\n"
                                        "-------*****---\n"
                                        "------*****---S\n"
                                        "-----*****-----\n"
                                        "----*****------\n"
-                                       "---*****-------\n"
+                                       "---*****---!---\n"
                                        "--*****-------S\n"
                                        "-*****---------\n"
                                        "*****----------",
 
                                        "*****----------\n"
-                                       "-*****---------\n"
-                                       "--*****-------S\n"
+                                       "-*****---@-----\n"
+                                       "--*****---!---S\n"
                                        "---*****-------\n"
-                                       "----*****------\n"
+                                       "----*****---@--\n"
                                        "-----*****-----\n"
                                        "------*****---S\n"
-                                       "-------*****---\n"
+                                       "-<-----*****---\n"
                                        "--------*****--\n"
-                                       "---------*****-\n"
+                                       "--<------*****-\n"
                                        "----------*****",
 
                                        "-------*-------\n"
@@ -222,7 +230,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "--**-------**--\n"
                                        "-**---------**-\n"
                                        "**-----------**\n"
-                                       "-**---------**-\n"
+                                       "-**-----@---**-\n"
                                        "--**-------**--\n"
                                        "---**-----**---\n"
                                        "----**---**----\n"
@@ -243,7 +251,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "-<----******--\n"
                                        "----******---<\n"
                                        "--------------\n"
-                                       "-------------<\n"
+                                       "----@--------<\n"
                                        "--------------\n"
                                        "--<------<----\n"
                                        "-------------S\n"
@@ -261,7 +269,7 @@ const std::vector<std::string> MAP = { "-------*-------\n"
                                        "-****-----****-\n"
                                        "-*<**-----****-\n"
                                        "-----*****----S\n"
-                                       "--<--*****-----\n"
+                                       "--<--*****--!--\n"
                                        "-----*****-----"  };
 /*
 
