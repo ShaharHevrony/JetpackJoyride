@@ -5,10 +5,9 @@ class Missile : public Object {
 public:
     Missile(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Missile() = default;
-    sf::Clock getTime();
-    void restartTime();
     float getCurrPositionX();
     void setCurrPositionX(float x);
+    void changeByTime(float time, sf::Vector2f playerPosition, int index);
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);
@@ -26,9 +25,13 @@ public:
 
 
 protected:
-    sf::Clock m_missileTimer;   // Timer for tracking the time
+    //sf::Clock m_missileTimer;   // Timer for tracking the time
+    float m_countTime = 0.0f;
     float m_currPosition;
-    sf::Sound m_soundMilssileLaunch;
+    sf::Sound m_soundMissileLaunch;
     sf::Sound m_soundMissileAlarm;
+    bool firstChange = false;
+    bool secondChange = false;
+    bool missileSound = false;
 
 };

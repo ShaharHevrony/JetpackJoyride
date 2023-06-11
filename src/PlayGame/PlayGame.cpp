@@ -65,8 +65,6 @@ void PlayGame::createObjectMap() {
                 case MISSILE: {
                     position = sf::Vector2f(WINDOW_WIDTH+200, m_player->getObject().getPosition().x);
                     m_missile.push_back(std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position));
-                    //Start the timer for the missile
-                    m_missile[m_missile.size() - 1]->restartTime();
                     break;
                 }
                 case PIGGY: {
@@ -135,6 +133,13 @@ void PlayGame::run() {
                 }
             }
         }
+        // Increase speed every 5 seconds
+        static sf::Clock speedIncreaseTimer;
+        if (speedIncreaseTimer.getElapsedTime().asSeconds() >= 5.0f) {
+            m_control.Speed_t += 50.9f;
+            speedIncreaseTimer.restart();
+        }
+
         if (m_lastObject.x <= 0.f) {
             createObjectMap();
         }
@@ -214,7 +219,6 @@ void PlayGame::dealWithEvent() {
                     scale += index/4;
                     position.x += scale;
                     m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, FallingCoinType));
-                    m_fallingCoins[index]->setObject(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
                     if(index == 40) {
                         m_lastCoin = position;
                     }
@@ -304,12 +308,13 @@ void PlayGame::deathMovement(bool& alreadyDead) {
 }
 
 void PlayGame::moveObjects() {
-    sf::Vector2f lastPosition = sf::Vector2f(0.f,0.f);
+    sf::Vector2f lastPosition = sf::Vector2f(0.f, 0.f);
 
     float timeStep = TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
+
 
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
@@ -337,29 +342,12 @@ void PlayGame::moveObjects() {
         m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * OBJECT_SCALE) - 10));
         m_flame->move(TIME_STEP);
     }
-    if (!m_missile.empty()) {
-        for (int index = 0; index < m_missile.size(); index++) {
-            if (m_missile[index]->getTime().getElapsedTime().asSeconds() <= 3) {
-                m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-                m_missile[index]->getObject().setPosition(WINDOW_WIDTH - 100, m_player->getObject().getPosition().y + (index * 90));
-                m_missile[index]->setCurrPositionX(m_player->getObject().getPosition().y + (index * 90));
-            } else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 3 &&
-                      m_missile[index]->getTime().getElapsedTime().asSeconds() < 5) {
-                m_missile[index]->setObject(ResourcesManager::instance().getMissile(1), sf::Vector2u(2, 1), 0.18f);
-                m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-            } else if (m_missile[index]->getTime().getElapsedTime().asSeconds() >= 5) {
-                m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-                m_missile[index]->setObject(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1), 0.18f);
-                m_missile[index]->getObject().setPosition(m_missile[0]->getObject().getPosition().x - 1, m_missile[index]->getCurrPositionX());                
-            }
-            m_missile[index]->updateCollisionTime(timeStep);
-        }
-        for (int index = 0; index < m_missile.size(); index++) {
-            if (m_missile[index]->getObject().getPosition().x < -100) {
-                m_missile.erase(m_missile.begin() + index);
-                index--; //Decrement the index since the vector size has decreased
-            }
-
+    for (int index = 0; index < m_missile.size(); index++) {
+        m_missile[index]->changeByTime(m_control.Time_t, m_player->getObject().getPosition(), index);
+        m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
+        if (m_missile[index]->getObject().getPosition().x < -100) {
+            m_missile.erase(m_missile.begin() + index);
+            index--; //Decrement the index since the vector size has decreased
         }
     }
 }

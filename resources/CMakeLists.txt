@@ -27,7 +27,6 @@ configure_file ("Glitter.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("BerryDeathElec.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
 

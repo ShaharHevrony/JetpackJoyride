@@ -2,7 +2,9 @@
 
 Box2Coin::Box2Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
                 :Box2Object(texture, position, world, scale, type){
+    setObject(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
     create(world);
+
 }
 
 //--------------- create the box2d values ---------------
@@ -40,13 +42,12 @@ void Box2Coin::create(b2World *world) {
 //-------------- handle all collisions --------------
 void Box2Coin::move(float time) {
     animate();
-    float length = m_object.getTexture()->getSize().x/4;
+    float length = m_object.getTexture()->getSize().x/8;
     b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
     bodyVelocity.x = - m_scale/20;
     m_body->SetLinearVelocity(bodyVelocity);
     b2Vec2 bodyPosition = m_body->GetPosition();
     float bodyAngle = m_body->GetAngle();
-    m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
     m_object.setPosition(bodyPosition.x, bodyPosition.y);
     m_object.setRotation(bodyAngle * 180.0f / b2_pi);
 }
