@@ -111,7 +111,10 @@ void Setting::readFile() {
     std::ifstream readingFile;
     std::string filePath = "settingManager";
     if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
-        throw FileNotExist();
+        writeFile();
+        if (!std::filesystem::exists(filePath)) { //Can't open a none existing file
+            throw FileNotExist();
+        }
     }
     readingFile.open(filePath, std::fstream::in);
     if (!readingFile.is_open()) {             //File doesn't open

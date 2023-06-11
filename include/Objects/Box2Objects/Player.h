@@ -33,6 +33,4 @@ public:
 private:
     sf::Sound m_CoinCollect;
     sf::Sound m_ZapperSound;
-
-
 };

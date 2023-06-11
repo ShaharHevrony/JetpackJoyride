@@ -9,10 +9,8 @@ GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& cont
 GameSettings::~GameSettings() {}
 
 void GameSettings::create() {
-    //m_overlay = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
-    //m_overlay.setFillColor(sf::Color(0, 0, 0, 128));  //Semi-transparent black overlay
     m_overlay.setTexture(*ResourcesManager::instance().getFirstBackground());
-    m_overlay.setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
+    m_overlay.setScale(WINDOW_HEIGHT/m_overlay.getTexture()->getSize().y, WINDOW_HEIGHT/m_overlay.getTexture()->getSize().y);
     //Create the game over box
     m_setting = sf::RectangleShape(sf::Vector2f(WIDTH_CENTER/2, HEIGHT_CENTER/2));
     m_setting.setFillColor(sf::Color(150,150,150));
@@ -51,7 +49,6 @@ bool GameSettings::run(int playerType) {
         }
         m_window->clear();
         // Draw the game over screen
-        //m_board.draw(m_window, m_control, playerType);
         // Draw the overlay
         m_window->draw(m_overlay);
         // Draw the game over box and options

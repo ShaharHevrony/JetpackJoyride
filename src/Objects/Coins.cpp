@@ -1,7 +1,7 @@
 #include "Coin.h"
 
 Coin::Coin(sf::Texture* texture, const sf::Vector2f &position): Object(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(4, 1), 0.18f);
+    m_animation.setAnimation(texture, sf::Vector2u(8, 1), 0.1f);
 }
 
 void Coin::move(float time) {

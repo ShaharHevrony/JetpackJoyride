@@ -1,11 +1,10 @@
 #include "Player.h"
 
 Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type)
-        : Box2Object(texture, position, world, 1.f, type) {
+        :Box2Object(texture, position, world, 1.f, type) {
     create(world);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
-
 }
 
 //--------------- create the box2d values ---------------
@@ -47,7 +46,7 @@ void Player::setChange(b2World *world) {
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
-    shape.SetAsBox(m_object.getGlobalBounds().width/2, m_object.getGlobalBounds().height/2);
+    shape.SetAsBox(m_object.getGlobalBounds().width/4, m_object.getGlobalBounds().height/4);
 
     //FixtureDef
     b2FixtureDef fixtureDef;

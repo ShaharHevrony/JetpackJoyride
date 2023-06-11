@@ -9,6 +9,18 @@ ResourcesManager::ResourcesManager() {
     }
     m_font = font;
 
+    sf::Texture* gameMenu = new sf::Texture();
+    if (!gameMenu->loadFromFile(PATH + "GameMenu.png")) {
+        throw OpenTextureFailed();
+    }
+    m_gameMenu = gameMenu;
+
+    sf::Texture* titleTex = new sf::Texture();
+    if (!titleTex->loadFromFile(PATH + "Title.png")) {
+        throw OpenTextureFailed();
+    }
+    m_title = titleTex;
+
     sf::Texture* playerTex = new sf::Texture();
     if (!playerTex->loadFromFile(PATH + "Player.png")) {
         throw OpenTextureFailed();
@@ -21,19 +33,20 @@ ResourcesManager::ResourcesManager() {
     }
     m_coin = coinTex;
 
-    sf::Texture* obstacleTex = new sf::Texture();
-    if (!obstacleTex->loadFromFile(PATH + "Zappers.png")) {
+    sf::Texture* upperZappers = new sf::Texture();
+    if (!upperZappers->loadFromFile(PATH + "UpperZappers.png")) {
         throw OpenTextureFailed();
     }
-    m_obstacle = obstacleTex;
+    m_upperZappers = upperZappers;
 
-    sf::Texture* titleTex = new sf::Texture();
-    if (!titleTex->loadFromFile(PATH + "Title.png")) {
+    sf::Texture* lowerZappers = new sf::Texture();
+    if (!lowerZappers->loadFromFile(PATH + "LowerZappers.png")) {
         throw OpenTextureFailed();
     }
-    m_title = titleTex;
+    m_lowerZapper = lowerZappers;
 
-    for(int index = 0; index < 4; index++){
+
+    for(int index = 0; index < 8; index++){
         sf::Texture* tempButton = new sf::Texture();
         if(!tempButton->loadFromFile(PATH + buttons[index])){
             throw OpenTextureFailed();
@@ -72,10 +85,10 @@ ResourcesManager::ResourcesManager() {
     m_barryDeath[1] = berryDead;
 
     sf::Texture* beam = new sf::Texture();
-    if (!beam->loadFromFile(PATH + "Beam.png")) {
+    if (!beam->loadFromFile(PATH + "ZappersBeam.png")) {
         throw OpenTextureFailed();
     }
-    m_laserBeam = beam;
+    m_zappersBeam = beam;
 
     for (int index = 0; index < 3; index++) {
         sf::Texture* tempMissile = new sf::Texture();
@@ -109,30 +122,6 @@ ResourcesManager::ResourcesManager() {
     }
     m_scientist = scientist;
 
-    /*sf::Texture* prev = new sf::Texture();
-    if (!prev->loadFromFile(PATH + "Prev.png")) {
-        throw OpenTextureFailed();
-    }
-    m_prev = prev;
-
-    sf::Texture* next = new sf::Texture();
-    if (!next->loadFromFile(PATH + "Next.png")) {
-        throw OpenTextureFailed();
-    }
-    m_next = next;
-
-    sf::Texture* locked = new sf::Texture();
-    if (!locked->loadFromFile(PATH + "Locked.png")) {
-        throw OpenTextureFailed();
-    }
-    m_locked = locked;
-
-    sf::Texture* unlocked = new sf::Texture();
-    if (!unlocked->loadFromFile(PATH + "Unlocked.png")) {
-        throw OpenTextureFailed();
-    }
-    m_unlocked = unlocked;*/
-
     for (int index = 0; index < 3; index++) {
         sf::Texture* tempSuper = new sf::Texture();
         if (!tempSuper->loadFromFile(PATH + superPower[index])) {
@@ -164,7 +153,7 @@ ResourcesManager::ResourcesManager() {
 
     //load pacman death sound
     sf::SoundBuffer soundMissileAlarm;
-    if (!soundMissileAlarm.loadFromFile(PATH + "missileAlarm.wav")) {
+    if (!soundMissileAlarm.loadFromFile(PATH + "MissileAlarm.wav")) {
         // Error loading sound file
     }
     m_soundMissileAlarm = soundMissileAlarm;
@@ -175,15 +164,16 @@ ResourcesManager::~ResourcesManager() {
     delete m_firstBackground;
     delete m_background;
     delete m_coin;
-    delete m_obstacle;
-    delete m_title;
-    delete m_laserBeam;
+    delete m_upperZappers;
+    delete m_lowerZapper;
+    delete m_gameMenu;
+    delete m_zappersBeam;
     delete m_piggy;
     delete m_gameSetting;
     delete m_flame;
     delete m_glitter;
 
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 8; i++){
         delete m_buttons[i];
     }
     for(int i = 0; i < 2; i++){
@@ -206,6 +196,10 @@ ResourcesManager &ResourcesManager::instance() {
 
 sf::Font& ResourcesManager::getFont() {
     return m_font;
+}
+
+sf::Texture* ResourcesManager::getGameMenu() const {
+    return m_gameMenu;
 }
 
 sf::Texture* ResourcesManager::getTitle() const {
@@ -236,16 +230,20 @@ sf::Texture* ResourcesManager::getCoin() const {
     return m_coin;
 }
 
-sf::Texture* ResourcesManager::getObstacle() const {
-    return m_obstacle;
+sf::Texture* ResourcesManager::getUpperZappers() const{
+    return m_upperZappers;
+}
+
+sf::Texture* ResourcesManager::getLowerZappers() const{
+    return m_lowerZapper;
 }
 
 sf::Texture* ResourcesManager::getBarryDeath(int index) const {
     return m_barryDeath[index];
 }
 
-sf::Texture* ResourcesManager::getLaserBeam() const {
-    return m_laserBeam;
+sf::Texture* ResourcesManager::getZappersBeam() const {
+    return m_zappersBeam;
 }
 
 sf::Texture* ResourcesManager::getMissile(int index) const {
@@ -268,8 +266,7 @@ sf::Texture* ResourcesManager::getScientist() const{
     return m_scientist;
 }
 
-sf::Texture* ResourcesManager::getSuperPower(int index) const
-{
+sf::Texture* ResourcesManager::getSuperPower(int index) const {
     return m_superPower[index];
 }
 

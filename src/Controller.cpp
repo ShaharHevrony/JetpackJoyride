@@ -27,24 +27,32 @@ Controller::~Controller() {}
 void Controller::create() {
     m_gameController = GameControllerInfo();
 
-    m_window.clear(sf::Color(150, 150, 150));
+    m_menuBackground.setTexture(*ResourcesManager::instance().getGameMenu());
+    m_menuBackground.setScale(WINDOW_WIDTH/m_menuBackground.getTexture()->getSize().x, WINDOW_HEIGHT/m_menuBackground.getTexture()->getSize().y);
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
     m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x/2, ResourcesManager::instance().getTitle()->getSize().y/2);
     m_title.setScale(SET_SCALE, SET_SCALE);
-    m_window.draw(m_title);
 
     sf::Sprite tempSpr;
-    for(int index = 0; index < NUM_OF_BUTTONS; index++) {
-        tempSpr.setTexture(*ResourcesManager::instance().getButtons(index));
-        tempSpr.setPosition(WIDTH_CENTER, index * MENU_GAP + HEIGHT_CENTER);
-        tempSpr.setOrigin(ResourcesManager::instance().getButtons(index)->getSize().x/2,
-                          ResourcesManager::instance().getButtons(index)->getSize().y/2);
-        tempSpr.setScale(SET_SCALE, SET_SCALE);
-        m_buttonSpr.push_back(tempSpr);
-        m_window.draw(m_buttonSpr[index]);
+    for(int button = 0; button < 8; button++) {
+        tempSpr.setTexture(*ResourcesManager::instance().getButtons(button));
+        if((button % 4) == PlayButton){
+            tempSpr.setPosition(WIDTH_CENTER - MENU_WIDTH_GAP, HEIGHT_CENTER);
+        } else if((button % 4) == ShopButton) {
+            tempSpr.setPosition(WIDTH_CENTER + MENU_WIDTH_GAP, HEIGHT_CENTER);
+        } else if((button % 4) == SettingButton) {
+            tempSpr.setPosition(WIDTH_CENTER - MENU_WIDTH_GAP, HEIGHT_CENTER + MENU_HEIGHT_GAP);
+        } else {
+            tempSpr.setPosition(WIDTH_CENTER + MENU_WIDTH_GAP, HEIGHT_CENTER + MENU_HEIGHT_GAP);
+        }
+        tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x/2,ResourcesManager::instance().getButtons(button)->getSize().y/2);
+        tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
+        m_getButtonSpr.push_back(tempSpr);
     }
-    m_window.display();
+    for(int button = 0; button < NUM_OF_BUTTONS; button++){
+        m_gameButtons.push_back(m_getButtonSpr[button]);
+    }
 }
 
 void Controller::run() {
@@ -70,10 +78,11 @@ void Controller::run() {
 }
 
 void Controller::draw() {
-    m_window.clear(sf::Color(150, 150, 150));
+    m_window.clear();
+    m_window.draw(m_menuBackground);
     m_window.draw(m_title);
     for(int index = 0; index < NUM_OF_BUTTONS; index++){
-        m_window.draw(m_buttonSpr[index]);
+        m_window.draw(m_gameButtons[index]);
     }
     m_window.display();
 }
@@ -84,7 +93,7 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
     //loop that go on the object in the menu and check if the user click on one of them
     for (int index = 0; index < NUM_OF_BUTTONS; index++) {
         //if the user click on the button
-        if (m_buttonSpr[index].getGlobalBounds().contains(location)) {
+        if (m_gameButtons[index].getGlobalBounds().contains(location)) {
             switch (index) {
                 //if click on eraser
                 case PlayButton: {
@@ -121,12 +130,14 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
 }
 
 void Controller::handleMouseMoved(sf::Event::MouseMoveEvent& event) {
-    m_buttonSpr[m_buttonToScale].setScale(SET_SCALE, SET_SCALE);
+    for(int button = 0; button < NUM_OF_BUTTONS; button++){
+        m_gameButtons[button] = (m_getButtonSpr[button]);
+    }
+
     auto location = m_window.mapPixelToCoords({ event.x, event.y });
-    for (int row = 0; row < NUM_OF_BUTTONS; row++){
-        if (m_buttonSpr[row].getGlobalBounds().contains(location)) {
-            m_buttonSpr[row].setScale(SET_SCALE * RESIZE_BUTTONS, SET_SCALE * RESIZE_BUTTONS);
-            m_buttonToScale = row;
+    for (int button = 0; button < NUM_OF_BUTTONS; button++){
+        if (m_gameButtons[button].getGlobalBounds().contains(location)) {
+            m_gameButtons[button].setTexture(*m_getButtonSpr[button + 4].getTexture());
         }
     }
 }

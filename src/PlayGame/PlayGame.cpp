@@ -31,9 +31,9 @@ void PlayGame::createObjectMap() {
     m_singleObjects.clear();
     m_pairedObjects.clear();
     
-    //int random = randMap();
+    int random = randMap();
     sf::Vector2f position;
-    int random = 0;
+    //int random = 0;
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
@@ -47,7 +47,7 @@ void PlayGame::createObjectMap() {
                     break;
                 }
                 case OBSTACLE: {
-                    m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getObstacle(), position));
+                    m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLowerZappers(), position));
                     if (m_pairedObjects.size() % 2 == 0) {
                         sf::Vector2f otherPosition = m_pairedObjects[m_pairedObjects.size()-2]->getObject().getPosition();
                         m_pairedObjects[m_pairedObjects.size()-2]->setPaired(position);
@@ -58,8 +58,8 @@ void PlayGame::createObjectMap() {
                         float distance = m_pairedObjects[m_pairedObjects.size()-1]->calculateDistance();
                         float angle = m_pairedObjects[m_pairedObjects.size()-2]->calculateAngle();
 
-                        m_singleObjects.push_back(std::make_unique<Beam>(ResourcesManager::instance().getLaserBeam(), position, angle));
-                        m_singleObjects[m_singleObjects.size()-1]->getObject().setScale(1.f, distance/ResourcesManager::instance().getLaserBeam()->getSize().y);
+                        m_singleObjects.push_back(std::make_unique<Beam>(ResourcesManager::instance().getZappersBeam(), position, angle));
+                        m_singleObjects[m_singleObjects.size()-1]->getObject().setScale(1.f, distance/ResourcesManager::instance().getZappersBeam()->getSize().y);
                     }
                     break;
                 }
@@ -81,7 +81,7 @@ void PlayGame::createObjectMap() {
                     m_singleObjects.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
                     sf::Vector2f pos = m_singleObjects[m_singleObjects.size() - 1]->getObject().getPosition();
-                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y * 1.65);
+                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y);
                     break;
                 }
                 case SUPERPOWER: {
@@ -104,13 +104,11 @@ void PlayGame::run() {
     bool alreadyDead = false;
     GameSettings setting = GameSettings(*m_window, m_board, m_control);
     bool restartGame = false;
-    /*
     if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
-        // Error loading music file
+        //Error loading music file
     }
-        m_music.play();
-        m_music.setLoop(true); // set the music to loop
-    */
+    m_music.play();
+    m_music.setLoop(true); // set the music to loop
     while (m_window->isOpen() && !restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -168,8 +166,7 @@ void PlayGame::run() {
         }
         draw();
     }
-    //m_music.stop();
-
+    m_music.stop();
 }
 
 void PlayGame::dealWithCollision() {
@@ -221,7 +218,8 @@ void PlayGame::dealWithEvent() {
                     scale += index/4;
                     position.x += scale;
                     m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, FallingCoinType));
-                    if(index == 40){
+                    m_fallingCoins[index]->setObject(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
+                    if(index == 40) {
                         m_lastCoin = position;
                     }
                 }
@@ -229,16 +227,12 @@ void PlayGame::dealWithEvent() {
             }
             case startSuperPower: {
                 //Add sound of money here
-                //set screen to be slower
-                //set life to 1 
-                m_player->setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
+                m_player->setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
                 m_player->setType(SuperPowerType);
                 break;
             }
             case ReturnRegular: {
                 //Add sound of money here
-                //set screen to be slower
-                //set life to 1 
                 m_player->setObject(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
                 m_player->setType(PlayerType);
                 break;
@@ -246,7 +240,7 @@ void PlayGame::dealWithEvent() {
             case DeathInTheAir: {
                 //Add sound of death here
                 m_fallingCoins.clear();
-                m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(3, 1), 0.18f);
+                m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
                 b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
                 m_world->SetGravity(deathGravity);
                 m_floor->setChange(m_world);
@@ -379,8 +373,8 @@ void PlayGame::moveObjects() {
 
 int PlayGame::randMap() {
     srand(time(nullptr));
-    //int random = rand() % MAP.size();
-    int random = 1;
+    int random = rand() % MAP.size();
+    //int random = 1;
     if (m_control.RandomCount_t.size() != MAP.size()) {
         while (m_control.RandomCount_t.contains(random)) {
             random = rand() % MAP.size();

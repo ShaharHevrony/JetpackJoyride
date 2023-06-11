@@ -106,7 +106,7 @@ void Board::setBackgrounds(int size) {
     for (int index = 0; index < size; index++) {
         m_backgrounds[index].setTexture(*ResourcesManager::instance().getBackground());
         m_backgrounds[index].setPosition(index * ResourcesManager::instance().getBackground()->getSize().x - index, 0);
-        m_backgrounds[index].setScale(SET_BACKGROUND, SET_BACKGROUND);
+        m_backgrounds[index].setScale(WINDOW_HEIGHT/m_backgrounds[index].getTexture()->getSize().y, WINDOW_HEIGHT/m_backgrounds[index].getTexture()->getSize().y);
     }
 }
 
@@ -116,7 +116,7 @@ sf::Sprite Board::getFirstBackground() const{
 
 void Board::setFirstBackground() {
     m_firstBackground.setTexture(*ResourcesManager::instance().getFirstBackground());
-    m_firstBackground.setScale(SET_BACKGROUND, SET_BACKGROUND);
+    m_firstBackground.setScale(WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y, WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y);
 }
 
 float Board::getWidth() const {

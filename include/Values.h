@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 struct GameControllerInfo {
     GameControllerInfo();
@@ -56,23 +56,23 @@ const char PIGGY      = '$';
 const char SCIENTIST  = 'S';
 const char SUPERPOWER = '@';
 
-
-
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
 const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
 
 const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
 const float PLAYER_POS_X    = WINDOW_WIDTH  / 8;
-const float PLAYER_POS_Y    = WINDOW_HEIGHT / 2;
+const float PLAYER_POS_Y    = 3 * WINDOW_HEIGHT / 4;
 const float BOUNDS_POS_Y    = WINDOW_HEIGHT / 10;
 const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float SET_SCALE       = WINDOW_HEIGHT / 1200;
-const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1100;
+const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1000;
 const float TITLE_POSITION  = WINDOW_HEIGHT / 4.7;
-const float MENU_GAP        = WINDOW_HEIGHT / 7.7;
+const float MENU_WIDTH_GAP  = WINDOW_WIDTH / 8;
+const float MENU_HEIGHT_GAP = WINDOW_HEIGHT / 4;
+const float SET_BUTTONS     = WINDOW_HEIGHT / 250;
 
 const float SETTING_CIRCLE  = WINDOW_WIDTH  / 100;
 const float SETTING_WIDTH   = WINDOW_WIDTH  / 2;
@@ -80,7 +80,6 @@ const float SETTING_HEIGHT  = WINDOW_HEIGHT / 1.2;
 const float SETTING_SIZE    = WINDOW_WIDTH  / 35;
 
 const float START_POINT     = WINDOW_WIDTH  / 100;
-const float SET_BACKGROUND  = WINDOW_HEIGHT / 900;
 const float OBJECT_MAP_POS  = WINDOW_WIDTH  / 30;
 
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 500;
@@ -91,6 +90,7 @@ const float BERRYS_MASS     = WINDOW_HEIGHT / 100;
 const float COINS_MASS      = WINDOW_HEIGHT / 1000;
 const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
 const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
+
 
 const float RESIZE_BUTTONS  = 1.15;
 const int NUM_OF_BUTTONS    = 4;
@@ -103,7 +103,7 @@ const double PI             = 3.14159265358;
 
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
-const std::vector<std::string> buttons = {"PlayGameButton.png", "ShopButton.png", "SettingButton.png", "HelpButton.png"};
+const std::vector<std::string> buttons = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
@@ -112,47 +112,70 @@ const std::vector<std::string> superPower = {"PowerUpBox.png", "SuperPower.png" 
 
 const std::vector<std::string> settingManager = {"74 55\n49583 39204 39202 29483 14844" };
 
-const std::vector<std::string> MAP = { "-------@---!---\n"
-                                       "---------------\n"
-                                       "--------------S\n"
-                                       "-------@-------",
-    
+const std::vector<std::string> MAP = { "------------*--\n"
+                                       "------------*--\n"
+                                       "-----------*---\n"
+                                       "----------*----\n"
+                                       "---------*-----\n"
+                                       "--------*------\n"
                                        "-------*-------\n"
+                                       "------*--------\n"
+                                       "-----*---------\n"
+                                       "----*---------S\n"
+                                       "---*-----------\n"
+                                       "--*------------\n"
+                                       "--*------------\n"
+                                       "--*------------\n"
+                                       "---*-----------\n"
+                                       "----*----------\n"
+                                       "-----*---------\n"
+                                       "------*-------S\n"
                                        "-------*-------\n"
+                                       "--------*------\n"
+                                       "---------*-----\n"
+                                       "----------*----\n"
+                                       "-----------*---\n"
+                                       "------------*-S\n"
+                                       "------------*--\n"
+                                       "------------*--\n"
+                                       "-----------*---\n"
+                                       "----------*----\n"
+                                       "---------*-----\n"
+                                       "--------*------\n"
                                        "-------*------S\n"
                                        "-------$-------",
 
-                                       "--****---****--\n"
-                                       "--****---****--\n"
-                                       "--****@--****--\n"
-                                       "--****---****--\n"
-                                       "--****---****--\n"
+                                       "--*--*---*--*--\n"
+                                       "--*--*---*--*--\n"
+                                       "--*--*@--*--*--\n"
+                                       "--*--*---*--*--\n"
+                                       "--*--*---*--*--\n"
                                        "***************\n"
                                        "-*************S\n"
-                                       "--***********--\n"
-                                       "---*********---\n"
-                                       "----*******----\n"
-                                       "-----*****----S\n"
+                                       "--**-------**--\n"
+                                       "---**-----**---\n"
+                                       "----**---**----\n"
+                                       "-----**-**----S\n"
                                        "------***------\n"
                                        "-------*-------\n"
-                                       "------$-------",
+                                       "-------$-------",
 
                                        "----***--------\n"
-                                       "---*****-------\n"
-                                       "--***-***-----S\n"
+                                       "---**-**-------\n"
+                                       "--**---**-----S\n"
                                        "-**-----**-----\n"
-                                       "**-------**----\n"
+                                       "**-<-----**----\n"
                                        "**--------**---\n"
                                        "-**--------**--\n"
                                        "--**----@---**-\n"
-                                       "---**--------**\n"
+                                       "---**<-------**\n"
                                        "--**--------**-\n"
                                        "-**--------**--\n"
                                        "**--------**---\n"
                                        "**-------**----\n"
                                        "-**-----**-----\n"
-                                       "--***-***------\n"
-                                       "---*****------S\n"
+                                       "--**---**------\n"
+                                       "---**-**------S\n"
                                        "----***--------",
 
                                        "-------**----**\n"
@@ -209,55 +232,76 @@ const std::vector<std::string> MAP = { "-------@---!---\n"
                                        "----------*****",
 
                                        "-------*-------\n"
-                                       "------***------\n"
+                                       "---<--***------\n"
                                        "-----*****-----\n"
                                        "----**---**---S\n"
-                                       "---**-----**---\n"
+                                       "---**---<-**---\n"
                                        "--**-------**--\n"
                                        "-**---------**-\n"
                                        "**-----------**\n"
-                                       "-**---------**-\n"
+                                       "-**----@----**-\n"
                                        "--**-------**--\n"
                                        "---**-----**---\n"
-                                       "----**---**----\n"
+                                       "----**-<-**----\n"
                                        "-----*****-----\n"
                                        "------***------\n"
                                        "-------*-------\n"
-                                       "------***------\n"
+                                       "------***---<--\n"
                                        "-----*****----S\n"
                                        "----**---**----\n"
                                        "---**-----**---\n"
                                        "--**-------**--\n"
                                        "-**---------**-\n"
                                        "**-----------**\n"
-                                       "-**-----@---**-\n"
+                                       "<**-----@---**-\n"
                                        "--**-------**--\n"
                                        "---**-----**---\n"
                                        "----**---**----\n"
                                        "-----*****-----\n"
-                                       "------***------\n"
+                                       "<-----***------\n"
                                        "-------*-------",
 
-                                       "--------------\n"
-                                       "---<----------\n"
-                                       "-------------S\n"
-                                       "--------------\n"
-                                       "---!------<--S\n"
-                                       "--------------",
-
-                                       "--------------\n"
-                                       "-<----******--\n"
-                                       "----******---S\n"
-                                       "-<----******--\n"
-                                       "----******---<\n"
-                                       "--------------\n"
-                                       "----@--------<\n"
-                                       "--------------\n"
-                                       "--<------<----\n"
-                                       "-------------S\n"
-                                       "----------<---\n"
-                                       "-----<--------\n"
-                                       "---*****----<-",
+                                       "---------------\n"
+                                       "---<-----------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---<----------S\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "----------$----\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "-*-------------\n"
+                                       "-*------------S\n"
+                                       "-*-------------\n"
+                                       "-*------------<\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "-------<-------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "--------------*\n"
+                                       "--------------*\n"
+                                       "--------------*\n"
+                                       "--------------*\n"
+                                       "--------------*\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "--------<------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "--------<------\n"
+                                       "--------------S\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "---------------\n"
+                                       "-<----<--------\n"
+                                       "---------------",
 
                                        "-****-----****-\n"
                                        "-****-----****-\n"
