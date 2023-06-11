@@ -4,7 +4,7 @@ configure_file ("GameMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("UpperZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("ZappersBeam.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("LowerZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
+configure_file ("hitSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Hall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("GameSettingButton.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("startOfHall.png" ${CMAKE_BINARY_DIR} COPYONLY)
