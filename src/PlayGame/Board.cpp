@@ -81,6 +81,18 @@ void Board::draw(sf::RenderWindow* window, Control& control, int playerType) {
 void Board::moveBackgrounds(float time) {
     sf::Vector2f direction(-1,0);
     m_firstBackground.move(direction*time);
+    if (m_firstBackground.getPosition().x > -(WINDOW_WIDTH)) {
+
+        // Move the second background sprite based on the first one
+        sf::Vector2f position = m_backgrounds[1].getPosition();
+        position.x = m_firstBackground.getPosition().x + m_firstBackground.getGlobalBounds().width;
+        m_backgrounds[1].setPosition(position);
+
+        // Move the third background sprite based on the second one
+        position = m_backgrounds[2].getPosition();
+        position.x = m_backgrounds[1].getPosition().x + m_backgrounds[1].getGlobalBounds().width;
+        m_backgrounds[2].setPosition(position);
+    }
     for (int index = 0; index < 3; index++) {
         m_backgrounds[index].move(direction * time);
         if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {

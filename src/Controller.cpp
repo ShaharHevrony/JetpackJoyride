@@ -98,7 +98,14 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                 //if click on eraser
                 case PlayButton: {
                     PlayGame* play = new PlayGame(m_window);
+                    if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
+                        //Error loading music file
+                    }
+                    m_music.setVolume(m_musicSound);
+                    m_music.play();
+                    m_music.setLoop(true); // set the music to loop
                     play->run();
+                    m_music.stop();
                     break;
                 }
                 case ShopButton: {
@@ -111,6 +118,8 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     try{
                         Setting *setting = new Setting(m_window);
                         setting->run();
+                        m_musicSound = setting->getVol();
+
                     } catch (std::exception& e){
                         std::cout << e.what() << std::endl;
                         throw;

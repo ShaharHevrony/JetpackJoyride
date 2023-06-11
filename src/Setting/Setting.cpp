@@ -21,6 +21,9 @@ void Setting::run() {
                         } else if (m_sound.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
                             m_sound.setGrabbed(true);
                         }
+                        else if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                            return;
+                        }
                     }
                     break;
                 }
@@ -71,6 +74,10 @@ void Setting::draw() {
     m_sound.setType("SOUND: ");
     m_window->draw(m_sound.getType());
     m_window->draw(m_sound.getCircle());
+
+    m_window->draw(m_backButton);
+    m_window->draw(m_backText);
+
     m_window->display();
 }
 
@@ -101,6 +108,25 @@ void Setting::create() {
     }
     m_music.setType("MUSIC: ");
     m_sound.setType("SOUND: ");
+
+    m_backButton.setSize(sf::Vector2f(SETTING_SIZE * 2, SETTING_SIZE));
+    //m_backButton.setPosition(sf::Vector2f(m_settingBoard.getPosition().x , m_settingBoard.getPosition().y));
+    m_backButton.setPosition(WIDTH_CENTER, HEIGHT_CENTER);
+    m_backButton.setOrigin(SETTING_WIDTH / 2, SETTING_HEIGHT / 2);
+
+    m_backButton.setFillColor(sf::Color(200, 200, 200));
+    m_backButton.setOutlineThickness(2);
+    m_backButton.setOutlineColor(sf::Color(150, 150, 150));
+    
+    m_backText.setString("Back");
+    m_backText.setFont(ResourcesManager::instance().getFont());
+    //m_backText.setCharacterSize(FONT_SIZE);
+    m_backText.setPosition(m_backButton.getPosition());
+    m_backText.setOrigin(SETTING_WIDTH / 2 - SETTING_CIRCLE, SETTING_HEIGHT / 2 - SETTING_CIRCLE);
+    //m_backText.setOrigin(m_backButton.getSize().x/2 , m_backButton.getSize().y/2);
+
+    m_backText.setFillColor(sf::Color::Black);
+
 }
 
 Setting::~Setting() {
@@ -175,4 +201,7 @@ void Setting::checkPotentialBest(int score) {
         m_topScore[0] = score;
         sort();
     }
+}
+int Setting::getVol() {
+    return m_music.getVolume();
 }

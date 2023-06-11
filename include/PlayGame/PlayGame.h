@@ -60,7 +60,7 @@ private:
     std::unique_ptr<Box2Object> m_ceiling;
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
 
-    sf::Music m_music;
+    //sf::Music m_music;
 
 
 };

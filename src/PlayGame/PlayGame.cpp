@@ -104,11 +104,12 @@ void PlayGame::run() {
     bool alreadyDead = false;
     GameSettings setting = GameSettings(*m_window, m_board, m_control);
     bool restartGame = false;
-    if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
-        //Error loading music file
-    }
-    m_music.play();
-    m_music.setLoop(true); // set the music to loop
+    //if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
+    //    //Error loading music file
+    //}
+    //m_music.play();
+    //m_music.setLoop(true); // set the music to loop
+
     while (m_window->isOpen() && !restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -168,7 +169,7 @@ void PlayGame::run() {
         }
         draw();
     }
-    m_music.stop();
+    //m_music.stop();
 }
 
 void PlayGame::dealWithCollision() {

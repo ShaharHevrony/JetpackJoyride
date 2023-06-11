@@ -34,6 +34,7 @@ private:
     sf::Sound m_CoinCollect;
     sf::Sound m_ZapperSound;
     sf::Clock m_playerCollisionTime;   // Timer for tracking the time
+    sf::Sound m_soundHitMissile;
     bool m_wasSuper = false;
 
 };

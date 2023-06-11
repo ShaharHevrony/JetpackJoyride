@@ -157,6 +157,13 @@ ResourcesManager::ResourcesManager() {
         // Error loading sound file
     }
     m_soundMissileAlarm = soundMissileAlarm;
+
+    //load pacman death sound
+    sf::SoundBuffer soundMissileHit;
+    if (!soundMissileHit.loadFromFile(PATH + "hitSound.wav")) {
+        // Error loading sound file
+    }
+    m_soundMissileHit = soundMissileHit;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -284,4 +291,8 @@ sf::SoundBuffer& ResourcesManager::getSoundMissileLaunch() {
 
 sf::SoundBuffer& ResourcesManager::getSoundMissileAlarm() {
     return m_soundMissileAlarm;
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundMissileHit() {
+    return m_soundMissileHit;
 }

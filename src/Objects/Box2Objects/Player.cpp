@@ -5,6 +5,7 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
     create(world);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
+    m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
 }
 
 //--------------- create the box2d values ---------------
@@ -154,12 +155,6 @@ void Player::handleCollision(Obstacle& obstacle) {
 }
 
 void Player::handleCollision(Beam &beam) {
-    /*
-    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
-        Event event = Event(DeathInTheAir);
-        EventsQueue::instance().push(event);
-        m_ZapperSound.play();
-    }*/
 
     if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         if (m_type == PlayerType) {
@@ -195,6 +190,7 @@ void Player::handleCollision (Box2Coin& box2Coin) {
         box2Coin.setObject(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
+        m_CoinCollect.play();
     }
 }
 
@@ -209,6 +205,7 @@ void Player::handleCollision(Missile &missile) {
             Event event = Event(ReturnRegular);
             EventsQueue::instance().push(event);
         }
+        m_soundHitMissile.play();
     }
 }
 

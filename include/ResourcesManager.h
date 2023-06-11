@@ -32,6 +32,7 @@ public:
     sf::SoundBuffer& getSoundZapper();
     sf::SoundBuffer& getSoundMissileLaunch();
     sf::SoundBuffer& getSoundMissileAlarm();
+    sf::SoundBuffer& getSoundMissileHit();
 
 private:
     ResourcesManager();
@@ -60,4 +61,5 @@ private:
     sf::SoundBuffer m_soundZapper;
     sf::SoundBuffer m_soundMissileSound;
     sf::SoundBuffer m_soundMissileAlarm;
+    sf::SoundBuffer m_soundMissileHit;
 };

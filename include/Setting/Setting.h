@@ -18,7 +18,7 @@ public:
     void checkPotentialBest(int score);
     void sort();
     void draw();
-
+    int getVol();
     void readFile();
     void writeFile();
 
@@ -30,6 +30,9 @@ private:
     sf::Text m_topText[5];
     sf::RectangleShape m_topBoard[5];
     int m_topScore[5];
+
+    sf::RectangleShape m_backButton;
+    sf::Text m_backText;
 
     AudioManager m_music;
     AudioManager m_sound;
