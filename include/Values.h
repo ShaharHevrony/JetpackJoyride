@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 struct GameControllerInfo {
     GameControllerInfo();
@@ -67,8 +67,8 @@ const float BOUNDS_POS_Y    = WINDOW_HEIGHT / 10;
 const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
-const float SET_SCALE       = WINDOW_HEIGHT / 1200;
-const float SET_OBJ_SCALE   = WINDOW_HEIGHT / 1000;
+const float PLAYER_SCALE    = WINDOW_HEIGHT / 1200;
+const float OBJECT_SCALE    = WINDOW_HEIGHT / 1000;
 const float TITLE_POSITION  = WINDOW_HEIGHT / 4.7;
 const float MENU_WIDTH_GAP  = WINDOW_WIDTH / 8;
 const float MENU_HEIGHT_GAP = WINDOW_HEIGHT / 4;

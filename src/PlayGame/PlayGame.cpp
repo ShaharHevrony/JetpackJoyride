@@ -10,7 +10,6 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
     m_player  = std::make_unique<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, PlayerType);
     m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
-
 }
 
 PlayGame::~PlayGame() {}
@@ -24,7 +23,7 @@ void PlayGame::create() {
     m_settingButton.setTexture(*ResourcesManager::instance().getGameSetting());
     m_settingButton.setPosition(GAME_SETTING_X, GAME_SETTING_Y);
     m_settingButton.setOrigin(m_settingButton.getTexture()->getSize().x/2, m_settingButton.getTexture()->getSize().y/2);
-    m_settingButton.setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
+    m_settingButton.setScale(OBJECT_SCALE, OBJECT_SCALE);
 }
 
 void PlayGame::createObjectMap() {
@@ -79,7 +78,7 @@ void PlayGame::createObjectMap() {
                 }
                 case SCIENTIST: {
                     m_singleObjects.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
-                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(SET_OBJ_SCALE, SET_OBJ_SCALE);
+                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(OBJECT_SCALE, OBJECT_SCALE);
                     sf::Vector2f pos = m_singleObjects[m_singleObjects.size() - 1]->getObject().getPosition();
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y);
                     break;
@@ -104,12 +103,6 @@ void PlayGame::run() {
     bool alreadyDead = false;
     GameSettings setting = GameSettings(*m_window, m_board, m_control);
     bool restartGame = false;
-    //if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
-    //    //Error loading music file
-    //}
-    //m_music.play();
-    //m_music.setLoop(true); // set the music to loop
-
     while (m_window->isOpen() && !restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -229,19 +222,16 @@ void PlayGame::dealWithEvent() {
                 break;
             }
             case startSuperPower: {
-                //Add sound of money here
                 m_player->setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
                 m_player->setType(SuperPowerType);
                 break;
             }
             case ReturnRegular: {
-                //Add sound of money here
                 m_player->setObject(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
                 m_player->setType(PlayerType);
                 break;
             }
             case DeathInTheAir: {
-                //Add sound of death here
                 m_fallingCoins.clear();
                 m_player->setObject(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
                 b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
@@ -344,7 +334,7 @@ void PlayGame::moveObjects() {
     if(m_flame->getInUse()){
         sf::Vector2f playerPosition = m_player->getObject().getPosition();
         sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
-        m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * SET_OBJ_SCALE) - 10));
+        m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * OBJECT_SCALE) - 10));
         m_flame->move(TIME_STEP);
     }
     if (!m_missile.empty()) {

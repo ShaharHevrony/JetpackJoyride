@@ -10,7 +10,7 @@ void Box2Coin::create(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = SET_OBJ_SCALE;
+    bodyDef.angularDamping = OBJECT_SCALE;
     m_body = world->CreateBody(&bodyDef);
 
     b2CircleShape shape;

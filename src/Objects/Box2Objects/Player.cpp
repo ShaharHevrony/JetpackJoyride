@@ -36,6 +36,7 @@ void Player::create(b2World *world) {
 
     m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
+    m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
 }
 
 void Player::setChange(b2World *world) {
@@ -43,7 +44,7 @@ void Player::setChange(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = SET_OBJ_SCALE;
+    bodyDef.angularDamping = PLAYER_SCALE;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
@@ -56,7 +57,7 @@ void Player::setChange(b2World *world) {
     fixtureDef.shape = &shape;
     fixtureDef.density = BERRYS_FRICTION;
     fixtureDef.friction = BERRYS_FRICTION;
-    fixtureDef.restitution = SET_OBJ_SCALE/2; //Add the restitution property
+    fixtureDef.restitution = PLAYER_SCALE/2; //Add the restitution property
     m_body->CreateFixture(&fixtureDef);
 
     b2MassData mass;
@@ -66,6 +67,7 @@ void Player::setChange(b2World *world) {
     m_body->SetMassData(&mass);
     m_body->SetFixedRotation(true);
     m_body->SetUserData(this);
+    m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
 }
 
 //------------- SFML functions on window -------------
@@ -81,25 +83,24 @@ void Player::move(float time) {
         float bodyAngle = m_body->GetAngle();
         if (m_type == SuperPowerType) {
              setObject(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
-             m_object.setScale(1.3, 1.3);
         }else {
             m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
-            m_object.setScale(1, 1);
         }
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     } else if (m_type == PlayerType) {
         m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
-        m_object.setScale(1, 1);
-    }else {
+     }else {
         setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
         float length = m_object.getTexture()->getSize().x / 2;
         m_object.setTextureRect(sf::IntRect(length, 0, length, m_object.getTexture()->getSize().y));
-        m_object.setScale(1, 1);
-    }
+     }
 }
 
 void Player::draw(sf::RenderWindow* window) {
+    if(m_type == GameOverType){
+        m_body->SetLinearVelocity(b2Vec2{0,0});
+    }
     auto angle = m_body->GetAngle() * 180 / b2_pi;
     m_object.setRotation(angle);
     m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
@@ -125,7 +126,6 @@ void Player::handleCollision(Coin& Coin) {
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
         m_CoinCollect.play();
-
     }
 }
 

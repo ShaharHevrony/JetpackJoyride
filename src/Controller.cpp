@@ -32,7 +32,7 @@ void Controller::create() {
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
     m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x/2, ResourcesManager::instance().getTitle()->getSize().y/2);
-    m_title.setScale(SET_SCALE, SET_SCALE);
+    m_title.setScale(PLAYER_SCALE, PLAYER_SCALE);
 
     sf::Sprite tempSpr;
     for(int button = 0; button < 8; button++) {
