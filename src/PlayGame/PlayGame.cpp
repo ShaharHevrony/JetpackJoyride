@@ -119,7 +119,9 @@ void PlayGame::run() {
                 case sf::Event::KeyPressed: {
                     if (event.key.code == sf::Keyboard::Space) {
                         m_player->setSpacePressed(true);
-                        m_flame->setInUse(true);
+                        if (m_player->getType() != SuperPowerType) {
+                            m_flame->setInUse(true);
+                        }
                     }
                     break;
                 }

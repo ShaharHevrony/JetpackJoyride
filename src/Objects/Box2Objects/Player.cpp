@@ -80,17 +80,21 @@ void Player::move(float time) {
         float bodyAngle = m_body->GetAngle();
         if (m_type == SuperPowerType) {
              setObject(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
+             m_object.setScale(1.3, 1.3);
         }else {
             m_object.setTextureRect(sf::IntRect(length * 3, 0, length, m_object.getTexture()->getSize().y));
+            m_object.setScale(1, 1);
         }
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     } else if (m_type == PlayerType) {
         m_object.setTextureRect(sf::IntRect(length * 2, 0, length, m_object.getTexture()->getSize().y));
+        m_object.setScale(1, 1);
     }else {
         setObject(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
         float length = m_object.getTexture()->getSize().x / 2;
         m_object.setTextureRect(sf::IntRect(length, 0, length, m_object.getTexture()->getSize().y));
+        m_object.setScale(1, 1);
     }
 }
 
@@ -125,17 +129,52 @@ void Player::handleCollision(Coin& Coin) {
 }
 
 void Player::handleCollision(Obstacle& obstacle) {
+    /*
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
         Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
+        m_ZapperSound.play();
+    }*/
+    if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        if (m_type == PlayerType ){
+            if (m_playerCollisionTime.getElapsedTime().asSeconds() >= 0.7 || !m_wasSuper) {
+                Event event = Event(DeathInTheAir);
+                EventsQueue::instance().push(event);
+                m_wasSuper = true;
+            }
+        }
+        else if (m_type == SuperPowerType) {
+            Event event = Event(ReturnRegular);
+            EventsQueue::instance().push(event);
+            m_playerCollisionTime.restart();
+            m_wasSuper = true;
+        }
         m_ZapperSound.play();
     }
 }
 
 void Player::handleCollision(Beam &beam) {
+    /*
     if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && m_type == PlayerType) {
         Event event = Event(DeathInTheAir);
         EventsQueue::instance().push(event);
+        m_ZapperSound.play();
+    }*/
+
+    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+        if (m_type == PlayerType) {
+            if (m_playerCollisionTime.getElapsedTime().asSeconds() >= 1 || !m_wasSuper) {
+                Event event = Event(DeathInTheAir);
+                EventsQueue::instance().push(event);
+                m_wasSuper = true;
+            }
+        }
+        else if (m_type == SuperPowerType) {
+            Event event = Event(ReturnRegular);
+            EventsQueue::instance().push(event);
+            m_playerCollisionTime.restart();
+            m_wasSuper = true;
+        }
         m_ZapperSound.play();
     }
 }
@@ -147,6 +186,7 @@ void Player::handleCollision(Piggy& piggy) {
         EventsQueue::instance().push(event);
         m_CoinCollect.play();
     }
+
 }
 
 void Player::handleCollision (Box2Coin& box2Coin) {
