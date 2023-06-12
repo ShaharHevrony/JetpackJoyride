@@ -10,7 +10,7 @@ void Bound::create(b2World *world) {
     b2PolygonShape boxShape;
 
     bodyDef.type = b2_staticBody;
-    if (m_type == FloorType) {  //If this bound is a floor then:
+    if (m_type == B2Floor) {  //If this bound is a floor then:
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
         m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
         boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 2);
@@ -23,7 +23,6 @@ void Bound::create(b2World *world) {
 
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
-    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &boxShape;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.2f;
@@ -42,7 +41,6 @@ void Bound::setChange(b2World* world) {
 
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
-    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &boxShape;
     fixtureDef.density = BERRYS_FRICTION;
     fixtureDef.friction = BERRYS_FRICTION;

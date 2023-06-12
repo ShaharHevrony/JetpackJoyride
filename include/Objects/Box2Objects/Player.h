@@ -8,10 +8,11 @@
 #include "Box2Coin.h"
 #include "Missile.h"
 #include "SuperPower.h"
+#include "PlayerStateManager.h"
 
 class Player: public Box2Object {
 public:
-    Player(sf::Texture* texture = nullptr, sf::Vector2f position = DEFAULT_VEC, b2World* world = nullptr, int type = 2);
+    Player(sf::Texture* texture = nullptr, sf::Vector2f position = DEFAULT_VEC, b2World* world = nullptr, int type = 3);
     virtual ~Player() = default;
 
     virtual void create(b2World *world);
@@ -33,8 +34,5 @@ public:
 private:
     sf::Sound m_CoinCollect;
     sf::Sound m_ZapperSound;
-    sf::Clock m_playerCollisionTime;   // Timer for tracking the time
     sf::Sound m_soundHitMissile;
-    bool m_wasSuper = false;
-
 };

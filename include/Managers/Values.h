@@ -3,17 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
-
-struct GameControllerInfo {
-    GameControllerInfo();
-    int TopScore[5];
-    int MusicVolume;
-    int SoundVolume;
-    int CollectedSum;
-    int ChosenCharacter;
-};
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -31,14 +22,19 @@ enum EventsTypes {
     ReturnRegular,
 };
 
-enum Box2Objects{
-    FloorType,
-    CeilingType,
-    PlayerType,
-    SuperPowerType,
-    DeadPlayerType,
-    GameOverType,
-    FallingCoinType,
+enum Box2Objects {
+    B2Floor,
+    B2Ceiling,
+    B2Player,
+    B2FallingCoin,
+};
+
+enum PlayerState {
+    Regular,
+    SuperPowerTank,
+    SuperPowerRunner,
+    DeadPlayer,
+    GameOver,
 };
 
 struct Control {
@@ -91,7 +87,6 @@ const float COINS_MASS      = WINDOW_HEIGHT / 1000;
 const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
 const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
 
-
 const float RESIZE_BUTTONS  = 1.15;
 const int NUM_OF_BUTTONS    = 4;
 const int BACKGROUND        = 3;
@@ -103,14 +98,13 @@ const double PI             = 3.14159265358;
 
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
-const std::vector<std::string> buttons = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
-const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
-const std::vector<std::string> missile = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
-const std::vector<std::string> superPower = {"PowerUpBox.png", "SuperPower.png" ,"SuperPowerFly.png"};
+const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 
-
-const std::vector<std::string> settingManager = {"74 55\n49583 39204 39202 29483 14844" };
+const std::vector<std::string> buttons     = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
+const std::vector<std::string> missile     = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
+const std::vector<std::string> superPower  = {"PowerUpBox.png", "SuperPower.png" ,"SuperPowerFly.png"};
+const std::vector<std::string> berrysDeath = {"BerryHit.png", "BerryDead.png"};
 
 const std::vector<std::string> MAP = { "------------*--\n"
                                        "------------*--\n"

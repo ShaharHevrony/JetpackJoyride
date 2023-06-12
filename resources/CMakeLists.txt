@@ -1,50 +1,54 @@
-configure_file ("Title.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("GameMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
+#Images:
+#All of the player's images:
+configure_file ("Images/Player/Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SuperPowerTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SuperPowerFlyTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SuperPowerRunner.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("UpperZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("ZappersBeam.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("LowerZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("hitSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Hall.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("GameSettingButton.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("startOfHall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+#All of the game object's images:
+configure_file ("Images/Objects/UpperZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/ZappersBeam.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/LowerZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Piggy.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Coin.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Exhaust.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Glitter.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Missile.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/MissileIncoming.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/MissileWarning.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/PowerUpBox.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("PlayGameOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("PlayGameOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("SettingsOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("SettingsOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("ShopOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("ShopOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("HelpOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("HelpOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+#All of the other images:
+configure_file ("Images/Other/Icon.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Title.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/GameMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Hall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/GameSettingButton.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/StartOfHall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/PlayGameOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/PlayGameOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/SettingsOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/SettingsOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/ShopOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/ShopOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/HelpOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/HelpOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/settingsMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/quit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("Piggy.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Coin.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Lasers.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Exhaust.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Glitter.png" ${CMAKE_BINARY_DIR} COPYONLY)
+#The font of the game:
+configure_file ("Images/Other/Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)
 
-configure_file ("Player.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("Missile.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("MissileIncoming.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("MissileWarning.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("SuperPower.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("PowerUpBox.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("SuperPowerFly.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-configure_file ("JetpackJoyrideMusic.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Coin.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("ZapperSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("missileLaunch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("MissileAlarm.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+#Audios:
+configure_file ("Audios/hitSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/JetpackJoyrideMusic.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/coin.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/ZapperSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/missileLaunch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/MissileAlarm.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 

@@ -1,6 +1,7 @@
 #include "Beam.h"
 
 Beam::Beam(sf::Texture* texture, const sf::Vector2f &position, float rotate): Object(texture, position) {
+    //m_points.clear();
     m_animation.setAnimation(texture, sf::Vector2u(4, 1), 0.18f);
     m_object.setOrigin(m_object.getTextureRect().width/2, 1.f);
     m_object.setRotation(rotate);

@@ -22,7 +22,6 @@ void Missile::draw(sf::RenderWindow* window) {
 
 void Missile::updateCollisionTime(float time)
 {
-    
     if (m_object.getPosition().x == WINDOW_WIDTH) {
         m_soundMissileAlarm.play();
     }
@@ -46,11 +45,11 @@ void Missile::changeByTime(float time, sf::Vector2f playerPosition, int index) {
             m_currPosition = playerPosition.y + index * 90;
         }
         else if (m_countTime >= 3 && m_countTime <= 5 && !firstChange) {
-            setObject(ResourcesManager::instance().getMissile(1), sf::Vector2u(2, 1), 0.18f);
+            setAnimate(ResourcesManager::instance().getMissile(1), sf::Vector2u(2, 1), 0.18f);
             firstChange = true;
         }
         else if (m_countTime >= 5 && !secondChange){
-            setObject(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1), 0.1f);
+            setAnimate(ResourcesManager::instance().getMissile(2), sf::Vector2u(7, 1), 0.1f);
             secondChange = true;
         }
         updateCollisionTime(time);

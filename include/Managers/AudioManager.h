@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "ResourcesManager.h"
+#include "GameManager.h"
 
 class AudioManager {
 public:
     AudioManager();
     ~AudioManager();
     void create(int index);
-    void positionToVolume();
+    float positionToVolume();
     void volumeToPosition();
     void handleMouseMoved(sf::Vector2f& mouseMove);
 

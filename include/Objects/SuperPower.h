@@ -1,13 +1,9 @@
 #pragma once
-#include "Object.h"
 #include "Player.h"
 
 class SuperPower : public Object {
 public:
-    SuperPower(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC) : Object(texture, position){
-        m_animation.setAnimation(texture, sf::Vector2u(1, 1), 0.18f);
-
-    }
+    SuperPower(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~SuperPower() = default;
 
     virtual void move(float time);

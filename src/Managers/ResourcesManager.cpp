@@ -1,14 +1,22 @@
-
 #include "ResourcesManager.h"
 #include "Values.h"
 
 ResourcesManager::ResourcesManager() {
+    //--------------------------- Define the game's font ---------------------------
     sf::Font font;
     if(!font.loadFromFile(PATH + "Jetpackia.ttf")) {
         throw OpenFontFailed();
     }
     m_font = font;
 
+    //--------------------------- Define the game's icon ---------------------------
+    sf::Image* icon = new sf::Image();
+    if (!icon->loadFromFile(PATH + "Icon.png")) {
+        throw OpenImageFailed();
+    }
+    m_icon = icon;
+
+    //---------------------- Define all of the game's textures ---------------------
     sf::Texture* gameMenu = new sf::Texture();
     if (!gameMenu->loadFromFile(PATH + "GameMenu.png")) {
         throw OpenTextureFailed();
@@ -45,14 +53,11 @@ ResourcesManager::ResourcesManager() {
     }
     m_lowerZapper = lowerZappers;
 
-
-    for(int index = 0; index < 8; index++){
-        sf::Texture* tempButton = new sf::Texture();
-        if(!tempButton->loadFromFile(PATH + buttons[index])){
-            throw OpenTextureFailed();
-        }
-        m_buttons[index] = tempButton;
+    sf::Texture* beam = new sf::Texture();
+    if (!beam->loadFromFile(PATH + "ZappersBeam.png")) {
+        throw OpenTextureFailed();
     }
+    m_zappersBeam = beam;
 
     sf::Texture* gameSettingButton = new sf::Texture();
     if (!gameSettingButton->loadFromFile(PATH + "GameSettingButton.png")) {
@@ -64,39 +69,13 @@ ResourcesManager::ResourcesManager() {
     if (!backgroundTex->loadFromFile(PATH + "Hall.png")) {
         throw OpenTextureFailed();
     }
-    m_background = backgroundTex;
+    m_gameBackground = backgroundTex;
 
     sf::Texture* backgroundStartTex = new sf::Texture();
     if (!backgroundStartTex->loadFromFile(PATH + "StartOfHall.png")) {
         throw OpenTextureFailed();
     }
-    m_firstBackground = backgroundStartTex;
-
-    sf::Texture* berryHit = new sf::Texture();
-    if (!berryHit->loadFromFile(PATH + "BerryHit.png")) {
-        throw OpenTextureFailed();
-    }
-    m_barryDeath[0] = berryHit;
-
-    sf::Texture* berryDead = new sf::Texture();
-    if (!berryDead->loadFromFile(PATH + "BerryDead.png")) {
-        throw OpenTextureFailed();
-    }
-    m_barryDeath[1] = berryDead;
-
-    sf::Texture* beam = new sf::Texture();
-    if (!beam->loadFromFile(PATH + "ZappersBeam.png")) {
-        throw OpenTextureFailed();
-    }
-    m_zappersBeam = beam;
-
-    for (int index = 0; index < 3; index++) {
-        sf::Texture* tempMissile = new sf::Texture();
-        if (!tempMissile->loadFromFile(PATH + missile[index])) {
-            throw OpenTextureFailed();
-        }
-        m_missile[index] = tempMissile;
-    }
+    m_gameFirstBackground = backgroundStartTex;
 
     sf::Texture* flame = new sf::Texture();
     if (!flame->loadFromFile(PATH + "Exhaust.png")) {
@@ -122,7 +101,44 @@ ResourcesManager::ResourcesManager() {
     }
     m_scientist = scientist;
 
-    for (int index = 0; index < 3; index++) {
+    sf::Texture* settingBackground = new sf::Texture();
+    if (!settingBackground->loadFromFile(PATH + "settingsMenu.png")) {
+        throw OpenTextureFailed();
+    }
+    m_settingBackground = settingBackground;
+
+    sf::Texture* quit = new sf::Texture();
+    if (!quit->loadFromFile(PATH + "quit.png")) {
+        throw OpenTextureFailed();
+    }
+    m_quit = quit;
+
+    //------------------- Define all of the game's arrays texture ------------------
+    for(int index = 0; index < buttons.size(); index++){
+        sf::Texture* tempButton = new sf::Texture();
+        if(!tempButton->loadFromFile(PATH + buttons[index])){
+            throw OpenTextureFailed();
+        }
+        m_buttons[index] = tempButton;
+    }
+
+    for(int index = 0; index < berrysDeath.size(); index++) {
+        sf::Texture* tempDeath = new sf::Texture();
+        if (!tempDeath->loadFromFile(PATH + berrysDeath[index])) {
+            throw OpenTextureFailed();
+        }
+        m_barryDeath[index] = tempDeath;
+    }
+
+    for (int index = 0; index < missile.size(); index++) {
+        sf::Texture* tempMissile = new sf::Texture();
+        if (!tempMissile->loadFromFile(PATH + missile[index])) {
+            throw OpenTextureFailed();
+        }
+        m_missile[index] = tempMissile;
+    }
+
+    for (int index = 0; index < superPower.size(); index++) {
         sf::Texture* tempSuper = new sf::Texture();
         if (!tempSuper->loadFromFile(PATH + superPower[index])) {
             throw OpenTextureFailed();
@@ -130,68 +146,72 @@ ResourcesManager::ResourcesManager() {
         m_superPower[index] = tempSuper;
     }
 
-    //load pacman death sound
+    //----------------------- Define all of the game's audios ----------------------
     sf::SoundBuffer soundCoin;
     if (!soundCoin.loadFromFile(PATH + "Coin.wav")) {
-        // Error loading sound file
+        throw OpenAudioFailed();
     }
     m_soundCoin = soundCoin;
 
-    //load pacman death sound
     sf::SoundBuffer soundZapper;
     if (!soundZapper.loadFromFile(PATH + "ZapperSound.wav")) {
-        // Error loading sound file
+        throw OpenAudioFailed();
     }
     m_soundZapper = soundZapper;
 
-    //load pacman death sound
     sf::SoundBuffer soundMissileLaunch;
     if (!soundMissileLaunch.loadFromFile(PATH + "missileLaunch.wav")) {
-        // Error loading sound file
+        throw OpenAudioFailed();
     }
     m_soundMissileSound = soundMissileLaunch;
 
-    //load pacman death sound
     sf::SoundBuffer soundMissileAlarm;
     if (!soundMissileAlarm.loadFromFile(PATH + "MissileAlarm.wav")) {
-        // Error loading sound file
+        throw OpenAudioFailed();
     }
     m_soundMissileAlarm = soundMissileAlarm;
 
-    //load pacman death sound
     sf::SoundBuffer soundMissileHit;
     if (!soundMissileHit.loadFromFile(PATH + "hitSound.wav")) {
-        // Error loading sound file
+        throw OpenAudioFailed();
     }
     m_soundMissileHit = soundMissileHit;
 }
 
 ResourcesManager::~ResourcesManager() {
+    delete m_icon;
+    delete m_gameMenu;
+    delete m_title;
     delete m_player;
-    delete m_firstBackground;
-    delete m_background;
     delete m_coin;
     delete m_upperZappers;
     delete m_lowerZapper;
-    delete m_gameMenu;
     delete m_zappersBeam;
-    delete m_piggy;
     delete m_gameSetting;
+    delete m_gameBackground;
+    delete m_gameFirstBackground;
     delete m_flame;
+    delete m_piggy;
     delete m_glitter;
+    delete m_scientist;
+    delete m_settingBackground;
+    delete m_quit;
 
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < buttons.size(); i++){
         delete m_buttons[i];
     }
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < berrysDeath.size(); i++){
         delete m_barryDeath[i];
     }
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < missile.size(); i++){
         delete m_missile[i];
+    }
+    for(int i = 0; i < superPower.size(); i++){
+        delete m_superPower[i];
     }
 }
 
-ResourcesManager &ResourcesManager::instance() {
+ResourcesManager& ResourcesManager::instance() {
     try {
         static ResourcesManager m_instance;
         return m_instance;
@@ -201,10 +221,17 @@ ResourcesManager &ResourcesManager::instance() {
     }
 }
 
+//------------------------------ Get the game's font -------------------------------
 sf::Font& ResourcesManager::getFont() {
     return m_font;
 }
 
+//------------------------------ Get the game's icon -------------------------------
+sf::Image* ResourcesManager::getIcon() const {
+    return m_icon;
+}
+
+//------------------------- Get all of the game's textures -------------------------
 sf::Texture* ResourcesManager::getGameMenu() const {
     return m_gameMenu;
 }
@@ -215,22 +242,6 @@ sf::Texture* ResourcesManager::getTitle() const {
 
 sf::Texture* ResourcesManager::getPlayer() const {
     return m_player;
-}
-
-sf::Texture* ResourcesManager::getButtons(int index) const {
-    return m_buttons[index];
-}
-
-sf::Texture* ResourcesManager::getGameSetting() const {
-    return m_gameSetting;
-}
-
-sf::Texture* ResourcesManager::getBackground() const {
-    return m_background;
-}
-
-sf::Texture* ResourcesManager::getFirstBackground() const {
-    return m_firstBackground;
 }
 
 sf::Texture* ResourcesManager::getCoin() const {
@@ -245,16 +256,20 @@ sf::Texture* ResourcesManager::getLowerZappers() const{
     return m_lowerZapper;
 }
 
-sf::Texture* ResourcesManager::getBarryDeath(int index) const {
-    return m_barryDeath[index];
-}
-
 sf::Texture* ResourcesManager::getZappersBeam() const {
     return m_zappersBeam;
 }
 
-sf::Texture* ResourcesManager::getMissile(int index) const {
-    return m_missile[index];
+sf::Texture* ResourcesManager::getGameSetting() const {
+    return m_gameSetting;
+}
+
+sf::Texture* ResourcesManager::getGameBackground() const {
+    return m_gameBackground;
+}
+
+sf::Texture* ResourcesManager::getFirstBackground() const {
+    return m_gameFirstBackground;
 }
 
 sf::Texture* ResourcesManager::getFlame() const {
@@ -273,10 +288,32 @@ sf::Texture* ResourcesManager::getScientist() const{
     return m_scientist;
 }
 
+sf::Texture* ResourcesManager::getSettingBackGround() const {
+    return m_settingBackground;
+}
+
+sf::Texture* ResourcesManager::getQuitKey() const {
+    return m_quit;
+}
+
+//---------------------- Get all of the game's arrays texture ----------------------
+sf::Texture* ResourcesManager::getButtons(int index) const {
+    return m_buttons[index];
+}
+
+sf::Texture* ResourcesManager::getBarryDeath(int index) const {
+    return m_barryDeath[index];
+}
+
+sf::Texture* ResourcesManager::getMissile(int index) const {
+    return m_missile[index];
+}
+
 sf::Texture* ResourcesManager::getSuperPower(int index) const {
     return m_superPower[index];
 }
 
+//-------------------------- Get all of the game's audios --------------------------
 sf::SoundBuffer& ResourcesManager::getSoundCoin() {
     return m_soundCoin;
 }

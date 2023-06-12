@@ -25,13 +25,10 @@ public:
 
 
 protected:
-    //sf::Clock m_missileTimer;   // Timer for tracking the time
     float m_countTime = 0.0f;
     float m_currPosition;
     sf::Sound m_soundMissileLaunch;
     sf::Sound m_soundMissileAlarm;
     bool firstChange = false;
     bool secondChange = false;
-    bool missileSound = false;
-
 };

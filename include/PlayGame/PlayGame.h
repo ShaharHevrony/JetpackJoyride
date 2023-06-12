@@ -11,7 +11,6 @@
 #include "Obstacle.h"
 #include "ScoreBoard.h"
 #include "EventsQueue.h"
-#include "Player.h"
 #include "Bound.h"
 #include "Beam.h"
 #include "CollisionListener.h"
@@ -55,12 +54,8 @@ private:
     std::unique_ptr<Flame> m_flame;
 
     b2World* m_world;
-    std::unique_ptr<Box2Object> m_player;
+    std::shared_ptr<Box2Object> m_player;
     std::unique_ptr<Box2Object> m_floor;
     std::unique_ptr<Box2Object> m_ceiling;
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
-
-    //sf::Music m_music;
-
-
 };

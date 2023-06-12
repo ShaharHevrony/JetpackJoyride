@@ -16,22 +16,6 @@ b2Body* Box2Object::getBody() {
     return m_body;
 }
 
-void Box2Object::setType(int type) {
-    m_type = type;
-}
-
 int Box2Object::getType() const {
     return m_type;
-}
-
-void Box2Object::setSpacePressed(bool pressed){
-    m_spacePressed = pressed;
-}
-
-bool Box2Object::getSpacePressed() const{
-    return m_spacePressed;
-}
-
-bool Box2Object::getSensor() const {
-    return m_sensor;
 }

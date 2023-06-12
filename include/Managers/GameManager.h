@@ -1,0 +1,38 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <filesystem>
+
+#include "Exeption.h"
+#include "Values.h"
+
+class GameManager {
+public:
+    static GameManager& instance();
+    void readFile();
+    void writeFile();
+    void checkPotentialBest(int score);
+    void sort();
+
+    void setTopScore(int* top);
+    int getTopScore(int index) const;
+    void setSound(int sound);
+    int getSound() const;
+    void setMusic(int music);
+    int getMusic() const;
+    void setCollectedSum(int collected);
+    int getCollectedSum() const;
+    void setCharacter(int character);
+    int getCharacter() const;
+
+private:
+    GameManager();
+    ~GameManager();
+
+    int m_topScore[5];
+    int m_musicVolume;
+    int m_soundVolume;
+    int m_collectedSum;
+    int m_chosenCharacter;
+};

@@ -44,7 +44,7 @@ sf::Sprite& Object::getObject() {
     return (sf::Sprite&)m_object;
 }
 
-void Object::setObject(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) {
+void Object::setAnimate(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) {
     m_object.setTexture(*texture);
     m_animation.setAnimation(texture, imageCount, switchTime);
     animate();

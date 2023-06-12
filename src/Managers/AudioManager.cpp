@@ -1,5 +1,5 @@
 
-#include "Setting/AudioManager.h"
+#include "AudioManager.h"
 #include <cmath>
 
 AudioManager::AudioManager() {}
@@ -7,18 +7,28 @@ AudioManager::AudioManager() {}
 AudioManager::~AudioManager() {}
 
 void AudioManager::create(int index) {
-    sf::Vector2f position = sf::Vector2f(WIDTH_CENTER/6, HEIGHT_CENTER/6);
-    m_start = sf::Vector2f(WIDTH_CENTER - 1.5 * position.x, HEIGHT_CENTER - 1.5 * index * position.y);
-    m_end   = sf::Vector2f(WIDTH_CENTER + 1.5 * position.x ,HEIGHT_CENTER - 1.5 * index * position.y);
+    sf::Vector2f position = sf::Vector2f(WIDTH_CENTER / 6, HEIGHT_CENTER / 6);
+    if (index == 2) {
+        m_start = sf::Vector2f(WIDTH_CENTER - 1.2 * position.x, HEIGHT_CENTER - 1.05 * index * position.y);
+        m_end = sf::Vector2f(WIDTH_CENTER + 1.2 * position.x, HEIGHT_CENTER - 1.05 * index * position.y);
+    }
+    if (index == 1) {
+        m_start = sf::Vector2f(WIDTH_CENTER - 1.2 * position.x, HEIGHT_CENTER - 0.8 * index * position.y);
+        m_end = sf::Vector2f(WIDTH_CENTER + 1.2 * position.x, HEIGHT_CENTER - 0.8 * index * position.y);
+    }
 
     m_circle.setRadius(SETTING_CIRCLE);
-    m_circle.setFillColor(sf::Color(150,150,150));
+    m_circle.setFillColor(sf::Color::White);
+    m_circle.setOutlineColor(sf::Color::Black);
+    m_circle.setOutlineThickness(5.f);
     m_circle.setOrigin(SETTING_CIRCLE, SETTING_CIRCLE);
     m_circle.setPosition(m_start.x, m_start.y);
     m_type = sf::Text("", ResourcesManager::instance().getFont(), SETTING_SIZE);
     m_type.setPosition(WIDTH_CENTER, m_start.y - position.y);
     m_type.setOrigin(WIDTH_CENTER / 10, (SETTING_CIRCLE - SETTING_SIZE) / 2);
-    m_type.setFillColor(sf::Color(150,150,150));
+    m_type.setFillColor(sf::Color::White);
+    m_type.setOutlineColor(sf::Color::Black);
+    m_type.setOutlineThickness(5.f);
     volumeToPosition();
 }
 
@@ -38,12 +48,13 @@ void AudioManager::handleMouseMoved(sf::Vector2f& mouseMove) {
     }
 }
 
-void AudioManager::positionToVolume() {
+float AudioManager::positionToVolume() {
     sf::Vector2f lineVector = m_end - m_start;
     float lineLength = std::sqrt(lineVector.x * lineVector.x + lineVector.y * lineVector.y);
     sf::Vector2f circleVector = m_circle.getPosition() - m_start;
     float circleDistance = std::sqrt(circleVector.x * circleVector.x + circleVector.y * circleVector.y);
     m_volume = (circleDistance / lineLength) * 100;
+    return m_volume;
 }
 
 void AudioManager::volumeToPosition() {

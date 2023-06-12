@@ -43,3 +43,17 @@ public:
         return "The file is invalid, cant read.\n";
     }
 };
+
+class OpenAudioFailed : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "Opening the audio failed\n";
+    }
+};
+
+class OpenImageFailed : public std::exception {
+public:
+    const char* what() const noexcept {
+        return "Opening the image failed\n";
+    }
+};

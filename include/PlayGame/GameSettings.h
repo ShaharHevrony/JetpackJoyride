@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "Values.h"
-#include "ResourcesManager.h"
 #include "Board.h"
 
 class GameSettings {
@@ -17,7 +16,7 @@ public:
 
 private:
     sf::RenderWindow* m_window;
-    sf::Sprite m_overlay;
+    sf::Sprite m_background;
     sf::RectangleShape m_setting;
     sf::Text m_gameSettings[3];
     Control m_control;

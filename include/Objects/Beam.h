@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_set>
+
 #include "Object.h"
 #include "Player.h"
 
@@ -21,4 +23,6 @@ public:
     virtual void handleCollision(Missile& missile) {}
     virtual void handleCollision(SuperPower& SuperPower){}
 
+private:
+    //std::unordered_set<sf::Vector2f> m_points;
 };

@@ -2,7 +2,7 @@
 
 Box2Coin::Box2Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
                 :Box2Object(texture, position, world, scale, type){
-    setObject(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
+    setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
     create(world);
 
 }
@@ -21,7 +21,6 @@ void Box2Coin::create(b2World *world) {
     //FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
-    m_sensor = fixtureDef.isSensor;
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.5f;
     fixtureDef.friction = 1.1f;

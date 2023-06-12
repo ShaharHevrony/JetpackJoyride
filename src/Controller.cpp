@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 #include "Controller.h"
 #include "ResourcesManager.h"
@@ -8,25 +7,15 @@
 #include "Setting.h"
 #include "Help.h"
 
-GameControllerInfo::GameControllerInfo() {
-    ChosenCharacter = 0;
-    CollectedSum = 0;
-    MusicVolume = 0;
-    SoundVolume = 0;
-    for(int top = 0; top < TOP_FIVE; top++){
-        TopScore[top] = 0;
-    }
-}
-
-Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride") {
+Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride", sf::Style::Close | sf::Style::Titlebar) {
     create();
+    sf::Image image = (*ResourcesManager::instance().getIcon());
+    m_window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 }
 
 Controller::~Controller() {}
 
 void Controller::create() {
-    m_gameController = GameControllerInfo();
-
     m_menuBackground.setTexture(*ResourcesManager::instance().getGameMenu());
     m_menuBackground.setScale(WINDOW_WIDTH/m_menuBackground.getTexture()->getSize().x, WINDOW_HEIGHT/m_menuBackground.getTexture()->getSize().y);
     m_title.setTexture(*ResourcesManager::instance().getTitle());
@@ -66,7 +55,6 @@ void Controller::run() {
                 //if the user clicks on the window
                 case sf::Event::MouseButtonReleased: {
                     handleMouseButton(event.mouseButton);
-
                 }
                 case sf::Event::MouseMoved: {
                     handleMouseMoved(event.mouseMove);
@@ -109,9 +97,8 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case ShopButton: {
-                    m_gameController.CollectedSum = 10000;
                     Shop* shop = new Shop(m_window);
-                    shop->run(m_gameController);
+                    shop->run();
                     break;
                 }
                 case SettingButton:{
@@ -149,12 +136,4 @@ void Controller::handleMouseMoved(sf::Event::MouseMoveEvent& event) {
             m_gameButtons[button].setTexture(*m_getButtonSpr[button + 4].getTexture());
         }
     }
-}
-
-void Controller::setGameControllerInfo(GameControllerInfo gameController) {
-    m_gameController = gameController;
-}
-
-GameControllerInfo Controller::getGameControllerInfo() {
-    return m_gameController;
 }

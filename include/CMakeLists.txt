@@ -4,5 +4,6 @@ target_sources (${CMAKE_PROJECT_NAME} PRIVATE ${MY_HEADER_FILES})
 
 add_subdirectory(Objects)
 add_subdirectory(Events)
-add_subdirectory(Setting)
+add_subdirectory(Menu)
+add_subdirectory(Managers)
 add_subdirectory(PlayGame)

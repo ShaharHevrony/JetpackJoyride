@@ -22,7 +22,7 @@ public:
     void animate();
     Animation getAnimation() const;
     sf::Sprite& getObject();
-    void setObject(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
+    void setAnimate(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
     bool getDelete() const;
     void setDelete();
     void setInUse(bool inUse);

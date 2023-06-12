@@ -9,8 +9,8 @@ GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& cont
 GameSettings::~GameSettings() {}
 
 void GameSettings::create() {
-    m_overlay.setTexture(*ResourcesManager::instance().getFirstBackground());
-    m_overlay.setScale(WINDOW_HEIGHT/m_overlay.getTexture()->getSize().y, WINDOW_HEIGHT/m_overlay.getTexture()->getSize().y);
+    m_background.setTexture(*ResourcesManager::instance().getFirstBackground());
+    m_background.setScale(WINDOW_HEIGHT/m_background.getTexture()->getSize().y, WINDOW_HEIGHT/m_background.getTexture()->getSize().y);
     //Create the game over box
     m_setting = sf::RectangleShape(sf::Vector2f(WIDTH_CENTER/2, HEIGHT_CENTER/2));
     m_setting.setFillColor(sf::Color(150,150,150));
@@ -37,7 +37,7 @@ bool GameSettings::run(int playerType) {
             if (event.type == sf::Event::MouseButtonReleased) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*m_window);
                 sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-                if(m_gameSettings[0].getGlobalBounds().contains(mousePosF) && playerType != DeadPlayerType){
+                if(m_gameSettings[0].getGlobalBounds().contains(mousePosF) && playerType != DeadPlayer){
                     return false;      //Resume the game
                 } else if (m_gameSettings[1].getGlobalBounds().contains(mousePosF)) {
                     return true;       //Restart the game
@@ -48,17 +48,13 @@ bool GameSettings::run(int playerType) {
             }
         }
         m_window->clear();
-        // Draw the game over screen
-        // Draw the overlay
-        m_window->draw(m_overlay);
-        // Draw the game over box and options
+        m_window->draw(m_background);
         m_window->draw(m_setting);
-        if(playerType != DeadPlayerType && playerType!= GameOverType) {
+        if(playerType != DeadPlayer && playerType != GameOver) {
             m_window->draw(m_gameSettings[0]);
         }
         m_window->draw(m_gameSettings[1]);
         m_window->draw(m_gameSettings[2]);
-        //Display the window content
         m_window->display();
     }
 }
