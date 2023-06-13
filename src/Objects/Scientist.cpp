@@ -13,7 +13,3 @@ void Scientist::move(float time) {
 void Scientist::draw(sf::RenderWindow* window) {
     window->draw(m_object);
 }
-
-//void Scientist::setPlayerPos(sf::Vector2f pos) {
-//    m_playerLoc = pos;
-//}

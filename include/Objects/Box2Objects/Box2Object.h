@@ -14,7 +14,7 @@ public:
     b2Body* getBody();
     int getType() const;
 
-    virtual void create(b2World *world) = 0;
+    virtual void create(b2World *world, b2BodyType bodyType) = 0;
     virtual void setChange(b2World *world) = 0;
 
     virtual void move(float time) = 0;
@@ -24,7 +24,6 @@ public:
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
-    virtual void handleCollision(Coin& coin) = 0;
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
     virtual void handleCollision (Box2Coin& box2Coin) = 0;

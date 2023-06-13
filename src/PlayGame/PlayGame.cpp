@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "PlayGame.h"
 
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
@@ -39,7 +38,7 @@ void PlayGame::createObjectMap() {
             position = sf::Vector2f(WINDOW_WIDTH + OBJECT_MAP_POS * row, 5 * START_POINT + OBJECT_MAP_POS * col);
             switch (type) {
                 case COIN: {
-                    m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position));
+                    m_singleObjects.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
                     if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
                         m_lastObject = position;
                     }
@@ -155,7 +154,7 @@ void PlayGame::run() {
             }
             dealWithCollision();
             dealWithEvent();
-        } else if(PlayerStateManager::instance().getState() != SuperPowerTank){
+        } else {
             deathMovement(alreadyDead);
             if (alreadyDead) {
                 sf::Time elapsed = m_timer.getElapsedTime();
@@ -214,7 +213,7 @@ void PlayGame::dealWithEvent() {
                 for(int index = 0; index <= 40; index++){
                     scale += index/4;
                     position.x += scale;
-                    m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, B2FallingCoin));
+                    m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, B2DynamicCoin));
                     if(index == 40) {
                         m_lastCoin = position;
                     }
@@ -283,7 +282,7 @@ void PlayGame::draw() {
     m_window->display();
 }
 
-void PlayGame::deathMovement(bool& alreadyDead) {
+void PlayGame::deathMovement(bool& berryState) {
     m_flame->setInUse(false);
     float timeStep = 1.5 * TIME_STEP;
     int32 velocityIterations = 6;
@@ -293,8 +292,8 @@ void PlayGame::deathMovement(bool& alreadyDead) {
 
     float velocityDelta = 3/WINDOW_HEIGHT;
     if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDelta
-    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta && !alreadyDead){
-        alreadyDead = true;
+    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta && !berryState){
+        berryState = true;
         Event event = Event(DeadOnTheGround);
         EventsQueue::instance().push(event);
         dealWithEvent();

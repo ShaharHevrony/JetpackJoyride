@@ -26,7 +26,8 @@ enum Box2Objects {
     B2Floor,
     B2Ceiling,
     B2Player,
-    B2FallingCoin,
+    B2StaticCoin,
+    B2DynamicCoin,
 };
 
 enum PlayerState {

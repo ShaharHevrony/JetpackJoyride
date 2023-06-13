@@ -15,10 +15,7 @@ void SuperPower::draw(sf::RenderWindow* window) {
 }
 
 void SuperPower::handleCollision(Object& object) {
-    if (&object == this) {
-        return;
-    }
-    else {
+    if (&object != this) {
         object.handleCollision(*this);
     }
 }

@@ -1,21 +1,19 @@
 #include "Bound.h"
 
 Bound::Bound(b2World *world,float scale, int type) :Box2Object(world, scale, type){
-    create(world);
+    create(world, b2_staticBody);
 }
 
-void Bound::create(b2World *world) {
+void Bound::create(b2World *world, b2BodyType bodyType) {
     //BodyDef
     b2BodyDef bodyDef;
     b2PolygonShape boxShape;
-
-    bodyDef.type = b2_staticBody;
+    bodyDef.type = bodyType;
     if (m_type == B2Floor) {  //If this bound is a floor then:
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
         m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
         boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 2);
-    }
-    else {                      //If this bound in a ceiling then:
+    } else {                  //If this bound in a ceiling then:
         bodyDef.position.Set(WIDTH_CENTER, 0.f);
         boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 0.5);
     }
@@ -30,7 +28,7 @@ void Bound::create(b2World *world) {
     m_body->SetUserData(this);
 }
 
-void Bound::setChange(b2World* world) {
+void Bound::setChange(b2World *world) {
     b2BodyDef bodyDef;
     b2PolygonShape boxShape;
 
@@ -46,7 +44,6 @@ void Bound::setChange(b2World* world) {
     fixtureDef.friction = BERRYS_FRICTION;
     m_body->CreateFixture(&fixtureDef);
     m_body->SetUserData(this);
-
 }
 
 void Bound::draw(sf::RenderWindow* window) {

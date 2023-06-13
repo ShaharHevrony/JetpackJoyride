@@ -3,7 +3,6 @@
 #include "Object.h"
 
 class Player;
-class Coin;
 class Obstacle;
 
 class PairedObject: public Object {
@@ -21,7 +20,6 @@ public:
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
-    virtual void handleCollision(Coin& coin) = 0;
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
     virtual void handleCollision (Box2Coin& box2Coin) = 0;

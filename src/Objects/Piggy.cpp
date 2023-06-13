@@ -16,10 +16,7 @@ void Piggy::draw(sf::RenderWindow* window) {
 }
 
 void Piggy::handleCollision(Object& object) {
-    if (&object == this) {
-        return;
-    }
-    else {
+    if (&object != this) {
         object.handleCollision(*this);
     }
 }

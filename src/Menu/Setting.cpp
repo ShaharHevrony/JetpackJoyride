@@ -96,7 +96,11 @@ void Setting::create() {
     m_sound.create(sound);
     m_sound.setVolume(GameManager::instance().getSound());
 
-    for(int index = 0; index < TOP_FIVE; index++){
+    for(int index = 0; index < TOP_FIVE; index++) {
+        m_topScore[index] = GameManager::instance().getTopScore(index);
+    }
+
+    for(int index = 0; index < TOP_FIVE; index++) {
         m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SETTING_SIZE * 1.2));
         m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER, HEIGHT_CENTER + GAME_SETTING_Y * 2 + SETTING_SIZE * 1.4 * index)); //-position.y));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/2, m_topBoard->getSize().y/2);

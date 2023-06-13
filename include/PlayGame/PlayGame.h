@@ -4,10 +4,8 @@
 #include <filesystem>
 #include <vector>
 #include <ctime>
-#include <box2d/box2d.h>
 
 #include "GameSettings.h"
-#include "Coin.h"
 #include "Obstacle.h"
 #include "ScoreBoard.h"
 #include "EventsQueue.h"

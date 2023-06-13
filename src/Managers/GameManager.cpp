@@ -6,7 +6,7 @@ GameManager::GameManager() {
     m_collectedSum = 0;
     m_musicVolume = 0;
     m_soundVolume = 0;
-    for(int top = 0; top < TOP_FIVE; top++){
+    for(int top = 0; top < TOP_FIVE; top++) {
         m_topScore[top] = 0;
     }
     readFile();

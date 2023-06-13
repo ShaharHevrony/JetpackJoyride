@@ -19,6 +19,7 @@ configure_file ("Images/Objects/Missile.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Objects/MissileIncoming.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Objects/MissileWarning.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Objects/PowerUpBox.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Objects/Lights.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 #All of the other images:
 configure_file ("Images/Other/Icon.png" ${CMAKE_BINARY_DIR} COPYONLY)

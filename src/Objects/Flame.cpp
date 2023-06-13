@@ -4,7 +4,6 @@ Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : Object(textur
     m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.18f);
 }
 
-
 void Flame::move(float time) {
     animate();
     m_object.setPosition(m_playerLoc);

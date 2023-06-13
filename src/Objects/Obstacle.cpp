@@ -11,9 +11,7 @@ void Obstacle::move(float time) {
 }
 
 void Obstacle::handleCollision(Object& object) {
-    if (&object == this) {
-        return;
-    } else {
+    if (&object != this) {
         object.handleCollision(*this);
     }
 }

@@ -2,7 +2,7 @@
 
 Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type)
         :Box2Object(texture, position, world, 1.f, type) {
-    create(world);
+    create(world, b2_dynamicBody);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
@@ -11,9 +11,9 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
 }
 
 //--------------- create the box2d values ---------------
-void Player::create(b2World *world) {
+void Player::create(b2World *world, b2BodyType bodyType) {
     b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
     bodyDef.angularDamping = 1.f;
     m_body = world->CreateBody(&bodyDef);
@@ -94,25 +94,12 @@ void Player::draw(sf::RenderWindow* window) {
 
 //-------------- handle all collisions --------------
 void Player::handleCollision(Object& object) {
-    if (&object == this) {
-        return;
-    }
-    else {
+    if (&object != this) {
         object.handleCollision(*this);
     }
 }
 
 void Player::handleCollision(Player &player) {}
-
-void Player::handleCollision(Coin& Coin) {
-    if (Coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !Coin.getCollided()) {
-        Coin.setCollided();
-        Coin.setAnimate(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
-        Event event = Event(CollectedMoney, COLLECTED_MONEY);
-        EventsQueue::instance().push(event);
-        m_CoinCollect.play();
-    }
-}
 
 void Player::handleCollision(Obstacle& obstacle) {
     if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {

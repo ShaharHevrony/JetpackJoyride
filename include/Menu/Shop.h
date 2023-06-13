@@ -6,7 +6,6 @@
 
 #include "Values.h"
 #include "ResourcesManager.h"
-#include "Coin.h"
 
 class Shop {
 public:
