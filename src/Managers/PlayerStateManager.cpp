@@ -55,7 +55,7 @@ void PlayerStateManager::moveByState() {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
             } else {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
-                float length = length * 2;
+                length = length * 2;
                 m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
             }
             break;

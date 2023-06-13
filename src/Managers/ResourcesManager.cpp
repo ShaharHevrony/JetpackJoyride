@@ -138,7 +138,7 @@ ResourcesManager::ResourcesManager() {
         m_missile[index] = tempMissile;
     }
 
-    for (int index = 0; index < superPower.size(); index++) {
+    for (int index = 0; index < superPower.size() ; index++) {
         sf::Texture* tempSuper = new sf::Texture();
         if (!tempSuper->loadFromFile(PATH + superPower[index])) {
             throw OpenTextureFailed();
