@@ -113,6 +113,18 @@ ResourcesManager::ResourcesManager() {
     }
     m_quit = quit;
 
+    sf::Texture* lights = new sf::Texture();
+    if (!lights->loadFromFile(PATH + "Lights.png")) {
+        throw OpenTextureFailed();
+    }
+    m_lights = lights;
+
+    sf::Texture* superPowerRunning = new sf::Texture();
+    if (!superPowerRunning->loadFromFile(PATH + "SuperPowerRunner.png")) {
+        throw OpenTextureFailed();
+    }
+    m_SuperPowerRunner = superPowerRunning;
+
     //------------------- Define all of the game's arrays texture ------------------
     for(int index = 0; index < buttons.size(); index++){
         sf::Texture* tempButton = new sf::Texture();
@@ -176,6 +188,12 @@ ResourcesManager::ResourcesManager() {
         throw OpenAudioFailed();
     }
     m_soundMissileHit = soundMissileHit;
+
+    sf::SoundBuffer soundPowerBox;
+    if (!soundPowerBox.loadFromFile(PATH + "getPowerSound.wav")) {
+        throw OpenAudioFailed();
+    }
+    m_soundGetPower = soundPowerBox;
 }
 
 ResourcesManager::~ResourcesManager() {
@@ -313,6 +331,14 @@ sf::Texture* ResourcesManager::getSuperPower(int index) const {
     return m_superPower[index];
 }
 
+sf::Texture* ResourcesManager::getLights() const {
+    return m_lights;
+}
+
+sf::Texture* ResourcesManager::getSuperPowerRunner() const {
+    return m_SuperPowerRunner;
+}
+
 //-------------------------- Get all of the game's audios --------------------------
 sf::SoundBuffer& ResourcesManager::getSoundCoin() {
     return m_soundCoin;
@@ -332,4 +358,8 @@ sf::SoundBuffer& ResourcesManager::getSoundMissileAlarm() {
 
 sf::SoundBuffer& ResourcesManager::getSoundMissileHit() {
     return m_soundMissileHit;
+}
+
+sf::SoundBuffer& ResourcesManager::getSoundPowerBox() {
+    return m_soundGetPower;
 }

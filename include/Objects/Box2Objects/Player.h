@@ -33,4 +33,6 @@ private:
     sf::Sound m_CoinCollect;
     sf::Sound m_ZapperSound;
     sf::Sound m_soundHitMissile;
+    sf::Sound m_soundGetPowerBox;
+
 };

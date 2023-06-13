@@ -17,6 +17,8 @@
 #include "Flame.h"
 #include "Scientist.h"
 #include "SuperPower.h"
+#include "Lights.h"
+#include "GameManager.h"
 
 class PlayGame {
 public:
@@ -49,6 +51,8 @@ private:
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
+    std::vector<std::unique_ptr<Lights>> m_lights;
+
     std::unique_ptr<Flame> m_flame;
 
     b2World* m_world;
@@ -56,4 +60,7 @@ private:
     std::unique_ptr<Box2Object> m_floor;
     std::unique_ptr<Box2Object> m_ceiling;
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
+
+    bool m_choosePower = false;
+
 };

@@ -61,7 +61,14 @@ void PlayerStateManager::moveByState() {
             break;
         }
         case SuperPowerRunner: {
-            //FIXME
+            if (m_spacePressed) {
+                m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(1, 1), 0.18f);
+            }
+            else {
+                m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(2, 1), 0.18f);
+                length = length * 2;
+                m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
+            }           
             break;
         }
         case DeadPlayer: {

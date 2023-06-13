@@ -34,6 +34,10 @@ public:
     sf::Texture* getBarryDeath(int index) const;
     sf::Texture* getMissile(int index) const;
     sf::Texture* getSuperPower(int index) const;
+    sf::Texture* getLights() const;
+    sf::Texture* getSuperPowerRunner() const;
+
+
 
     //Get all audios:
     sf::SoundBuffer& getSoundCoin();
@@ -41,6 +45,7 @@ public:
     sf::SoundBuffer& getSoundMissileLaunch();
     sf::SoundBuffer& getSoundMissileAlarm();
     sf::SoundBuffer& getSoundMissileHit();
+    sf::SoundBuffer& getSoundPowerBox();
 
 private:
     ResourcesManager();
@@ -71,6 +76,9 @@ private:
     sf::Texture* m_barryDeath[2];
     sf::Texture* m_missile[3];
     sf::Texture* m_superPower[3];
+    sf::Texture* m_lights;
+    sf::Texture* m_SuperPowerRunner;
+
 
     //Define all audios:
     sf::SoundBuffer m_soundCoin;
@@ -78,4 +86,5 @@ private:
     sf::SoundBuffer m_soundMissileSound;
     sf::SoundBuffer m_soundMissileAlarm;
     sf::SoundBuffer m_soundMissileHit;
+    sf::SoundBuffer m_soundGetPower;
 };

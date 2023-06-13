@@ -6,6 +6,7 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     m_floor   = std::make_unique<Bound>(m_world, 1.f, B2Floor);   //Create the floor of the game
     m_ceiling = std::make_unique<Bound>(m_world, 1.f, B2Ceiling); //Create the ceiling of the game
 
+
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
     m_player  = std::make_shared<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, B2Player);
     m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
@@ -23,6 +24,7 @@ void PlayGame::create() {
     m_settingButton.setPosition(GAME_SETTING_X, GAME_SETTING_Y);
     m_settingButton.setOrigin(m_settingButton.getTexture()->getSize().x/2, m_settingButton.getTexture()->getSize().y/2);
     m_settingButton.setScale(OBJECT_SCALE, OBJECT_SCALE);
+    //m_lights.setPosition(WINDOW_WIDTH, WINDOW_HEIGHT - 50);
 }
 
 void PlayGame::createObjectMap() {
@@ -92,6 +94,11 @@ void PlayGame::createObjectMap() {
             }
         }
     }
+    position = sf::Vector2f(WINDOW_WIDTH-70, WINDOW_HEIGHT/14);
+    m_lights.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
+    m_lights[m_lights.size() - 1]->getObject().setScale(1.5, 1.5);
+
+
 }
 
 void PlayGame::run() {
@@ -144,7 +151,8 @@ void PlayGame::run() {
         if (m_lastCoin.x <= 0.f) {
             m_fallingCoins.clear();
         }
-        if (PlayerStateManager::instance().getState() == Regular || PlayerStateManager::instance().getState() == SuperPowerTank) {
+        if (PlayerStateManager::instance().getState() == Regular || PlayerStateManager::instance().getState() == SuperPowerTank ||
+            PlayerStateManager::instance().getState() == SuperPowerRunner) {
             moveObjects();
             if (PlayerStateManager::instance().getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
                 //Here we check the pose of the player falling standing or lift
@@ -159,6 +167,8 @@ void PlayGame::run() {
             if (alreadyDead) {
                 sf::Time elapsed = m_timer.getElapsedTime();
                 if (elapsed.asSeconds() >= 2.0) {
+                    //GameManager::instance().setTopScore(m_scoreBoard.getScore());
+                    m_scoreBoard.setScore();
                     restartGame = setting.run(PlayerStateManager::instance().getState());
                 }
             }
@@ -221,8 +231,16 @@ void PlayGame::dealWithEvent() {
                 break;
             }
             case startSuperPower: {
-                PlayerStateManager::instance().setState(SuperPowerTank);
-                m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
+                if (!m_choosePower) {
+                    PlayerStateManager::instance().setState(SuperPowerTank);
+                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
+                    m_choosePower = true;
+                }
+                else {
+                    PlayerStateManager::instance().setState(SuperPowerRunner);
+                    m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.2f);
+                    m_choosePower = false;
+                }
                 break;
             }
             case ReturnRegular: {
@@ -269,6 +287,9 @@ void PlayGame::draw() {
     }
     for (int index = 0; index < m_fallingCoins.size(); index++) {
         m_fallingCoins[index]->draw(m_window);
+    }
+    for (int index = 0; index < m_lights.size(); index++) {
+        m_lights[index]->draw(m_window);
     }
 
     m_scoreBoard.draw(m_window);
@@ -341,6 +362,13 @@ void PlayGame::moveObjects() {
         m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
         if (m_missile[index]->getObject().getPosition().x < -100) {
             m_missile.erase(m_missile.begin() + index);
+            index--; //Decrement the index since the vector size has decreased
+        }
+    }
+    for (int index = 0; index < m_lights.size(); index++) {
+        m_lights[index]->move(m_control.Time_t * m_control.Speed_t);
+        if (m_lights[index]->getObject().getPosition().x < -100) {
+            m_lights.erase(m_lights.begin() + index);
             index--; //Decrement the index since the vector size has decreased
         }
     }

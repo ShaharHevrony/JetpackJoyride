@@ -34,6 +34,16 @@ void ScoreBoard::draw(sf::RenderWindow *window) {
     }
 }
 
+int ScoreBoard::getScore() const
+{
+    return score;
+}
+
+void ScoreBoard::setScore() const
+{
+    score = 0;
+}
+
 void ScoreBoard::addPoints(int addToScore) {
     score += addToScore;
     if(best < score) {

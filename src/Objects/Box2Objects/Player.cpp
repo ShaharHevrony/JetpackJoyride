@@ -6,6 +6,8 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
+    m_soundGetPowerBox.setBuffer(ResourcesManager::instance().getSoundPowerBox());
+
 
     PlayerStateManager::instance().setPlayer(*this);
 }
@@ -152,5 +154,6 @@ void Player::handleCollision(SuperPower& SuperPower) {
         SuperPower.setDelete();
         Event event = Event(startSuperPower);
         EventsQueue::instance().push(event);
+        m_soundGetPowerBox.play();
     }
 }

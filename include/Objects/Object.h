@@ -13,6 +13,7 @@ class Piggy;
 class Box2Coin;
 class Missile;
 class SuperPower;
+class Lights;
 
 class Object {
 public:

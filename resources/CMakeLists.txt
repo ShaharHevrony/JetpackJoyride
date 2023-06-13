@@ -50,6 +50,8 @@ configure_file ("Audios/coin.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Audios/ZapperSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Audios/missileLaunch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Audios/MissileAlarm.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Audios/getPowerSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 
 

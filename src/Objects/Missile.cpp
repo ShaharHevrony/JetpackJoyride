@@ -20,10 +20,10 @@ void Missile::draw(sf::RenderWindow* window) {
 }
 
 void Missile::updateCollisionTime(float time) {
-    if (m_object.getPosition().x == WINDOW_WIDTH) {
+    if (m_object.getPosition().x == WINDOW_WIDTH + 200) {
         m_soundMissileAlarm.play();
     } else if (m_object.getPosition().x == WINDOW_WIDTH - 100) {
-        m_soundMissileAlarm.play();
+        m_soundMissileLaunch.play();
     }
 }
 

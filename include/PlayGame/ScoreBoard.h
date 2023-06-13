@@ -12,6 +12,7 @@ public:
     ~ScoreBoard();
     void draw(sf::RenderWindow *window);
     int getScore() const;
+    void setScore() const;
     void addPoints(int addToScore);
     int getBest() const;
     void setBest(int newBest);
