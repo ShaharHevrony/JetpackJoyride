@@ -284,9 +284,6 @@ void PlayGame::draw() {
     for (int index = 0; index < m_fallingCoins.size(); index++) {
         m_fallingCoins[index]->draw(m_window);
     }
-    for (int index = 0; index < m_lights.size(); index++) {
-        m_lights[index]->draw(m_window);
-    }
 
     m_scoreBoard.draw(m_window);
     m_floor->draw(m_window);
@@ -320,7 +317,6 @@ void PlayGame::deathMovement(bool& berryState) {
 
 void PlayGame::moveObjects() {
     sf::Vector2f lastPosition = sf::Vector2f(0.f, 0.f);
-
     float timeStep = TIME_STEP;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
@@ -360,19 +356,11 @@ void PlayGame::moveObjects() {
             index--; //Decrement the index since the vector size has decreased
         }
     }
-    for (int index = 0; index < m_lights.size(); index++) {
-        m_lights[index]->move(m_control.Time_t * m_control.Speed_t);
-        if (m_lights[index]->getObject().getPosition().x < -100) {
-            m_lights.erase(m_lights.begin() + index);
-            index--; //Decrement the index since the vector size has decreased
-        }
-    }
 }
 
 int PlayGame::randMap() {
     srand(time(nullptr));
     int random = rand() % MAP.size();
-    //int random = 1;
     if (m_control.RandomCount_t.size() != MAP.size()) {
         while (m_control.RandomCount_t.contains(random)) {
             random = rand() % MAP.size();

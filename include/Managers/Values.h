@@ -73,7 +73,7 @@ const float SET_BUTTONS     = WINDOW_HEIGHT / 250;
 
 const float SETTING_CIRCLE  = WINDOW_WIDTH  / 100;
 const float SETTING_WIDTH   = WINDOW_WIDTH  / 2;
-const float SETTING_HEIGHT  = WINDOW_HEIGHT / 15;
+const float SETTING_HEIGHT  = WINDOW_HEIGHT / 18;
 
 const float START_POINT     = WINDOW_WIDTH  / 20;
 const float SCALE_SIZE      = WINDOW_WIDTH  / 35;
