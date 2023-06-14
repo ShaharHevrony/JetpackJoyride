@@ -1,7 +1,7 @@
 #include "Flame.h"
 
 Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.18f);
+    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.1f);
 }
 
 void Flame::move(float time) {

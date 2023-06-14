@@ -3,9 +3,8 @@
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     m_world   = new b2World(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_world->SetContactListener(&m_collisionBox2D);
-    m_floor   = std::make_unique<Bound>(m_world, 1.f, B2Floor);   //Create the floor of the game
-    m_ceiling = std::make_unique<Bound>(m_world, 1.f, B2Ceiling); //Create the ceiling of the game
-
+    m_floor   = std::make_unique<Bound>(m_world, B2Floor);   //Create the floor of the game
+    m_ceiling = std::make_unique<Bound>(m_world, B2Ceiling); //Create the ceiling of the game
 
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
     m_player  = std::make_shared<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, B2Player);
@@ -24,7 +23,6 @@ void PlayGame::create() {
     m_settingButton.setPosition(GAME_SETTING_X, GAME_SETTING_Y);
     m_settingButton.setOrigin(m_settingButton.getTexture()->getSize().x/2, m_settingButton.getTexture()->getSize().y/2);
     m_settingButton.setScale(OBJECT_SCALE, OBJECT_SCALE);
-    //m_lights.setPosition(WINDOW_WIDTH, WINDOW_HEIGHT - 50);
 }
 
 void PlayGame::createObjectMap() {
@@ -34,10 +32,13 @@ void PlayGame::createObjectMap() {
     int random = randMap();
     sf::Vector2f position;
     //int random = 0;
+    position = sf::Vector2f(GAME_SETTING_X, GAME_SETTING_Y);
+    m_singleObjects.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
+
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
-            position = sf::Vector2f(WINDOW_WIDTH + OBJECT_MAP_POS * row, 5 * START_POINT + OBJECT_MAP_POS * col);
+            position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, START_POINT + SCALE_SIZE * col);
             switch (type) {
                 case COIN: {
                     m_singleObjects.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
@@ -94,11 +95,6 @@ void PlayGame::createObjectMap() {
             }
         }
     }
-    position = sf::Vector2f(WINDOW_WIDTH-70, WINDOW_HEIGHT/14);
-    m_lights.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
-    m_lights[m_lights.size() - 1]->getObject().setScale(1.5, 1.5);
-
-
 }
 
 void PlayGame::run() {
@@ -218,16 +214,16 @@ void PlayGame::dealWithEvent() {
             }
             case CollectedPiggy: {
                 sf::Vector2f position = event.getPiggyPosition();
-                float scale = 2.f;
-                position.x += 20.f;
-                for(int index = 0; index <= 40; index++){
-                    scale += index/4;
-                    position.x += scale;
+                float scale;
+                int random;
+                srand(time(nullptr));
+                for(int index = 0; index <= 80; index++) {
+                    position.x += index / 4;
+                    random = rand() % 10;
+                    scale = random + 0.5f;
                     m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, B2DynamicCoin));
-                    if(index == 40) {
-                        m_lastCoin = position;
-                    }
                 }
+                m_lastCoin = m_fallingCoins[m_fallingCoins.size() - 1]->getObject().getPosition();
                 break;
             }
             case startSuperPower: {
@@ -329,7 +325,6 @@ void PlayGame::moveObjects() {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
-
 
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {

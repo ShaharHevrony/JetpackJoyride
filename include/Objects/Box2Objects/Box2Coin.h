@@ -23,4 +23,6 @@ public:
     virtual void handleCollision(Missile& missile) {}
     virtual void handleCollision(SuperPower& SuperPower) {}
 
+private:
+    float m_scale;
 };

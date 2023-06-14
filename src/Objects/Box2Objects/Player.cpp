@@ -1,7 +1,6 @@
 #include "Player.h"
 
-Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type)
-        :Box2Object(texture, position, world, 1.f, type) {
+Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type) :Box2Object(texture, position, world, type) {
     create(world, b2_dynamicBody);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
@@ -43,7 +42,6 @@ void Player::create(b2World *world, b2BodyType bodyType) {
 }
 
 void Player::setChange(b2World *world) {
-    m_type = DeadPlayer;
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
@@ -84,7 +82,7 @@ void Player::move(float time) {
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     }
-    PlayerStateManager::instance().moveByState();
+    //PlayerStateManager::instance().moveByState();
 }
 
 void Player::draw(sf::RenderWindow* window) {

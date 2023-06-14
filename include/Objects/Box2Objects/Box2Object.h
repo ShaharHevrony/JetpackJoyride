@@ -8,8 +8,8 @@ class Obstacle;
 
 class Box2Object: public Object{
 public:
-    Box2Object(b2World* world = nullptr, float scale = 0.f, int type = 0);
-    Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type);
+    Box2Object(b2World* world = nullptr, int type = 0);
+    Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, int type);
     virtual ~Box2Object();
     b2Body* getBody();
     int getType() const;
@@ -32,6 +32,5 @@ public:
 
 protected:
     int m_type = 0;
-    float m_scale = 0.f;
     b2Body* m_body;
 };

@@ -27,9 +27,9 @@ void ScoreBoard::draw(sf::RenderWindow *window) {
     m_str[2] << best;
 
     for(int board = 0; board < scoreBoard.size(); board++){
-        m_scoreBoard[board] = sf::Text(scoreBoard[board] + m_str[board].str().c_str(), ResourcesManager::instance().getFont(), SETTING_SIZE);
+        m_scoreBoard[board] = sf::Text(scoreBoard[board] + m_str[board].str().c_str(), ResourcesManager::instance().getFont(), SCALE_SIZE);
         m_scoreBoard[board].setFillColor(sf::Color::White);
-        m_scoreBoard[board].setPosition(START_POINT, START_POINT + SETTING_SIZE * board);
+        m_scoreBoard[board].setPosition(SETTING_HEIGHT, SETTING_HEIGHT + SCALE_SIZE * board);
         window->draw(m_scoreBoard[board]);
     }
 }

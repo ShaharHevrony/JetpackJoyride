@@ -3,7 +3,7 @@
 
 class Bound: public Box2Object{
 public:
-    Bound(b2World* world = nullptr, float scale = 0.f, int type = 0);
+    Bound(b2World* world = nullptr, int type = 0);
     virtual ~Bound() = default;
 
     virtual void create(b2World *world, b2BodyType bodyType);

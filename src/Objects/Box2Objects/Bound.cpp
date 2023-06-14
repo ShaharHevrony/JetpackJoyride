@@ -1,6 +1,6 @@
 #include "Bound.h"
 
-Bound::Bound(b2World *world,float scale, int type) :Box2Object(world, scale, type){
+Bound::Bound(b2World *world, int type) :Box2Object(world, type){
     create(world, b2_staticBody);
 }
 

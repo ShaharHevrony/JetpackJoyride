@@ -31,11 +31,11 @@ int PlayerStateManager::getState() const {
     return m_state;
 }
 
-void PlayerStateManager::setSpacePressed(bool pressed){
+void PlayerStateManager::setSpacePressed(bool pressed) {
     m_spacePressed = pressed;
 }
 
-bool PlayerStateManager::getSpacePressed() const{
+bool PlayerStateManager::getSpacePressed() const {
     return m_spacePressed;
 }
 
@@ -55,7 +55,7 @@ void PlayerStateManager::moveByState() {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
             } else {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
-                length = length * 2;
+                length *= 2;
                 m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
             }
             break;
@@ -68,7 +68,7 @@ void PlayerStateManager::moveByState() {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(2, 1), 0.18f);
                 length = length * 2;
                 m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
-            }           
+            }
             break;
         }
         case DeadPlayer: {

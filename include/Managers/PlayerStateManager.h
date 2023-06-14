@@ -10,7 +10,6 @@ public:
     void setPlayer(Player& player);
     void setSpacePressed(bool pressed);
     bool getSpacePressed() const;
-
     void moveByState();
     void handleCollisionByState(float collidedType);
 

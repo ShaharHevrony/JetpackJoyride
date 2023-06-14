@@ -20,9 +20,9 @@ void GameSettings::create() {
     m_setting.setOrigin(WIDTH_CENTER/4, HEIGHT_CENTER/4);
 
     for(int index = 0; index < GAME_SETTINGS; index++) {
-        m_gameSettings[index] = sf::Text(gameSettings[index], ResourcesManager::instance().getFont(), SETTING_SIZE);
+        m_gameSettings[index] = sf::Text(gameSettings[index], ResourcesManager::instance().getFont(), SCALE_SIZE);
         m_gameSettings[index].setFillColor(sf::Color::Black);
-        m_gameSettings[index].setPosition(m_setting.getPosition().x, m_setting.getPosition().y + SETTING_SIZE * index);
+        m_gameSettings[index].setPosition(m_setting.getPosition().x, m_setting.getPosition().y + SCALE_SIZE * index);
         m_gameSettings[index].setOrigin(WIDTH_CENTER/8, HEIGHT_CENTER/8);
     }
 }

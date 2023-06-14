@@ -23,9 +23,9 @@ void AudioManager::create(int index) {
     m_circle.setOutlineThickness(5.f);
     m_circle.setOrigin(SETTING_CIRCLE, SETTING_CIRCLE);
     m_circle.setPosition(m_start.x, m_start.y);
-    m_type = sf::Text("", ResourcesManager::instance().getFont(), SETTING_SIZE);
+    m_type = sf::Text("", ResourcesManager::instance().getFont(), SCALE_SIZE);
     m_type.setPosition(WIDTH_CENTER, m_start.y - position.y);
-    m_type.setOrigin(WIDTH_CENTER / 10, (SETTING_CIRCLE - SETTING_SIZE) / 2);
+    m_type.setOrigin(WIDTH_CENTER / 10, (SETTING_CIRCLE - SCALE_SIZE) / 2);
     m_type.setFillColor(sf::Color::White);
     m_type.setOutlineColor(sf::Color::Black);
     m_type.setOutlineThickness(5.f);

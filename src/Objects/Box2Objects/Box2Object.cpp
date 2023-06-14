@@ -1,9 +1,8 @@
 #include "Box2Object.h"
 
-Box2Object::Box2Object(b2World *world, float scale, int type) : Object(), m_type(type), m_scale(scale){}
+Box2Object::Box2Object(b2World *world, int type) : Object(), m_type(type){}
 
-Box2Object::Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
-            :Object(texture, position), m_type(type), m_scale(scale){}
+Box2Object::Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, int type) :Object(texture, position), m_type(type){}
 
 Box2Object::~Box2Object() {
     if (m_body != nullptr) {

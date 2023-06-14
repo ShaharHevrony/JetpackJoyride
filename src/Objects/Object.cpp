@@ -11,6 +11,7 @@ Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(
 }
 
 Object::Object(Object& other) {
+    m_object = other.getObject();
     m_object.setTexture(*other.getObject().getTexture());
     m_object.setPosition(other.getObject().getPosition());
     m_object.setRotation(other.getObject().getRotation());

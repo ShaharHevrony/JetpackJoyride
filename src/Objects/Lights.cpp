@@ -1,7 +1,7 @@
 #include "Lights.h"
 
 Lights::Lights(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.18f);
+    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.14f);
 }
 
 void Lights::move(float time) {

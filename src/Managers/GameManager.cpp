@@ -85,7 +85,7 @@ void GameManager::checkPotentialBest(int score) {
 }
 
 void GameManager::setTopScore(int* top) {
-    for(int index = 0; index < TOP_FIVE; index++){
+    for(int index = 0; index < TOP_FIVE; index++) {
         m_topScore[index] = top[index];
     }
 }
