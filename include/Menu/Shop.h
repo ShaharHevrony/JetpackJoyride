@@ -16,7 +16,6 @@ public:
     ~Shop();
     void create();
     void run();
-    void move();
     void draw();
 
 private:
@@ -27,5 +26,7 @@ private:
     std::stringstream m_str;
     sf::Text money;
     sf::Sprite m_backButton;
+    sf::Sprite m_leftArrow;
+    sf::Sprite m_rightArrow;
 
 };

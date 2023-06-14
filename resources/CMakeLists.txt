@@ -42,6 +42,8 @@ configure_file ("Images/Other/HelpOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/settingsMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/quit.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/arrow.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 #The font of the game:
 configure_file ("Images/Other/Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)

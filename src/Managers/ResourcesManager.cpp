@@ -125,6 +125,12 @@ ResourcesManager::ResourcesManager() {
     }
     m_SuperPowerRunner = superPowerRunning;
 
+    sf::Texture* arrow = new sf::Texture();
+    if (!arrow->loadFromFile(PATH + "arrow.png")) {
+        throw OpenTextureFailed();
+    }
+    m_arrow = arrow;
+
     //------------------- Define all of the game's arrays texture ------------------
     for(int index = 0; index < buttons.size(); index++){
         sf::Texture* tempButton = new sf::Texture();
@@ -314,6 +320,9 @@ sf::Texture* ResourcesManager::getQuitKey() const {
     return m_quit;
 }
 
+sf::Texture* ResourcesManager::getArrow() const {
+    return m_arrow;
+}
 //---------------------- Get all of the game's arrays texture ----------------------
 sf::Texture* ResourcesManager::getButtons(int index) const {
     return m_buttons[index];

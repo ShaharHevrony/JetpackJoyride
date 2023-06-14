@@ -36,6 +36,7 @@ public:
     sf::Texture* getSuperPower(int index) const;
     sf::Texture* getLights() const;
     sf::Texture* getSuperPowerRunner() const;
+    sf::Texture* getArrow() const;
 
 
 
@@ -78,6 +79,7 @@ private:
     sf::Texture* m_superPower[3];
     sf::Texture* m_lights;
     sf::Texture* m_SuperPowerRunner;
+    sf::Texture* m_arrow;
 
 
     //Define all audios:

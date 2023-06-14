@@ -11,33 +11,39 @@ void Shop::create() {
     m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
 
-    // Define the horizontal and vertical spacing between squares
-    float horizontalSpacing = 100;
-    float verticalSpacing   = 100;
+    // Define the size and position of the big rectangle
+    sf::Vector2f rectSize(PLAYER_POS_X * 2 + 100, PLAYER_POS_Y * 2 + 100);
+    sf::Vector2f rectPosition((WINDOW_WIDTH - rectSize.x) / 2, (WINDOW_HEIGHT - rectSize.y) / 2);
 
-    for (int board = 0; board < 4; board++) {
-        // Calculate the row and column of the current square
-        int row = board / 2;
-        int col = board % 2;
+    // Draw the big rectangle
+    sf::RectangleShape tempRec(rectSize);
+    tempRec.setPosition(rectPosition);
+    tempRec.setFillColor(sf::Color::White);
+    m_characters.push_back(tempRec);
+    m_window->draw(m_characters[0]);
 
-        // Calculate the position of the current square
-        sf::Vector2f position(WINDOW_WIDTH/3 + (col * (PLAYER_POS_X + horizontalSpacing)), WINDOW_HEIGHT/8 + (row * (PLAYER_POS_Y + verticalSpacing)));
+    // Draw the name under the rectangle
+    sf::Text tempName(squareNames[0], ResourcesManager::instance().getFont(), SCALE_SIZE);
+    tempName.setFillColor(sf::Color::White);
+    tempName.setPosition(rectPosition.x + (rectSize.x / 2) - (tempName.getLocalBounds().width / 2), rectPosition.y + rectSize.y + 20);  //Increase the vertical offset
+    m_names.push_back(tempName);
 
-        // Draw the rectangle
-        sf::RectangleShape tempRec(sf::Vector2f(PLAYER_POS_X, PLAYER_POS_Y));
-        tempRec.setPosition(position);
-        tempRec.setFillColor(sf::Color::White);
-        m_characters.push_back(tempRec);
-        m_window->draw(m_characters[board]);
+    m_rightArrow.setTexture(*ResourcesManager::instance().getArrow());
+    m_leftArrow.setTexture(*ResourcesManager::instance().getArrow());
 
-        // Draw the name under the rectangle
-        sf::Text tempName(squareNames[board], ResourcesManager::instance().getFont(), SCALE_SIZE);
-        tempName.setFillColor(sf::Color::White);
-        tempName.setPosition(position.x + (m_characters[board].getSize().x / 2) - (tempName.getLocalBounds().width / 2), position.y + m_characters[board].getSize().y + 20);  //Increase the vertical offset
-        m_names.push_back(tempName);
-        m_window->draw(m_names[board]);
-    }
+    float arrowYPosition = rectPosition.y + (rectSize.y / 2);
+
+    sf::Vector2f leftArrowPosition(rectPosition.x - 100*OBJECT_SCALE, arrowYPosition);
+    sf::Vector2f rightArrowPosition(rectPosition.x + rectSize.x + 100*OBJECT_SCALE, arrowYPosition);
+
+    // Set the positions and textures of the arrows
+    m_rightArrow.setOrigin(m_rightArrow.getTexture()->getSize().x / 2, m_rightArrow.getTexture()->getSize().y / 2);
+    m_leftArrow.setOrigin(m_leftArrow.getTexture()->getSize().x / 2, m_leftArrow.getTexture()->getSize().y / 2);
+    m_rightArrow.setRotation(180);
+    m_leftArrow.setPosition(leftArrowPosition);
+    m_rightArrow.setPosition(rightArrowPosition);
 }
+
 
 void Shop::run() {
     create();
@@ -64,7 +70,6 @@ void Shop::run() {
     }
 }
 
-void Shop::move() {}
 
 void Shop::draw() {
     m_window->clear();
@@ -79,5 +84,7 @@ void Shop::draw() {
     money.setPosition(SHOP_POS_X, SHOP_POS_Y);
     m_window->draw(money);
     m_window->draw(m_backButton);
+    m_window->draw(m_rightArrow);
+    m_window->draw(m_leftArrow);
     m_window->display();
 }
