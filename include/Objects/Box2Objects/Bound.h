@@ -8,6 +8,7 @@ public:
 
     virtual void create(b2World *world, b2BodyType bodyType);
     virtual void setChange(b2World *world);
+
     virtual void move(float time) {}
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time) {}

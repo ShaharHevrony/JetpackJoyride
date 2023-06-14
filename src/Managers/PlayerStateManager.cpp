@@ -18,13 +18,35 @@ PlayerStateManager& PlayerStateManager::instance() {
 
 PlayerStateManager::~PlayerStateManager() {}
 
-void PlayerStateManager::setPlayer(Player& player) {
-    m_player = std::make_shared<Player>(player);
+void PlayerStateManager::setPlayer(std::shared_ptr<Box2Object> player) {
+    m_player = player;
     m_state  = Regular;
 }
 
 void PlayerStateManager::setState(int state) {
     m_state = state;
+    switch (m_state) {
+        case Regular: {
+            m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
+            break;
+        }
+        case SuperPowerTank: {
+            m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
+            break;
+        }
+        case SuperPowerRunner: {
+            m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.18f);
+            break;
+        }
+        case DeadPlayer: {
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
+            break;
+        }
+        case GameOver: {
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 2), 0.18f);
+            break;
+        }
+    }
 }
 
 int PlayerStateManager::getState() const {
@@ -45,8 +67,10 @@ void PlayerStateManager::moveByState() {
         case Regular: {
             if(m_spacePressed) {
                 m_player->getObject().setTextureRect(sf::IntRect(length * 3, 0, length, m_player->getObject().getTexture()->getSize().y));
-            } else {
+            } else if(m_player->getBody()->GetLinearVelocity().y > 0.0f) {
                 m_player->getObject().setTextureRect(sf::IntRect(length * 2, 0, length, m_player->getObject().getTexture()->getSize().y));
+            } else {
+                m_player->animate();
             }
             break;
         }
@@ -54,28 +78,33 @@ void PlayerStateManager::moveByState() {
             if(m_spacePressed) {
                 m_player->setAnimate(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
             } else {
-                m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
-                length *= 2;
-                m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
+                if(m_player->getBody()->GetLinearVelocity().y > 0.0f) {
+                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
+                    length *= 2;
+                    m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
+                } else {
+                    m_player->animate();
+                }
             }
             break;
         }
         case SuperPowerRunner: {
             if (m_spacePressed) {
-                m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(1, 1), 0.18f);
-            }
-            else {
-                m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(2, 1), 0.18f);
-                length = length * 2;
-                m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
+                m_player->getObject().setTextureRect(sf::IntRect(length * 2, 0, length, m_player->getObject().getTexture()->getSize().y));
+            } else if(m_player->getBody()->GetLinearVelocity().y > 0.0f) {
+                m_player->getObject().setTextureRect(sf::IntRect(length * 0, 0, length, m_player->getObject().getTexture()->getSize().y));
+            } else {
+                m_player->animate();
             }
             break;
         }
         case DeadPlayer: {
+            m_player->animate();
             break;
         }
         case GameOver: {
             m_player->getBody()->SetLinearVelocity(b2Vec2{0,0});
+            m_player->animate();
             break;
         }
         default: {

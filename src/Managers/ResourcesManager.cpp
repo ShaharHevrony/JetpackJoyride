@@ -221,7 +221,7 @@ ResourcesManager::~ResourcesManager() {
     for(int i = 0; i < berrysDeath.size(); i++){
         delete m_barryDeath[i];
     }
-    for(int i = 0; i < missile.size(); i++){
+    for(int i = 0; i < missile.size(); i++) {
         delete m_missile[i];
     }
     for(int i = 0; i < superPower.size(); i++){
@@ -266,11 +266,11 @@ sf::Texture* ResourcesManager::getCoin() const {
     return m_coin;
 }
 
-sf::Texture* ResourcesManager::getUpperZappers() const{
+sf::Texture* ResourcesManager::getUpperZappers() const {
     return m_upperZappers;
 }
 
-sf::Texture* ResourcesManager::getLowerZappers() const{
+sf::Texture* ResourcesManager::getLowerZappers() const {
     return m_lowerZapper;
 }
 

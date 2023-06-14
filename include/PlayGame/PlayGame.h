@@ -58,8 +58,6 @@ private:
     std::unique_ptr<Box2Object> m_floor;
     std::unique_ptr<Box2Object> m_ceiling;
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
-
     bool m_choosePower = false;
     float m_volume;
-
 };

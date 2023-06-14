@@ -2,7 +2,7 @@
 
 Box2Object::Box2Object(b2World *world, int type) : Object(), m_type(type){}
 
-Box2Object::Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, int type) :Object(texture, position), m_type(type){}
+Box2Object::Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, int type) :Object(texture, position), m_type(type) {}
 
 Box2Object::~Box2Object() {
     if (m_body != nullptr) {
@@ -13,8 +13,4 @@ Box2Object::~Box2Object() {
 }
 b2Body* Box2Object::getBody() {
     return m_body;
-}
-
-int Box2Object::getType() const {
-    return m_type;
 }

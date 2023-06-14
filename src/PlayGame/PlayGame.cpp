@@ -9,6 +9,7 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
     m_player  = std::make_shared<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, B2Player);
     m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
+    PlayerStateManager::instance().setPlayer(m_player);
 }
 
 PlayGame::~PlayGame() {}
@@ -30,15 +31,12 @@ void PlayGame::createObjectMap() {
     m_pairedObjects.clear();
     
     int random = randMap();
-    sf::Vector2f position;
-    //int random = 0;
-    position = sf::Vector2f(GAME_SETTING_X, GAME_SETTING_Y);
+    sf::Vector2f position = sf::Vector2f(GAME_SETTING_X, GAME_SETTING_Y);
     m_singleObjects.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
-
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
-            position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, START_POINT + SCALE_SIZE * col);
+            position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, 2 * CEILING_POS_Y + SCALE_SIZE * col);
             switch (type) {
                 case COIN: {
                     m_singleObjects.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
@@ -79,7 +77,7 @@ void PlayGame::createObjectMap() {
                 case SCIENTIST: {
                     m_singleObjects.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
                     m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(OBJECT_SCALE, OBJECT_SCALE);
-                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, PLAYER_POS_Y);
+                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, 2 * CEILING_POS_Y + SCALE_SIZE * NUM_OF_OBJECTS);
                     break;
                 }
                 case SUPERPOWER: {
@@ -150,12 +148,6 @@ void PlayGame::run() {
         if (PlayerStateManager::instance().getState() == Regular || PlayerStateManager::instance().getState() == SuperPowerTank ||
             PlayerStateManager::instance().getState() == SuperPowerRunner) {
             moveObjects();
-            if (PlayerStateManager::instance().getSpacePressed() || m_player->getBody()->GetLinearVelocity().y > 0.0f) {
-                //Here we check the pose of the player falling standing or lift
-                m_player->move(TIME_STEP);
-            } else {
-                m_player->animate();
-            }
             dealWithCollision();
             dealWithEvent();
         } else {
@@ -214,14 +206,12 @@ void PlayGame::dealWithEvent() {
             }
             case CollectedPiggy: {
                 sf::Vector2f position = event.getPiggyPosition();
-                float scale;
                 int random;
                 srand(time(nullptr));
                 for(int index = 0; index <= 80; index++) {
                     position.x += index / 4;
-                    random = rand() % 10;
-                    scale = random + 0.5f;
-                    m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, scale, B2DynamicCoin));
+                    random = (rand() % 10) + 1;
+                    m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, random, B2DynamicCoin));
                 }
                 m_lastCoin = m_fallingCoins[m_fallingCoins.size() - 1]->getObject().getPosition();
                 break;
@@ -229,25 +219,21 @@ void PlayGame::dealWithEvent() {
             case startSuperPower: {
                 if (!m_choosePower) {
                     PlayerStateManager::instance().setState(SuperPowerTank);
-                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
                     m_choosePower = true;
                 }
                 else {
                     PlayerStateManager::instance().setState(SuperPowerRunner);
-                    m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.2f);
                     m_choosePower = false;
                 }
                 break;
             }
             case ReturnRegular: {
                 PlayerStateManager::instance().setState(Regular);
-                m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
                 break;
             }
             case DeathInTheAir: {
                 m_fallingCoins.clear();
                 PlayerStateManager::instance().setState(DeadPlayer);
-                m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
                 b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
                 m_world->SetGravity(deathGravity);
                 m_floor->setChange(m_world);
@@ -257,7 +243,6 @@ void PlayGame::dealWithEvent() {
             }
             case DeadOnTheGround: {
                 PlayerStateManager::instance().setState(GameOver);
-                m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
                 m_player->getBody()->SetTransform(m_player->getBody()->GetPosition(), 0.5f * b2_pi); //Set rotation to 90 degrees
                 m_player->getObject().setOrigin(-50, PLAYER_POS_Y/3);
                 break;
@@ -285,14 +270,15 @@ void PlayGame::draw() {
         m_fallingCoins[index]->draw(m_window);
     }
 
+    m_window->draw(m_settingButton);
     m_scoreBoard.draw(m_window);
     m_floor->draw(m_window);
     m_ceiling->draw(m_window);
-    m_player->draw(m_window);
     if (m_flame->getInUse()) {
         m_flame->draw(m_window);
     }
-    m_window->draw(m_settingButton);
+    m_player->draw(m_window);
+
     m_window->display();
 }
 
@@ -302,7 +288,7 @@ void PlayGame::deathMovement(bool& berryState) {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
-    m_player->animate();
+    m_player->move(m_control.Time_t * m_control.Speed_t);
 
     float velocityDelta = 3/WINDOW_HEIGHT;
     if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDelta
@@ -321,6 +307,7 @@ void PlayGame::moveObjects() {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
+    m_player->move(m_control.Time_t * m_control.Speed_t);
 
     for (int index = 0; index < m_pairedObjects.size(); index++) {
         if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {

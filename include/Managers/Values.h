@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -58,9 +58,10 @@ const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
 
 const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
-const float PLAYER_POS_X    = WINDOW_WIDTH  / 8;
-const float PLAYER_POS_Y    = 3 * WINDOW_HEIGHT / 4;
-const float BOUNDS_POS_Y    = WINDOW_HEIGHT / 10;
+const float PLAYER_POS_X    = WINDOW_WIDTH  / 7;
+const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
+const float FLOOR_POS_Y     = WINDOW_HEIGHT / 6;
+const float CEILING_POS_Y   = WINDOW_HEIGHT / 20;
 const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
@@ -74,8 +75,6 @@ const float SET_BUTTONS     = WINDOW_HEIGHT / 250;
 const float SETTING_CIRCLE  = WINDOW_WIDTH  / 100;
 const float SETTING_WIDTH   = WINDOW_WIDTH  / 2;
 const float SETTING_HEIGHT  = WINDOW_HEIGHT / 18;
-
-const float START_POINT     = WINDOW_WIDTH  / 20;
 const float SCALE_SIZE      = WINDOW_WIDTH  / 35;
 
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 500;
@@ -87,7 +86,6 @@ const float COINS_MASS      = WINDOW_HEIGHT / 1000;
 const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
 const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
 
-const float RESIZE_BUTTONS  = 1.15;
 const int NUM_OF_BUTTONS    = 4;
 const int BACKGROUND        = 3;
 const int GAME_SETTINGS     = 3;

@@ -7,13 +7,11 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
     m_soundGetPowerBox.setBuffer(ResourcesManager::instance().getSoundPowerBox());
 
-    // Set the volume of the sound object
+    //Set the volume of the sound object
     m_CoinCollect.setVolume(GameManager::instance().getSound());
     m_ZapperSound.setVolume(GameManager::instance().getSound());
     m_soundHitMissile.setVolume(GameManager::instance().getSound());
     m_soundGetPowerBox.setVolume(GameManager::instance().getSound());
-
-    PlayerStateManager::instance().setPlayer(*this);
 }
 
 //--------------- create the box2d values ---------------
@@ -87,7 +85,7 @@ void Player::move(float time) {
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     }
-    //PlayerStateManager::instance().moveByState();
+    PlayerStateManager::instance().moveByState();
 }
 
 void Player::draw(sf::RenderWindow* window) {

@@ -6,6 +6,7 @@ Box2Coin::Box2Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* 
     if (type == B2StaticCoin) {
         create(world, b2_staticBody);
     } else if (type == B2DynamicCoin) {
+        m_object.setOrigin(m_object.getTexture()->getSize().x/2, m_object.getTexture()->getSize().y/2);
         create(world, b2_dynamicBody);
     }
 }

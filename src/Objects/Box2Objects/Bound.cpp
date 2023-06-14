@@ -12,10 +12,10 @@ void Bound::create(b2World *world, b2BodyType bodyType) {
     if (m_type == B2Floor) {  //If this bound is a floor then:
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
         m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
-        boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 2);
+        boxShape.SetAsBox(WINDOW_WIDTH, FLOOR_POS_Y);
     } else {                  //If this bound in a ceiling then:
         bodyDef.position.Set(WIDTH_CENTER, 0.f);
-        boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y * 0.5);
+        boxShape.SetAsBox(WINDOW_WIDTH, CEILING_POS_Y);
     }
     m_body = world->CreateBody(&bodyDef);
 
@@ -34,7 +34,7 @@ void Bound::setChange(b2World *world) {
 
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
-    boxShape.SetAsBox(WINDOW_WIDTH, BOUNDS_POS_Y);
+    boxShape.SetAsBox(WINDOW_WIDTH, FLOOR_POS_Y);
     m_body = world->CreateBody(&bodyDef);
 
     b2FixtureDef fixtureDef;

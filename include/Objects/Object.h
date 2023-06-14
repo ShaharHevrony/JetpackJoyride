@@ -22,7 +22,6 @@ public:
     Object(Object& other);
     virtual ~Object() = default;
     void animate();
-    Animation getAnimation() const;
     sf::Sprite& getObject();
     void setAnimate(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
     bool getDelete() const;
@@ -34,12 +33,13 @@ public:
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
-    virtual void updateCollisionTime(float time){}
+    virtual void updateCollisionTime(float time) = 0;
 
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
     virtual void handleCollision(Obstacle& obstacle) = 0;
     virtual void handleCollision(Beam& beam) = 0;
+    virtual void handleCollision (Piggy& piggy) = 0;
     virtual void handleCollision (Box2Coin& box2Coin) = 0;
     virtual void handleCollision(Missile& missile) = 0;
     virtual void handleCollision(SuperPower& SuperPower) = 0;
