@@ -5,6 +5,8 @@ Missile::Missile(sf::Texture* texture, const sf::Vector2f& position) : Object(te
     m_soundMissileLaunch.setBuffer(ResourcesManager::instance().getSoundMissileLaunch());
     m_soundMissileAlarm.setBuffer(ResourcesManager::instance().getSoundMissileAlarm());
 
+    m_soundMissileLaunch.setVolume(GameManager::instance().getSound());
+    m_soundMissileAlarm.setVolume(GameManager::instance().getSound());
 }
 
 void Missile::move(float time) {

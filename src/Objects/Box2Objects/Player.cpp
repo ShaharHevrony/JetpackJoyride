@@ -7,6 +7,11 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
     m_soundGetPowerBox.setBuffer(ResourcesManager::instance().getSoundPowerBox());
 
+    // Set the volume of the sound object
+    m_CoinCollect.setVolume(GameManager::instance().getSound());
+    m_ZapperSound.setVolume(GameManager::instance().getSound());
+    m_soundHitMissile.setVolume(GameManager::instance().getSound());
+    m_soundGetPowerBox.setVolume(GameManager::instance().getSound());
 
     PlayerStateManager::instance().setPlayer(*this);
 }

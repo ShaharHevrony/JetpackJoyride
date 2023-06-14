@@ -6,6 +6,9 @@ configure_file ("Images/Player/BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Player/SuperPowerTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Player/SuperPowerFlyTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Player/SuperPowerRunner.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/kingHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/kingDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
 
 #All of the game object's images:
 configure_file ("Images/Objects/UpperZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)

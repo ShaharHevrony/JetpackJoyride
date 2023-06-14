@@ -60,5 +60,6 @@ private:
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
 
     bool m_choosePower = false;
+    float m_volume;
 
 };

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ResourcesManager.h"
+#include "GameManager.h"
 #include "Animation.h"
 #include "EventsQueue.h"
 

@@ -1,5 +1,6 @@
 
 #include "GameManager.h"
+#include <SFML/Audio/Listener.hpp>
 
 GameManager::GameManager() {
     m_chosenCharacter = 0;
@@ -59,7 +60,7 @@ void GameManager::writeFile() {
     }
     managerFile << m_soundVolume << " " << m_musicVolume << " " << m_chosenCharacter << "\n";
     for(int index = 0; index < TOP_FIVE; index++) {
-        managerFile << m_topScore[index];
+        managerFile << m_topScore[index] << "\n";
     }
     managerFile.close();
 }
@@ -78,8 +79,8 @@ void GameManager::sort() {
 }
 
 void GameManager::checkPotentialBest(int score) {
-    if (score > m_topScore[0]){
-        m_topScore[0] = score;
+    if (score > m_topScore[4]){
+        m_topScore[4] = score;
         sort();
     }
 }
@@ -98,8 +99,9 @@ void GameManager::setSound(int sound) {
     m_soundVolume = sound;
 }
 
-int GameManager::getSound() const {
-    return m_soundVolume;
+float GameManager::getSound() const {
+
+    return (sf::Listener::getGlobalVolume() * (m_soundVolume / 100.0f));
 }
 
 void GameManager::setMusic(int music) {

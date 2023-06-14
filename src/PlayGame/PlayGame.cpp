@@ -163,7 +163,7 @@ void PlayGame::run() {
             if (alreadyDead) {
                 sf::Time elapsed = m_timer.getElapsedTime();
                 if (elapsed.asSeconds() >= 2.0) {
-                    //GameManager::instance().setTopScore(m_scoreBoard.getScore());
+                    GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
                     m_scoreBoard.setScore();
                     restartGame = setting.run(PlayerStateManager::instance().getState());
                 }
@@ -257,7 +257,7 @@ void PlayGame::dealWithEvent() {
             }
             case DeadOnTheGround: {
                 PlayerStateManager::instance().setState(GameOver);
-                m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 2), 0.18f);
+                m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
                 m_player->getBody()->SetTransform(m_player->getBody()->GetPosition(), 0.5f * b2_pi); //Set rotation to 90 degrees
                 m_player->getObject().setOrigin(-50, PLAYER_POS_Y/3);
                 break;

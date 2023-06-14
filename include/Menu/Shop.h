@@ -18,4 +18,8 @@ public:
 
 private:
     sf::RenderWindow* m_window;
+    sf::Sprite m_shopeBoard;
+    sf::Text m_nameCharacter[4];
+
+
 };

@@ -18,7 +18,7 @@ public:
     void setTopScore(int* top);
     int getTopScore(int index) const;
     void setSound(int sound);
-    int getSound() const;
+    float getSound() const;
     void setMusic(int music);
     int getMusic() const;
     void setCollectedSum(int collected);

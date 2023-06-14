@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -104,7 +104,8 @@ const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
 const std::vector<std::string> buttons     = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
 const std::vector<std::string> missile     = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> superPower  = {"PowerUpBox.png", "SuperPowerTank.png" ,"SuperPowerFlyTank.png"};
-const std::vector<std::string> berrysDeath = {"BerryHit.png", "BerryDead.png"};
+const std::vector<std::string> berrysDeath = {"kingHit.png", "kingDead.png"};
+const std::vector<std::string> squareNames = { "Aviv", "Berry", "Shahar", "Lior" };
 
 const std::vector<std::string> MAP = { "------------*--\n"
                                        "------------*--\n"
