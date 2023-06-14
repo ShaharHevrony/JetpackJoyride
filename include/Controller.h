@@ -22,9 +22,5 @@ private:
     sf::Sprite m_title;
     std::vector<sf::Sprite> m_gameButtons;
     std::vector<sf::Sprite> m_getButtonSpr;
-
     sf::Music m_music;
-    int m_buttonToScale = 0;
-    int m_musicSound = 0;
-
 };

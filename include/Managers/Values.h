@@ -63,6 +63,8 @@ const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
 const float FLOOR_POS_Y     = WINDOW_HEIGHT / 6;
 const float CEILING_POS_Y   = WINDOW_HEIGHT / 20;
 const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
+const float SHOP_POS_X      = 8 * WINDOW_WIDTH / 10;
+const float SHOP_POS_Y      = WINDOW_HEIGHT / 10;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float PLAYER_SCALE    = WINDOW_HEIGHT / 1200;

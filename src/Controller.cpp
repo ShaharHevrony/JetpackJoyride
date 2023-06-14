@@ -89,7 +89,7 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     if (!m_music.openFromFile(PATH + "JetpackJoyrideMusic.wav")) {
                         //Error loading music file
                     }
-                    m_music.setVolume(m_musicSound);
+                    m_music.setVolume(GameManager::instance().getMusic());
                     m_music.play();
                     m_music.setLoop(true); // set the music to loop
                     play->run();
@@ -105,8 +105,6 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     try{
                         Setting *setting = new Setting(m_window);
                         setting->run();
-                        m_musicSound = setting->getVol();
-
                     } catch (std::exception& e){
                         std::cout << e.what() << std::endl;
                         throw;

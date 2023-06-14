@@ -6,8 +6,37 @@ Shop::~Shop() {}
 
 void Shop::create() {
     //create shop
-    m_shopeBoard.setTexture(*ResourcesManager::instance().getGameMenu());
-    m_shopeBoard.setScale(WINDOW_WIDTH / m_shopeBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_shopeBoard.getTexture()->getSize().y);
+    m_shopBoard.setTexture(*ResourcesManager::instance().getGameMenu());
+    m_shopBoard.setScale(WINDOW_WIDTH / m_shopBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_shopBoard.getTexture()->getSize().y);
+    m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
+    m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
+
+    // Define the horizontal and vertical spacing between squares
+    float horizontalSpacing = 100;
+    float verticalSpacing   = 100;
+
+    for (int board = 0; board < 4; board++) {
+        // Calculate the row and column of the current square
+        int row = board / 2;
+        int col = board % 2;
+
+        // Calculate the position of the current square
+        sf::Vector2f position(WINDOW_WIDTH/3 + (col * (PLAYER_POS_X + horizontalSpacing)), WINDOW_HEIGHT/8 + (row * (PLAYER_POS_Y + verticalSpacing)));
+
+        // Draw the rectangle
+        sf::RectangleShape tempRec(sf::Vector2f(PLAYER_POS_X, PLAYER_POS_Y));
+        tempRec.setPosition(position);
+        tempRec.setFillColor(sf::Color::White);
+        m_characters.push_back(tempRec);
+        m_window->draw(m_characters[board]);
+
+        // Draw the name under the rectangle
+        sf::Text tempName(squareNames[board], ResourcesManager::instance().getFont(), SCALE_SIZE);
+        tempName.setFillColor(sf::Color::White);
+        tempName.setPosition(position.x + (m_characters[board].getSize().x / 2) - (tempName.getLocalBounds().width / 2), position.y + m_characters[board].getSize().y + 20);  //Increase the vertical offset
+        m_names.push_back(tempName);
+        m_window->draw(m_names[board]);
+    }
 }
 
 void Shop::run() {
@@ -21,10 +50,13 @@ void Shop::run() {
                 }
                 //if the user clicks on the window
                 case sf::Event::MouseButtonReleased: {
-                    //handleMouseButton(event.mouseButton);
+                    if(m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
+                        return;
+                    }
                 }
                 case sf::Event::MouseMoved: {
                     //handleMouseMoved(event.mouseMove);
+                    break;
                 }
             }
         }
@@ -35,40 +67,17 @@ void Shop::run() {
 void Shop::move() {}
 
 void Shop::draw() {
-
     m_window->clear();
-    m_window->draw(m_shopeBoard);
-
-    sf::Vector2f squareSize(300, 300);  // Increase the size of the squares
-    sf::Vector2f squarePosition(WINDOW_WIDTH/3, WINDOW_HEIGHT/8);  // Adjust the initial position of the squares
-
-    // Define the horizontal and vertical spacing between squares
-    float horizontalSpacing = 100;
-    float verticalSpacing = 100;
-
-    for (int board = 0; board < 4; board++) {
-        // Calculate the row and column of the current square
-        int row = board / 2;
-        int col = board % 2;
-
-        // Calculate the position of the current square
-        sf::Vector2f position(squarePosition.x + (col * (squareSize.x + horizontalSpacing)),
-            squarePosition.y + (row * (squareSize.y + verticalSpacing)));
-
-        // Draw the rectangle
-        sf::RectangleShape square(squareSize);
-        square.setPosition(position);
-        square.setFillColor(sf::Color::White);
-        m_window->draw(square);
-
-        // Draw the name under the rectangle
-        sf::Text name(squareNames[board], ResourcesManager::instance().getFont(), SCALE_SIZE);
-        name.setFillColor(sf::Color::White);
-        name.setPosition(position.x + (squareSize.x / 2) - (name.getLocalBounds().width / 2),
-            position.y + squareSize.y + 20);  // Increase the vertical offset
-        m_window->draw(name);
+    m_window->draw(m_shopBoard);
+    for(int index = 0; index < m_characters.size(); index++) {
+        m_window->draw(m_characters[index]);
+        m_window->draw(m_names[index]);
     }
-
+    auto collectedSum = GameManager::instance().getCollectedSum();
+    // Draw the money text
+    sf::Text money("you have: " + std::to_string(collectedSum), ResourcesManager::instance().getFont(), SCALE_SIZE);
+    money.setPosition(SHOP_POS_X, SHOP_POS_Y);
+    m_window->draw(money);
+    m_window->draw(m_backButton);
     m_window->display();
 }
-

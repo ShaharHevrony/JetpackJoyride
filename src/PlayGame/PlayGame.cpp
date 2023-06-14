@@ -128,8 +128,11 @@ void PlayGame::run() {
                 //If the user clicks on the window
                 case sf::Event::MouseButtonReleased: {
                     if (m_settingButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
+                        GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
                         restartGame = setting.run(PlayerStateManager::instance().getState());
                         m_control.LoopClock_t.restart();
+                        m_scoreBoard.setScore();
                     }
                 }
             }
