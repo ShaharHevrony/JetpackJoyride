@@ -6,10 +6,15 @@ Shop::~Shop() {}
 
 void Shop::create() {
     //create shop
+    
+
     m_shopBoard.setTexture(*ResourcesManager::instance().getGameMenu());
     m_shopBoard.setScale(WINDOW_WIDTH / m_shopBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_shopBoard.getTexture()->getSize().y);
+
     m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
+    m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
+
 
     // Define the size and position of the big rectangle
     sf::Vector2f rectSize(PLAYER_POS_X * 2 + 100, PLAYER_POS_Y * 2 + 100);
@@ -19,14 +24,10 @@ void Shop::create() {
     sf::RectangleShape tempRec(rectSize);
     tempRec.setPosition(rectPosition);
     tempRec.setFillColor(sf::Color::White);
-    m_characters.push_back(tempRec);
-    m_window->draw(m_characters[0]);
+    m_characterRect = tempRec;
+    setAvatar();
+    m_window->draw(m_characterRect);
 
-    // Draw the name under the rectangle
-    sf::Text tempName(squareNames[0], ResourcesManager::instance().getFont(), SCALE_SIZE);
-    tempName.setFillColor(sf::Color::White);
-    tempName.setPosition(rectPosition.x + (rectSize.x / 2) - (tempName.getLocalBounds().width / 2), rectPosition.y + rectSize.y + 20);  //Increase the vertical offset
-    m_names.push_back(tempName);
 
     m_rightArrow.setTexture(*ResourcesManager::instance().getArrow());
     m_leftArrow.setTexture(*ResourcesManager::instance().getArrow());
@@ -44,6 +45,16 @@ void Shop::create() {
     m_leftArrow.setScale(PLAYER_SCALE/1.5, PLAYER_SCALE/1.5);
     m_rightArrow.setPosition(rightArrowPosition);
     m_rightArrow.setScale(PLAYER_SCALE/1.5, PLAYER_SCALE/1.5);
+
+    for (int i = 0; i < playersAvatar.size(); i++) {
+        sf::Text tempPrice("price: " + std::to_string(prices[i]), ResourcesManager::instance().getFont(), SCALE_SIZE);
+        tempPrice.setPosition(SHOP_POS_X, SHOP_POS_Y / 2);
+        m_pricesText.push_back(tempPrice);
+        sf::Text tempName(squareNames[i], ResourcesManager::instance().getFont(), SCALE_SIZE);
+        tempName.setPosition(rectPosition.x + (rectSize.x / 2) - (tempName.getLocalBounds().width / 2), rectPosition.y + rectSize.y + 20);
+        m_names.push_back(tempName);
+    }
+
 }
 
 
@@ -61,9 +72,44 @@ void Shop::run() {
                     if(m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
                         return;
                     }
+                    if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        m_characterRect.setOutlineThickness(0);
+                        m_avatarIndex--;
+                        setAvatar();
+                        break;
+                    }
+                    if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        m_characterRect.setOutlineThickness(0);
+                        m_avatarIndex++;
+                        setAvatar();
+                        break;
+                    }
+                    if (m_characterRect.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        m_characterRect.setOutlineColor(sf::Color::Red);
+                        m_characterRect.setOutlineThickness(7);
+                        break;
+                    }
                 }
                 case sf::Event::MouseMoved: {
-                    //handleMouseMoved(event.mouseMove);
+                    if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
+                        m_leftArrow.setScale(PLAYER_SCALE, PLAYER_SCALE); // Increase left arrow size by 20%
+                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset right arrow size
+                    }
+                    else if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
+                        m_rightArrow.setScale(PLAYER_SCALE, PLAYER_SCALE); // Increase right arrow size by 20%
+                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset left arrow size
+                        
+                    }
+                    else {
+                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset left arrow size
+                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset right arrow size
+                    }
+                    if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
+                        m_backButton.setScale(1.2, 1.2);
+                    }
+                    else {
+                        m_backButton.setScale(1, 1);
+                    }
                     break;
                 }
             }
@@ -72,19 +118,40 @@ void Shop::run() {
     }
 }
 
+void Shop::setAvatar() {
+    if (m_avatarIndex > 1) {
+        m_avatarIndex = 0;
+    }
+    else if (m_avatarIndex < 0) {
+        m_avatarIndex = playersAvatar.size() - 1;
+    }
+    m_characterRect.setTexture(ResourcesManager::instance().getAvatar(m_avatarIndex));
+    if (prices[m_avatarIndex] > GameManager::instance().getCollectedSum()) {
+        // Adjust the color of the texture to make it slightly grey
+        sf::Color greyColor(128, 128, 128, 255);
+        m_characterRect.setFillColor(greyColor);
+    }
+    else {
+        // Reset the color to its original state
+        m_characterRect.setFillColor(sf::Color::White);
+    }
+}
+
 
 void Shop::draw() {
     m_window->clear();
     m_window->draw(m_shopBoard);
-    for(int index = 0; index < m_characters.size(); index++) {
-        m_window->draw(m_characters[index]);
-        m_window->draw(m_names[index]);
-    }
+    m_window->draw(m_characterRect);
+    
     auto collectedSum = GameManager::instance().getCollectedSum();
     // Draw the money text
     sf::Text money("you have: " + std::to_string(collectedSum), ResourcesManager::instance().getFont(), SCALE_SIZE);
     money.setPosition(SHOP_POS_X, SHOP_POS_Y);
+
     m_window->draw(money);
+    m_window->draw(m_pricesText[m_avatarIndex]);
+    m_window->draw(m_names[m_avatarIndex]);
+
     m_window->draw(m_backButton);
     m_window->draw(m_rightArrow);
     m_window->draw(m_leftArrow);
