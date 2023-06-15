@@ -28,7 +28,8 @@ if(APPLE)
 
     set (SFML_STATIC_LIBRARIES FALSE)
     #set (SFML_DIR "/usr/local/Cellar/sfml/2.5.1")
-    set (SFML_DIR "/usr/ClionProjects/sfml/2.5.1")
+    #set (SFML_DIR "/usr/ClionProjects/sfml/2.5.1")
+    set (SFML_DIR "/Users/shaharhevrony/CLionProjects/sfml/2.5.1_2/lib/cmake/SFML")
 
     find_package (SFML 2.5 COMPONENTS audio graphics REQUIRED)
 
