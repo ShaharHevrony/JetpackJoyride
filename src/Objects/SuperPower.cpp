@@ -23,4 +23,3 @@ void SuperPower::handleCollision(Object& object) {
 void SuperPower::handleCollision(Player& player) {
     player.handleCollision(*this);
 }
-

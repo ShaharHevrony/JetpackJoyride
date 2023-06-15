@@ -8,10 +8,10 @@
 
 class Player;
 class Coin;
-class Obstacle;
+class Laser;
 class Beam;
 class Piggy;
-class Box2Coin;
+class Coin;
 class Missile;
 class SuperPower;
 class Lights;
@@ -37,10 +37,10 @@ public:
 
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
-    virtual void handleCollision(Obstacle& obstacle) = 0;
+    virtual void handleCollision(Laser& laser) = 0;
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
-    virtual void handleCollision (Box2Coin& box2Coin) = 0;
+    virtual void handleCollision (Coin& coin) = 0;
     virtual void handleCollision(Missile& missile) = 0;
     virtual void handleCollision(SuperPower& SuperPower) = 0;
 

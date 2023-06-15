@@ -3,15 +3,14 @@
 #include "Object.h"
 
 class Player;
-class Obstacle;
+class Laser;
 
 class PairedObject: public Object {
 public:
     PairedObject(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~PairedObject() = default;
-    float calculateAngle();
-    float calculateDistance();
-    void setPaired(const sf::Vector2f& position);
+    float calculateAngle(sf::Vector2f otherPosition);
+    float calculateDistance(sf::Vector2f otherPosition);
 
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
@@ -19,13 +18,10 @@ public:
 
     virtual void handleCollision(Object& object) = 0;
     virtual void handleCollision(Player& player) = 0;
-    virtual void handleCollision(Obstacle& obstacle) = 0;
+    virtual void handleCollision(Laser& laser) = 0;
     virtual void handleCollision(Beam& beam) = 0;
     virtual void handleCollision (Piggy& piggy) = 0;
-    virtual void handleCollision (Box2Coin& box2Coin) = 0;
+    virtual void handleCollision (Coin& coin) = 0;
     virtual void handleCollision(Missile& missile) = 0;
     virtual void handleCollision(SuperPower& SuperPower) = 0;
-
-protected:
-    sf::Vector2f m_pairPosition;
 };

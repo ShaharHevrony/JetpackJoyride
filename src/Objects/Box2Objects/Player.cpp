@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type) :Box2Object(texture, position, world, type) {
-    create(world, b2_dynamicBody);
+    setBody(world, b2_dynamicBody);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
@@ -15,11 +15,11 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
 }
 
 //--------------- create the box2d values ---------------
-void Player::create(b2World *world, b2BodyType bodyType) {
+void Player::setBody(b2World *world, b2BodyType bodyType) {
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = 1.f;
+    bodyDef.angularDamping = PLAYER_SCALE;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
@@ -44,6 +44,7 @@ void Player::create(b2World *world, b2BodyType bodyType) {
     m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
 }
 
+/*
 void Player::setChange(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -58,8 +59,8 @@ void Player::setChange(b2World *world) {
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
     fixtureDef.shape = &shape;
-    fixtureDef.density = BERRYS_FRICTION;
-    fixtureDef.friction = BERRYS_FRICTION;
+    fixtureDef.density = 0.3f;
+    fixtureDef.friction = 0.3f;
     fixtureDef.restitution = PLAYER_SCALE/2; //Add the restitution property
     m_body->CreateFixture(&fixtureDef);
 
@@ -72,6 +73,7 @@ void Player::setChange(b2World *world) {
     m_body->SetUserData(this);
     m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
 }
+*/
 
 //------------- SFML functions on window -------------
 void Player::move(float time) {
@@ -104,8 +106,8 @@ void Player::handleCollision(Object& object) {
 
 void Player::handleCollision(Player &player) {}
 
-void Player::handleCollision(Obstacle& obstacle) {
-    if (obstacle.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+void Player::handleCollision(Laser& laser) {
+    if (laser.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         float obstacleTime = 0.7f;
         PlayerStateManager::instance().handleCollisionByState(obstacleTime);
         m_ZapperSound.play();
@@ -130,10 +132,10 @@ void Player::handleCollision(Piggy& piggy) {
 
 }
 
-void Player::handleCollision (Box2Coin& box2Coin) {
-    if (box2Coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !box2Coin.getCollided()) {
-        box2Coin.setCollided();
-        box2Coin.setAnimate(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
+void Player::handleCollision (Coin& coin) {
+    if (coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !coin.getCollided()) {
+        coin.setCollided();
+        coin.setAnimate(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f);
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event);
         m_CoinCollect.play();

@@ -1,10 +1,10 @@
 #include "Bound.h"
 
 Bound::Bound(b2World *world, int type) :Box2Object(world, type){
-    create(world, b2_staticBody);
+    setBody(world, b2_staticBody);
 }
 
-void Bound::create(b2World *world, b2BodyType bodyType) {
+void Bound::setBody(b2World *world, b2BodyType bodyType) {
     //BodyDef
     b2BodyDef bodyDef;
     b2PolygonShape boxShape;
@@ -28,6 +28,7 @@ void Bound::create(b2World *world, b2BodyType bodyType) {
     m_body->SetUserData(this);
 }
 
+/*
 void Bound::setChange(b2World *world) {
     b2BodyDef bodyDef;
     b2PolygonShape boxShape;
@@ -45,6 +46,7 @@ void Bound::setChange(b2World *world) {
     m_body->CreateFixture(&fixtureDef);
     m_body->SetUserData(this);
 }
+*/
 
 void Bound::draw(sf::RenderWindow* window) {
     auto angle = m_body->GetAngle() * 180 / b2_pi;

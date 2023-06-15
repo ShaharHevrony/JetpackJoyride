@@ -43,14 +43,24 @@ void PlayerStateManager::setState(int state) {
             break;
         }
         case GameOver: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 2), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
             break;
         }
+        default:
+            break;
     }
 }
 
 int PlayerStateManager::getState() const {
     return m_state;
+}
+
+bool PlayerStateManager::wasSuperTank() const {
+    return m_wasSuperTank;
+}
+
+void PlayerStateManager::changeToSuperTank(bool change){
+    m_wasSuperTank = change;
 }
 
 void PlayerStateManager::setSpacePressed(bool pressed) {
@@ -107,11 +117,43 @@ void PlayerStateManager::moveByState() {
             m_player->animate();
             break;
         }
-        default: {
+        default:
             break;
-        }
     }
 }
+
+/*
+void PlayerStateManager::setGravity(b2World* m_world) {
+    switch (m_state) {
+        case Regular:{
+            b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
+            m_world->SetGravity(deathGravity);
+            m_player->setBody(m_world, b2_dynamicBody);
+            break;
+        }
+        case SuperPowerTank:{
+            b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
+            m_world->SetGravity(deathGravity);
+            m_player->setBody(m_world, b2_dynamicBody);
+            break;
+        }
+        case SuperPowerRunner: {
+            b2Vec2 deathGravity(- GRAVITATION_X, - GRAVITATION_Y);
+            m_world->SetGravity(deathGravity);
+            m_player->setBody(m_world, b2_dynamicBody);
+            break;
+        }
+        case DeadPlayer: {
+            b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
+            m_world->SetGravity(deathGravity);
+            m_player->setBody(m_world, b2_dynamicBody);
+            break;
+        }
+        default:
+            break;
+    }
+}
+*/
 
 void PlayerStateManager::handleCollisionByState(float collidedType) {
     float elapse = m_playerCollisionTime.getElapsedTime().asSeconds();
@@ -138,14 +180,7 @@ void PlayerStateManager::handleCollisionByState(float collidedType) {
             m_wasSuper = true;
             break;
         }
-        case DeadPlayer: {
+        default:
             break;
-        }
-        case GameOver: {
-            break;
-        }
-        default: {
-            break;
-        }
     }
 }

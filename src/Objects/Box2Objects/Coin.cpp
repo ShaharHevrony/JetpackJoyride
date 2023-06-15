@@ -1,18 +1,18 @@
 #include "Box2Coin.h"
 
-Box2Coin::Box2Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
+Coin::Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
                 :Box2Object(texture, position, world, type), m_scale(scale) {
     setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
     if (type == B2StaticCoin) {
-        create(world, b2_staticBody);
+        setBody(world, b2_staticBody);
     } else if (type == B2DynamicCoin) {
         m_object.setOrigin(m_object.getTexture()->getSize().x/2, m_object.getTexture()->getSize().y/2);
-        create(world, b2_dynamicBody);
+        setBody(world, b2_dynamicBody);
     }
 }
 
 //--------------- create the box2d values ---------------
-void Box2Coin::create(b2World *world, b2BodyType bodyType) {
+void Coin::setBody(b2World *world, b2BodyType bodyType) {
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
@@ -44,7 +44,7 @@ void Box2Coin::create(b2World *world, b2BodyType bodyType) {
 }
 
 //-------------- handle all collisions --------------
-void Box2Coin::move(float time) {
+void Coin::move(float time) {
     animate();
     if(m_body->GetType() == b2_dynamicBody) {
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
@@ -64,7 +64,7 @@ void Box2Coin::move(float time) {
     }
 }
 
-void Box2Coin::draw(sf::RenderWindow* window) {
+void Coin::draw(sf::RenderWindow* window) {
     if(m_body->GetType() == b2_dynamicBody) {
         auto angle = m_body->GetAngle() * 180.0f / b2_pi;
         m_object.setRotation(angle);
@@ -73,19 +73,17 @@ void Box2Coin::draw(sf::RenderWindow* window) {
     window->draw(m_object);
 }
 
-void Box2Coin::handleCollision(Object &object) {
+void Coin::handleCollision(Object& object) {
     if (&object != this) {
         object.handleCollision(*this);
     }
 }
 
-void Box2Coin::handleCollision(Player &player) {
+void Coin::handleCollision(Player& player) {
     player.handleCollision(*this);
 }
 
-void Box2Coin::handleCollision(Box2Coin &box2Coin) {}
-
-void Box2Coin::updateCollisionTime(float time) {
+void Coin::updateCollisionTime(float time) {
     if (m_collided) {
         m_collisionTime += time;
     }

@@ -41,7 +41,9 @@ void Shop::create() {
     m_leftArrow.setOrigin(m_leftArrow.getTexture()->getSize().x / 2, m_leftArrow.getTexture()->getSize().y / 2);
     m_rightArrow.setRotation(180);
     m_leftArrow.setPosition(leftArrowPosition);
+    m_leftArrow.setScale(PLAYER_SCALE/1.5, PLAYER_SCALE/1.5);
     m_rightArrow.setPosition(rightArrowPosition);
+    m_rightArrow.setScale(PLAYER_SCALE/1.5, PLAYER_SCALE/1.5);
 }
 
 

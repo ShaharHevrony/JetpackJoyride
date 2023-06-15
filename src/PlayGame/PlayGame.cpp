@@ -39,25 +39,23 @@ void PlayGame::createObjectMap() {
             position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, 2 * CEILING_POS_Y + SCALE_SIZE * col);
             switch (type) {
                 case COIN: {
-                    m_singleObjects.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
+                    m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
                     if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
                         m_lastObject = position;
                     }
                     break;
                 }
-                case OBSTACLE: {
-                    m_pairedObjects.push_back(std::make_unique<Obstacle>(ResourcesManager::instance().getLowerZappers(), position));
+                case LASER: {
+                    m_pairedObjects.push_back(std::make_unique<Laser>(ResourcesManager::instance().getLowerZappers(), position));
                     if (m_pairedObjects.size() % 2 == 0) {
                         sf::Vector2f otherPosition = m_pairedObjects[m_pairedObjects.size()-2]->getObject().getPosition();
-                        m_pairedObjects[m_pairedObjects.size()-2]->setPaired(position);
-                        m_pairedObjects[m_pairedObjects.size()-1]->setPaired(otherPosition);
+                        m_pairedObjects[m_pairedObjects.size()-1]->calculateAngle(otherPosition);
                         if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
                             m_lastObject = position;
                         }
-                        float distance = m_pairedObjects[m_pairedObjects.size()-1]->calculateDistance();
-                        float angle = m_pairedObjects[m_pairedObjects.size()-2]->calculateAngle();
-
-                        m_singleObjects.push_back(std::make_unique<Beam>(ResourcesManager::instance().getZappersBeam(), position, angle));
+                        float distance = m_pairedObjects[m_pairedObjects.size()-2]->calculateDistance(position);
+                        float angle    = m_pairedObjects[m_pairedObjects.size()-2]->calculateAngle(position);
+                        m_singleObjects.push_back(std::make_unique<Beam>(ResourcesManager::instance().getZappersBeam(), position, angle, distance));
                         m_singleObjects[m_singleObjects.size()-1]->getObject().setScale(1.f, distance/ResourcesManager::instance().getZappersBeam()->getSize().y);
                     }
                     break;
@@ -214,33 +212,44 @@ void PlayGame::dealWithEvent() {
                 for(int index = 0; index <= 80; index++) {
                     position.x += index / 4;
                     random = (rand() % 10) + 1;
-                    m_fallingCoins.push_back(std::make_unique<Box2Coin>(ResourcesManager::instance().getCoin(), position, m_world, random, B2DynamicCoin));
+                    m_fallingCoins.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position, m_world, random, B2DynamicCoin));
                 }
                 m_lastCoin = m_fallingCoins[m_fallingCoins.size() - 1]->getObject().getPosition();
                 break;
             }
             case startSuperPower: {
-                if (!m_choosePower) {
+                if (!PlayerStateManager::instance().wasSuperTank()) {
                     PlayerStateManager::instance().setState(SuperPowerTank);
-                    m_choosePower = true;
+                    //PlayerStateManager::instance().setGravity(m_world);
+                    m_floor->setBody(m_world, b2_staticBody);
+                    m_ceiling->setBody(m_world, b2_staticBody);
+                    PlayerStateManager::instance().changeToSuperTank(true);
                 }
                 else {
                     PlayerStateManager::instance().setState(SuperPowerRunner);
-                    m_choosePower = false;
+                    //PlayerStateManager::instance().setGravity(m_world);
+                    m_floor->setBody(m_world, b2_staticBody);
+                    m_ceiling->setBody(m_world, b2_staticBody);
+                    PlayerStateManager::instance().changeToSuperTank(false);
                 }
                 break;
             }
             case ReturnRegular: {
                 PlayerStateManager::instance().setState(Regular);
+                //PlayerStateManager::instance().setGravity(m_world);
+                m_floor->setBody(m_world, b2_staticBody);
+                m_ceiling->setBody(m_world, b2_staticBody);
                 break;
             }
             case DeathInTheAir: {
                 m_fallingCoins.clear();
                 PlayerStateManager::instance().setState(DeadPlayer);
+                //PlayerStateManager::instance().setGravity(m_world);
                 b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
                 m_world->SetGravity(deathGravity);
-                m_floor->setChange(m_world);
-                m_player->setChange(m_world);
+                m_player->setBody(m_world, b2_dynamicBody);
+                m_floor->setBody(m_world, b2_staticBody);
+                m_ceiling->setBody(m_world, b2_staticBody);
                 m_scoreBoard.setDead();
                 break;
             }
