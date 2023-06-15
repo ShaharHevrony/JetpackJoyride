@@ -28,6 +28,8 @@ private:
     std::stringstream m_str;
     sf::Text money;
     sf::Sprite m_backButton;
+    sf::Sprite m_buyButton;
+
     sf::Sprite m_leftArrow;
     sf::Sprite m_rightArrow;
 

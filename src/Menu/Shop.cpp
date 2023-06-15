@@ -15,6 +15,8 @@ void Shop::create() {
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
 
+   
+
 
     // Define the size and position of the big rectangle
     sf::Vector2f rectSize(PLAYER_POS_X * 2 + 100, PLAYER_POS_Y * 2 + 100);
@@ -54,7 +56,9 @@ void Shop::create() {
         tempName.setPosition(rectPosition.x + (rectSize.x / 2) - (tempName.getLocalBounds().width / 2), rectPosition.y + rectSize.y + 20);
         m_names.push_back(tempName);
     }
-
+    m_buyButton.setPosition(SHOP_POS_X, rectPosition.y + rectSize.y + 20);
+    m_buyButton.setTexture(*ResourcesManager::instance().getBuy());
+    //m_buyButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
 }
 
 
@@ -87,6 +91,13 @@ void Shop::run() {
                     if (m_characterRect.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         m_characterRect.setOutlineColor(sf::Color::Red);
                         m_characterRect.setOutlineThickness(7);
+                        break;
+                    }
+                    if (m_buyButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) { //here is the connectiton to the game!!!!
+                        if (prices[m_avatarIndex] < GameManager::instance().getCollectedSum()) {
+                            GameManager::instance().setCollectedSum(-prices[m_avatarIndex]);
+                            GameManager::instance().setCharacter(m_avatarIndex);
+                        }
                         break;
                     }
                 }
@@ -130,10 +141,12 @@ void Shop::setAvatar() {
         // Adjust the color of the texture to make it slightly grey
         sf::Color greyColor(128, 128, 128, 255);
         m_characterRect.setFillColor(greyColor);
+        m_buyButton.setColor(greyColor);
     }
     else {
         // Reset the color to its original state
         m_characterRect.setFillColor(sf::Color::White);
+        m_buyButton.setColor(sf::Color::White);
     }
 }
 
@@ -151,7 +164,7 @@ void Shop::draw() {
     m_window->draw(money);
     m_window->draw(m_pricesText[m_avatarIndex]);
     m_window->draw(m_names[m_avatarIndex]);
-
+    m_window->draw(m_buyButton);
     m_window->draw(m_backButton);
     m_window->draw(m_rightArrow);
     m_window->draw(m_leftArrow);

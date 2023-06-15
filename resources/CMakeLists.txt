@@ -46,6 +46,7 @@ configure_file ("Images/Other/settingsMenu.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/quit.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/arrow.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Buy.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 #The font of the game:

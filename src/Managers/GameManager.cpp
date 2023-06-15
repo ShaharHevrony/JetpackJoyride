@@ -113,7 +113,7 @@ int GameManager::getMusic() const {
 }
 
 void GameManager::setCollectedSum(int collected) {
-    m_collectedSum = collected;
+    m_collectedSum += collected;
 }
 
 int GameManager::getCollectedSum() const {
