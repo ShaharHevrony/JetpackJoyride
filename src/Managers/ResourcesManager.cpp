@@ -95,6 +95,11 @@ ResourcesManager::ResourcesManager() {
     if (!m_buy.loadFromFile(PATH + "Buy.png")) {
         throw OpenTextureFailed();
     }
+
+    if (!m_whitewArrow.loadFromFile(PATH + "whiteArrow.png")) {
+        throw OpenTextureFailed();
+    }
+
     //------------------- Define all of the game's arrays texture ------------------
     for (int index = 0; index < buttons.size(); index++) {
         if (!m_buttons[index].loadFromFile(PATH + buttons[index])) {
@@ -122,6 +127,12 @@ ResourcesManager::ResourcesManager() {
 
     for (int index = 0; index < playersAvatar.size(); index++) {
         if (!m_playerAva[index].loadFromFile(PATH + playersAvatar[index])) {
+            throw OpenTextureFailed();
+        }
+    }
+
+    for (int index = 0; index < help.size(); index++) {
+        if (!m_help[index].loadFromFile(PATH + help[index])) {
             throw OpenTextureFailed();
         }
     }
@@ -251,6 +262,10 @@ sf::Texture* ResourcesManager::getArrow() {
 sf::Texture* ResourcesManager::getBuy() {
     return &m_buy;
 }
+
+sf::Texture* ResourcesManager::getWiteArrow() {
+    return &m_whitewArrow;
+}
 //---------------------- Get all of the game's arrays texture ----------------------
 sf::Texture* ResourcesManager::getButtons(int index) {
     return &m_buttons[index];
@@ -266,6 +281,10 @@ sf::Texture* ResourcesManager::getMissile(int index) {
 
 sf::Texture* ResourcesManager::getSuperPower(int index) {
     return &m_superPower[index];
+}
+
+sf::Texture* ResourcesManager::getHelp(int index) {
+    return &m_help[index];
 }
 
 sf::Texture* ResourcesManager::getLights() {

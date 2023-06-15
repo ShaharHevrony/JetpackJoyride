@@ -34,10 +34,13 @@ public:
     sf::Texture* getBarryDeath(int index);
     sf::Texture* getMissile(int index);
     sf::Texture* getSuperPower(int index);
+    sf::Texture* getHelp(int index);
     sf::Texture* getLights();
     sf::Texture* getSuperPowerRunner();
     sf::Texture* getArrow();
     sf::Texture* getBuy();
+    sf::Texture* getWiteArrow();
+
 
     sf::Texture* getAvatar(int index);
     //Get all audios:
@@ -79,7 +82,10 @@ private:
     sf::Texture m_lights;
     sf::Texture m_SuperPowerRunner;
     sf::Texture m_arrow;
+    sf::Texture m_whitewArrow;
     sf::Texture m_playerAva[2];
+    sf::Texture m_help[3];
+
 
     sf::Texture m_buy;
 

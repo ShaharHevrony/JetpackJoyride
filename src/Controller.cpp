@@ -112,7 +112,7 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                     break;
                 }
                 case HelpButton:{
-                    Help help = Help();
+                    Help help = Help(m_window);
                     help.run();
                     break;
                 }
