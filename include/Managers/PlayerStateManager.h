@@ -5,20 +5,27 @@
 class PlayerStateManager {
 public:
     static PlayerStateManager& instance();
-    void setState(int state);
+    void setState(int state, b2World* m_world);
     int getState() const;
-    bool wasSuperTank() const;
-    void changeToSuperTank(bool change);
+    sf::Vector2f getPosition() const;
+    sf::Vector2u getSize() const;
+    bool getIfSuperTank() const;
+
+    void setToSuperTank(bool change);
     void setPlayer(std::shared_ptr<Box2Object> player);
     void setSpacePressed(bool pressed);
-    bool getSpacePressed() const;
+    void setSpeed();
+
     void moveByState();
-    //void setGravity(b2World* m_world);
+    void moveByPress();
     void handleCollisionByState(float collidedType);
 
 private:
     PlayerStateManager();
     ~PlayerStateManager();
+
+    float m_speed = 0.f;
+    bool m_wasPressed = false;
 
     int m_state;
     bool m_wasSuper = false;

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -60,17 +60,17 @@ const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
 const float PLAYER_POS_X    = WINDOW_WIDTH  / 7;
 const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
-const float FLOOR_POS_Y     = WINDOW_HEIGHT / 6;
-const float CEILING_POS_Y   = WINDOW_HEIGHT / 20;
+const float FLOOR_POS_Y     = WINDOW_HEIGHT / 9;
+const float CEILING_POS_Y   = WINDOW_HEIGHT / 10;
 const float GAME_SETTING_X  = 11 * WINDOW_WIDTH / 12;
-const float SHOP_POS_X      = 8 * WINDOW_WIDTH / 10;
+const float SHOP_POS_X      = 8  * WINDOW_WIDTH / 10;
 const float SHOP_POS_Y      = WINDOW_HEIGHT / 10;
 const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float PLAYER_SCALE    = WINDOW_HEIGHT / 1200;
 const float OBJECT_SCALE    = WINDOW_HEIGHT / 1000;
 const float TITLE_POSITION  = WINDOW_HEIGHT / 4.7;
-const float MENU_WIDTH_GAP  = WINDOW_WIDTH / 8;
+const float MENU_WIDTH_GAP  = WINDOW_WIDTH  / 8;
 const float MENU_HEIGHT_GAP = WINDOW_HEIGHT / 4;
 const float SET_BUTTONS     = WINDOW_HEIGHT / 250;
 
@@ -80,20 +80,21 @@ const float SETTING_HEIGHT  = WINDOW_HEIGHT / 18;
 const float SCALE_SIZE      = WINDOW_WIDTH  / 35;
 
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 500;
-const float GRAVITATION_X   = 0.0;
+const float GRAVITATION_X   = 0.f;
 const float DEATH_GRAVITY_Y = WINDOW_HEIGHT / 1500;
 const float DEATH_GRAVITY_X = WINDOW_WIDTH  / 7500;
 const float BERRYS_MASS     = WINDOW_HEIGHT / 100;
 const float COINS_MASS      = WINDOW_HEIGHT / 1000;
-const float BERRYS_FRICTION = WINDOW_WIDTH / 150;
+const float BERRYS_FRICTION = WINDOW_WIDTH  / 150;
 const float TIME_STEP       = 1 / (5 * GRAVITATION_Y);
-
+const float ANTI_GRAVITY    = -10.f;
 const int NUM_OF_BUTTONS    = 4;
 const int BACKGROUND        = 3;
 const int GAME_SETTINGS     = 3;
 const int NUM_OF_OBJECTS    = 15;
 const int COLLECTED_MONEY   = 5;
 const int TOP_FIVE          = 5;
+const int FLAME             = 0;
 const double PI             = 3.14159265358;
 
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);

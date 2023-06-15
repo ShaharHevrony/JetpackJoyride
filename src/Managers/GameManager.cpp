@@ -1,4 +1,3 @@
-
 #include "GameManager.h"
 #include <SFML/Audio/Listener.hpp>
 

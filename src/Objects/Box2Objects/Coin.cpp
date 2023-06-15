@@ -1,18 +1,23 @@
-#include "Box2Coin.h"
+#include "Coin.h"
 
 Coin::Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
-                :Box2Object(texture, position, world, type), m_scale(scale) {
+                :Box2Object(texture, position, type), m_scale(scale) {
     setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
     if (type == B2StaticCoin) {
-        setBody(world, b2_staticBody);
+        create(world, b2_staticBody);
     } else if (type == B2DynamicCoin) {
         m_object.setOrigin(m_object.getTexture()->getSize().x/2, m_object.getTexture()->getSize().y/2);
-        setBody(world, b2_dynamicBody);
+        create(world, b2_dynamicBody);
     }
 }
 
 //--------------- create the box2d values ---------------
-void Coin::setBody(b2World *world, b2BodyType bodyType) {
+void Coin::create(b2World *world, b2BodyType bodyType) {
+    if (m_body) {
+        world->DestroyBody(m_body);
+        m_body = nullptr;
+    }
+    //BodyDef
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);

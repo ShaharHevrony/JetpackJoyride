@@ -23,7 +23,6 @@ private:
     sf::RenderWindow* m_window;
     sf::Sprite m_shopBoard;
     std::vector<sf::Text> m_names;
-    //std::vector<sf::RectangleShape> m_characters;
     sf::RectangleShape m_characterRect;
     std::stringstream m_str;
     sf::Text money;
@@ -34,6 +33,5 @@ private:
     sf::Sprite m_rightArrow;
 
     int m_avatarIndex = 0;
-    //sf::Text m_prices[2];
     std::vector<sf::Text> m_pricesText;
 };

@@ -32,11 +32,10 @@ void PlayGame::createObjectMap() {
     
     int random = randMap();
     sf::Vector2f position = sf::Vector2f(GAME_SETTING_X, GAME_SETTING_Y);
-    m_singleObjects.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
     for (int row = 0; row < m_board.getMap(random).size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap(random)[row][col];
-            position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, 2 * CEILING_POS_Y + SCALE_SIZE * col);
+            position = sf::Vector2f(WINDOW_WIDTH + SCALE_SIZE * row, CEILING_POS_Y + SCALE_SIZE * col);
             switch (type) {
                 case COIN: {
                     m_singleObjects.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position, m_world, 1.f, B2StaticCoin));
@@ -72,12 +71,6 @@ void PlayGame::createObjectMap() {
                     }
                     break;
                 }
-                case SCIENTIST: {
-                    m_singleObjects.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
-                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setScale(OBJECT_SCALE, OBJECT_SCALE);
-                    m_singleObjects[m_singleObjects.size() - 1]->getObject().setPosition(position.x, 2 * CEILING_POS_Y + SCALE_SIZE * NUM_OF_OBJECTS);
-                    break;
-                }
                 case SUPERPOWER: {
                     m_singleObjects.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(0), position));
                     if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
@@ -89,6 +82,30 @@ void PlayGame::createObjectMap() {
                     break;
                 }
             }
+        }
+    }
+    createNonCollisionObjects();
+}
+
+void PlayGame::createNonCollisionObjects() { //FIXME: move to the board class and handle there.
+    m_nonCollision.clear();
+    //Create the player's flame:
+    sf::Vector2f position;
+    int numOfLights = (m_lastObject.x / WIDTH_CENTER) - 1;
+    for (int light = 0; light < numOfLights; light++){
+        position = sf::Vector2f(GAME_SETTING_X + light * WIDTH_CENTER, GAME_SETTING_Y);
+        m_nonCollision.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
+        if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+            m_lastObject = position;
+        }
+    }
+
+    int numOfObj = (m_lastObject.x / HEIGHT_CENTER) - 1;
+    for (int scientist = 0; scientist < numOfObj; scientist++){
+        position = sf::Vector2f(GAME_SETTING_X + scientist * HEIGHT_CENTER, CEILING_POS_Y + SCALE_SIZE * NUM_OF_OBJECTS);
+        m_nonCollision.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
+        if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+            m_lastObject = position;
         }
     }
 }
@@ -218,43 +235,28 @@ void PlayGame::dealWithEvent() {
                 break;
             }
             case startSuperPower: {
-                if (!PlayerStateManager::instance().wasSuperTank()) {
-                    PlayerStateManager::instance().setState(SuperPowerTank);
-                    //PlayerStateManager::instance().setGravity(m_world);
-                    m_floor->setBody(m_world, b2_staticBody);
-                    m_ceiling->setBody(m_world, b2_staticBody);
-                    PlayerStateManager::instance().changeToSuperTank(true);
+                if (!PlayerStateManager::instance().getIfSuperTank()) {
+                    PlayerStateManager::instance().setState(SuperPowerTank, m_world);
+                    PlayerStateManager::instance().setToSuperTank(true);
                 }
                 else {
-                    PlayerStateManager::instance().setState(SuperPowerRunner);
-                    //PlayerStateManager::instance().setGravity(m_world);
-                    m_floor->setBody(m_world, b2_staticBody);
-                    m_ceiling->setBody(m_world, b2_staticBody);
-                    PlayerStateManager::instance().changeToSuperTank(false);
+                    PlayerStateManager::instance().setState(SuperPowerRunner, m_world);
+                    PlayerStateManager::instance().setToSuperTank(false);
                 }
                 break;
             }
             case ReturnRegular: {
-                PlayerStateManager::instance().setState(Regular);
-                //PlayerStateManager::instance().setGravity(m_world);
-                m_floor->setBody(m_world, b2_staticBody);
-                m_ceiling->setBody(m_world, b2_staticBody);
+                PlayerStateManager::instance().setState(Regular, m_world);
                 break;
             }
             case DeathInTheAir: {
                 m_fallingCoins.clear();
-                PlayerStateManager::instance().setState(DeadPlayer);
-                //PlayerStateManager::instance().setGravity(m_world);
-                b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
-                m_world->SetGravity(deathGravity);
-                m_player->setBody(m_world, b2_dynamicBody);
-                m_floor->setBody(m_world, b2_staticBody);
-                m_ceiling->setBody(m_world, b2_staticBody);
+                PlayerStateManager::instance().setState(DeadPlayer, m_world);
                 m_scoreBoard.setDead();
                 break;
             }
             case DeadOnTheGround: {
-                PlayerStateManager::instance().setState(GameOver);
+                PlayerStateManager::instance().setState(GameOver, m_world);
                 m_player->getBody()->SetTransform(m_player->getBody()->GetPosition(), 0.5f * b2_pi); //Set rotation to 90 degrees
                 m_player->getObject().setOrigin(-50, PLAYER_POS_Y/3);
                 break;
@@ -265,32 +267,33 @@ void PlayGame::dealWithEvent() {
 
 void PlayGame::draw() {
     m_window->clear();
-    m_board.draw(m_window, m_control, PlayerStateManager::instance().getState());
-
-    for (int index = 0; index < m_singleObjects.size(); index++) {
-        m_singleObjects[index]->draw(m_window);
-    }
-    for (int index = 0; index < m_pairedObjects.size(); index++) {
-        if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
-            m_pairedObjects[index]->draw(m_window);
-        }
-    }
-    for (int index = 0; index < m_missile.size(); index++) {
-        m_missile[index]->draw(m_window);
-    }
-    for (int index = 0; index < m_fallingCoins.size(); index++) {
-        m_fallingCoins[index]->draw(m_window);
-    }
-
-    m_window->draw(m_settingButton);
-    m_scoreBoard.draw(m_window);
     m_floor->draw(m_window);
     m_ceiling->draw(m_window);
+    m_board.draw(m_window, m_control, PlayerStateManager::instance().getState());
+
+    for (auto &singleObj : m_singleObjects) {
+        singleObj->draw(m_window);
+    }
+    for (auto &pairedObj : m_pairedObjects) {
+        if (pairedObj != m_pairedObjects[m_pairedObjects.size() - 1] || m_pairedObjects.size() % 2 == 0) {
+            pairedObj->draw(m_window);
+        }
+    }
+    for (auto &missile : m_missile) {
+        missile->draw(m_window);
+    }
+    for (auto &fallingCoin : m_fallingCoins) {
+        fallingCoin->draw(m_window);
+    }
+    for (auto  &nonCollisionObj : m_nonCollision){
+        nonCollisionObj->draw(m_window);
+    }
+    m_window->draw(m_settingButton);
+    m_scoreBoard.draw(m_window);
     if (m_flame->getInUse()) {
         m_flame->draw(m_window);
     }
     m_player->draw(m_window);
-
     m_window->display();
 }
 
@@ -320,37 +323,37 @@ void PlayGame::moveObjects() {
     int32 positionIterations = 2;
     m_world->Step(timeStep, velocityIterations, positionIterations);
     m_player->move(m_control.Time_t * m_control.Speed_t);
+    sf::Vector2f playerPosition = m_player->getObject().getPosition();
+    sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
+    m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * OBJECT_SCALE) - 10));
+    m_flame->move(m_control.Time_t * m_control.Speed_t);
 
-    for (int index = 0; index < m_pairedObjects.size(); index++) {
-        if (index != m_pairedObjects.size() - 1 || m_pairedObjects.size() % 2 == 0) {
-            m_pairedObjects[index]->move(m_control.Time_t * m_control.Speed_t);
-            if (lastPosition.x <= 0.f || m_pairedObjects[index]->getObject().getPosition().x > lastPosition.x) {
-                lastPosition = m_pairedObjects[index]->getObject().getPosition();
+    for (auto &pairedObj : m_pairedObjects) {
+        if (pairedObj != m_pairedObjects[m_pairedObjects.size() - 1] || m_pairedObjects.size() % 2 == 0) {
+            pairedObj->move(m_control.Time_t * m_control.Speed_t);
+            if (lastPosition.x <= 0.f || pairedObj->getObject().getPosition().x > lastPosition.x) {
+                lastPosition = pairedObj->getObject().getPosition();
             }
         }
     }
-    for (int index = 0; index < m_singleObjects.size(); index++) {
-        m_singleObjects[index]->move(m_control.Time_t * m_control.Speed_t);
-        if (lastPosition.x <= 0.f || m_singleObjects[index]->getObject().getPosition().x > lastPosition.x) {
-            lastPosition = m_singleObjects[index]->getObject().getPosition();
+    for (auto &singleObj : m_singleObjects) {
+        singleObj->move(m_control.Time_t * m_control.Speed_t);
+        if (lastPosition.x <= 0.f || singleObj->getObject().getPosition().x > lastPosition.x) {
+            lastPosition = singleObj->getObject().getPosition();
         }
-    }
-
-    for (int index = 0; index < m_fallingCoins.size(); index++) {
-        m_fallingCoins[index]->move(m_control.Time_t * m_control.Speed_t);
     }
     m_lastObject = lastPosition;
 
-    if(m_flame->getInUse()){
-        sf::Vector2f playerPosition = m_player->getObject().getPosition();
-        sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
-        m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * OBJECT_SCALE) - 10));
-        m_flame->move(TIME_STEP);
+    for (auto &fallingCoin : m_fallingCoins) {
+        fallingCoin->move(m_control.Time_t * m_control.Speed_t);
+    }
+    for (auto &nonCollisionObj : m_nonCollision) {
+        nonCollisionObj->move(m_control.Time_t * m_control.Speed_t);
     }
     for (int index = 0; index < m_missile.size(); index++) {
         m_missile[index]->changeByTime(m_control.Time_t, m_player->getObject().getPosition(), index);
         m_missile[index]->move(m_control.Time_t * m_control.Speed_t);
-        if (m_missile[index]->getObject().getPosition().x < -100) {
+        if (m_missile[index]->getObject().getPosition().x < -100.f) {
             m_missile.erase(m_missile.begin() + index);
             index--; //Decrement the index since the vector size has decreased
         }

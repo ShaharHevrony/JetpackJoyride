@@ -1,12 +1,15 @@
 #pragma once
-#include "PairedObject.h"
+#include <math.h>
+
+#include "Object.h"
 #include "Player.h"
 
-class Laser: public PairedObject {
+class Laser: public Object {
 public:
-    Laser();
     Laser(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~Laser() = default;
+    float calculateAngle(sf::Vector2f otherPosition);
+    float calculateDistance(sf::Vector2f otherPosition);
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);

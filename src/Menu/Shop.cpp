@@ -6,17 +6,12 @@ Shop::~Shop() {}
 
 void Shop::create() {
     //create shop
-    
-
     m_shopBoard.setTexture(*ResourcesManager::instance().getGameMenu());
     m_shopBoard.setScale(WINDOW_WIDTH / m_shopBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_shopBoard.getTexture()->getSize().y);
 
     m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
-
-   
-
 
     // Define the size and position of the big rectangle
     sf::Vector2f rectSize(PLAYER_POS_X * 2 + 100, PLAYER_POS_Y * 2 + 100);
@@ -35,7 +30,6 @@ void Shop::create() {
     m_leftArrow.setTexture(*ResourcesManager::instance().getArrow());
 
     float arrowYPosition = rectPosition.y + (rectSize.y / 2);
-
     sf::Vector2f leftArrowPosition(rectPosition.x - 100*OBJECT_SCALE, arrowYPosition);
     sf::Vector2f rightArrowPosition(rectPosition.x + rectSize.x + 100*OBJECT_SCALE, arrowYPosition);
 
@@ -75,25 +69,21 @@ void Shop::run() {
                 case sf::Event::MouseButtonReleased: {
                     if(m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
                         return;
-                    }
-                    if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                    } else if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         m_characterRect.setOutlineThickness(0);
                         m_avatarIndex--;
                         setAvatar();
                         break;
-                    }
-                    if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                    } else if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         m_characterRect.setOutlineThickness(0);
                         m_avatarIndex++;
                         setAvatar();
                         break;
-                    }
-                    if (m_characterRect.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                    } else if (m_characterRect.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         m_characterRect.setOutlineColor(sf::Color::Red);
                         m_characterRect.setOutlineThickness(7);
                         break;
-                    }
-                    if (m_buyButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) { //here is the connectiton to the game!!!!
+                    }else if (m_buyButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) { //here is the connectiton to the game!!!!
                         if (prices[m_avatarIndex] < GameManager::instance().getCollectedSum()) {
                             GameManager::instance().setCollectedSum(-prices[m_avatarIndex]);
                             GameManager::instance().setCharacter(m_avatarIndex);
@@ -103,17 +93,17 @@ void Shop::run() {
                 }
                 case sf::Event::MouseMoved: {
                     if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
-                        m_leftArrow.setScale(PLAYER_SCALE, PLAYER_SCALE); // Increase left arrow size by 20%
-                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset right arrow size
+                        m_leftArrow.setScale(PLAYER_SCALE, PLAYER_SCALE);              //Increase left arrow size by 20%
+                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); //Reset right arrow size
                     }
                     else if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
-                        m_rightArrow.setScale(PLAYER_SCALE, PLAYER_SCALE); // Increase right arrow size by 20%
-                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset left arrow size
+                        m_rightArrow.setScale(PLAYER_SCALE, PLAYER_SCALE);             //Increase right arrow size by 20%
+                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); //Reset left arrow size
                         
                     }
                     else {
-                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset left arrow size
-                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); // Reset right arrow size
+                        m_leftArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5);  //Reset left arrow size
+                        m_rightArrow.setScale(PLAYER_SCALE / 1.5, PLAYER_SCALE / 1.5); //Reset right arrow size
                     }
                     if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
                         m_backButton.setScale(1.2, 1.2);
@@ -132,19 +122,17 @@ void Shop::run() {
 void Shop::setAvatar() {
     if (m_avatarIndex > 1) {
         m_avatarIndex = 0;
-    }
-    else if (m_avatarIndex < 0) {
+    } else if (m_avatarIndex < 0) {
         m_avatarIndex = playersAvatar.size() - 1;
     }
     m_characterRect.setTexture(ResourcesManager::instance().getAvatar(m_avatarIndex));
     if (prices[m_avatarIndex] > GameManager::instance().getCollectedSum()) {
-        // Adjust the color of the texture to make it slightly grey
+        //Adjust the color of the texture to make it slightly grey
         sf::Color greyColor(128, 128, 128, 255);
         m_characterRect.setFillColor(greyColor);
         m_buyButton.setColor(greyColor);
-    }
-    else {
-        // Reset the color to its original state
+    } else {
+        //Reset the color to its original state
         m_characterRect.setFillColor(sf::Color::White);
         m_buyButton.setColor(sf::Color::White);
     }

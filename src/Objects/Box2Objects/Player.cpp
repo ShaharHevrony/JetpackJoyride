@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type) :Box2Object(texture, position, world, type) {
-    setBody(world, b2_dynamicBody);
+Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int type) :Box2Object(texture, position, type) {
+    create(world, b2_dynamicBody);
     m_CoinCollect.setBuffer(ResourcesManager::instance().getSoundCoin());
     m_ZapperSound.setBuffer(ResourcesManager::instance().getSoundZapper());
     m_soundHitMissile.setBuffer(ResourcesManager::instance().getSoundMissileHit());
@@ -15,15 +15,15 @@ Player::Player(sf::Texture *texture, sf::Vector2f position, b2World* world, int 
 }
 
 //--------------- create the box2d values ---------------
-void Player::setBody(b2World *world, b2BodyType bodyType) {
+void Player::create(b2World *world, b2BodyType bodyType) {
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = PLAYER_SCALE;
+    bodyDef.angularDamping = 1.f;
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
-    shape.SetAsBox(m_object.getGlobalBounds().width/4, m_object.getGlobalBounds().height/4);
+    shape.SetAsBox(m_object.getGlobalBounds().width/8, m_object.getGlobalBounds().height/8);
 
     //FixtureDef
     b2FixtureDef fixtureDef;
@@ -43,50 +43,10 @@ void Player::setBody(b2World *world, b2BodyType bodyType) {
     m_body->SetUserData(this);
     m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
 }
-
-/*
-void Player::setChange(b2World *world) {
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = PLAYER_SCALE;
-    m_body = world->CreateBody(&bodyDef);
-
-    b2PolygonShape shape;
-    shape.SetAsBox(m_object.getGlobalBounds().width/4, m_object.getGlobalBounds().height/4);
-
-    //FixtureDef
-    b2FixtureDef fixtureDef;
-    fixtureDef.isSensor = false;
-    fixtureDef.shape = &shape;
-    fixtureDef.density = 0.3f;
-    fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = PLAYER_SCALE/2; //Add the restitution property
-    m_body->CreateFixture(&fixtureDef);
-
-    b2MassData mass;
-    mass.center = m_body->GetLocalCenter();
-    mass.mass = BERRYS_MASS;
-    mass.I = m_object.getOrigin().y;
-    m_body->SetMassData(&mass);
-    m_body->SetFixedRotation(true);
-    m_body->SetUserData(this);
-    m_object.setScale(PLAYER_SCALE,PLAYER_SCALE);
-}
-*/
 
 //------------- SFML functions on window -------------
 void Player::move(float time) {
-    if (PlayerStateManager::instance().getSpacePressed()) {
-        float jumpVelocity = -10 * GRAVITATION_Y; //Adjust the jump velocity as needed
-        b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-        bodyVelocity.y = jumpVelocity;
-        m_body->SetLinearVelocity(bodyVelocity);
-        b2Vec2 bodyPosition = m_body->GetPosition();
-        float bodyAngle = m_body->GetAngle();
-        m_object.setPosition(bodyPosition.x, bodyPosition.y);
-        m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-    }
+    PlayerStateManager::instance().moveByPress();
     PlayerStateManager::instance().moveByState();
 }
 
@@ -115,10 +75,13 @@ void Player::handleCollision(Laser& laser) {
 }
 
 void Player::handleCollision(Beam &beam) {
-    if (beam.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
-        float beamTime = 1.f;
-        PlayerStateManager::instance().handleCollisionByState(beamTime);
-        m_ZapperSound.play();
+    std::vector<sf::CircleShape> beamsCircles = beam.getCircles();
+    for(auto circle : beamsCircles){
+        if(circle.getGlobalBounds().intersects(m_object.getGlobalBounds())){
+            float beamTime = 1.f;
+            PlayerStateManager::instance().handleCollisionByState(beamTime);
+            m_ZapperSound.play();
+        }
     }
 }
 

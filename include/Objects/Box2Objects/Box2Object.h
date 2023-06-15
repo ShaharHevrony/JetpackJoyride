@@ -8,14 +8,12 @@ class Laser;
 
 class Box2Object: public Object{
 public:
-    Box2Object(b2World* world = nullptr, int type = 0);
-    Box2Object(sf::Texture* texture, const sf::Vector2f& position, b2World* world, int type);
+    Box2Object(int type = 0);
+    Box2Object(sf::Texture* texture, const sf::Vector2f& position, int type);
     virtual ~Box2Object();
     b2Body* getBody();
 
-    virtual void setBody(b2World *world, b2BodyType bodyType) = 0;
-    //virtual void setChange(b2World *world) = 0;
-
+    virtual void create(b2World *world, b2BodyType bodyType) = 0;
     virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
     virtual void updateCollisionTime(float time) = 0;

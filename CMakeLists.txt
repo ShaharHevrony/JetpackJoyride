@@ -27,7 +27,8 @@ if(APPLE)
     add_subdirectory(external/box2d/src)
 
     set (SFML_STATIC_LIBRARIES FALSE)
-    set (SFML_DIR "/usr/local/Cellar/sfml/2.5.1")
+    #set (SFML_DIR "/usr/local/Cellar/sfml/2.5.1")
+    set (SFML_DIR "/usr/ClionProjects/sfml/2.5.1")
 
     find_package (SFML 2.5 COMPONENTS audio graphics REQUIRED)
 

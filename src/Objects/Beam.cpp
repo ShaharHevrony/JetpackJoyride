@@ -11,19 +11,22 @@ void Beam::calculatePoints(float distance) {
     float size = std::min(ResourcesManager::instance().getPlayer()->getSize().x, ResourcesManager::instance().getPlayer()->getSize().y)*0.8/PLAYER_SCALE;
     int numOfCircle = (distance/size) + 1;
     float radius = WINDOW_HEIGHT * 0.02;
+    float angleRadians = (m_object.getRotation() + 90.f) * (PI / 180.0f);
     sf::Vector2f currentPosition = m_object.getPosition();
     for(int count = 0; count < numOfCircle; count++) {
         sf::CircleShape tempCircle(radius);
         tempCircle.setPosition(currentPosition);
         tempCircle.setOrigin(radius, radius);
-        tempCircle.setFillColor(sf::Color::Black);
         m_circles.push_back(tempCircle);
 
-        float deltaX = (distance/numOfCircle) * std::cos(m_object.getRotation());
-        float deltaY = (distance/numOfCircle) * std::sin(m_object.getRotation());
-
+        float deltaX = (distance/numOfCircle) * std::cos(angleRadians);
+        float deltaY = (distance/numOfCircle) * std::sin(angleRadians);
         currentPosition += sf::Vector2f(deltaX, deltaY);
     }
+}
+
+std::vector<sf::CircleShape> Beam::getCircles() const{
+    return m_circles;
 }
 
 void Beam::move(float time) {
@@ -32,7 +35,6 @@ void Beam::move(float time) {
     m_object.move(direction*time);
     for(auto &point : m_circles)
         point.move(direction*time);
-
 }
 
 void Beam::handleCollision(Object& object) {
@@ -47,7 +49,4 @@ void Beam::handleCollision(Player& player) {
 
 void Beam::draw(sf::RenderWindow* window) {
     window->draw(m_object);
-    //for(auto point : m_circles) //FIXME
-    //   window->draw(point);
-    //std::cout << m_circles.size() << "\n";
 }

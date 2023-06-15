@@ -7,8 +7,7 @@ public:
     Coin(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC, b2World* world = nullptr, float scale = 0.f, int type = 5);
     virtual ~Coin() = default;
 
-    virtual void setBody(b2World *world, b2BodyType bodyType);
-    //virtual void setChange(b2World *world) {}
+    virtual void create(b2World *world, b2BodyType bodyType);
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);

@@ -6,7 +6,7 @@
 #include <ctime>
 
 #include "GameSettings.h"
-#include "Obstacle.h"
+#include "Laser.h"
 #include "ScoreBoard.h"
 #include "EventsQueue.h"
 #include "Bound.h"
@@ -14,11 +14,9 @@
 #include "CollisionListener.h"
 #include "Missile.h"
 #include "Piggy.h"
-#include "Flame.h"
-#include "Scientist.h"
 #include "SuperPower.h"
-#include "Lights.h"
 #include "GameManager.h"
+#include "NonCollisionObject.h"
 
 class PlayGame {
 public:
@@ -26,6 +24,7 @@ public:
     ~PlayGame();
     void create();
     void createObjectMap();
+    void createNonCollisionObjects();
     void run();
     void dealWithCollision();
     void dealWithEvent();
@@ -50,8 +49,9 @@ private:
 
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
-    std::vector<std::unique_ptr<PairedObject>> m_pairedObjects;
-    std::unique_ptr<Flame> m_flame;
+    std::vector<std::unique_ptr<Laser>> m_pairedObjects;
+    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollision;
+    std::shared_ptr<Flame> m_flame;
 
     b2World* m_world;
     std::shared_ptr<Box2Object> m_player;

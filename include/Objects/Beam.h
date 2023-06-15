@@ -7,6 +7,7 @@ public:
     Beam(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC, float rotate = 0.f, float distance = 0.f);
     virtual ~Beam() = default;
     void calculatePoints(float distance);
+    std::vector<sf::CircleShape> getCircles() const;
 
     virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);

@@ -1,6 +1,6 @@
 #pragma once
 #include "Object.h"
-#include "Box2Coin.h"
+#include "Coin.h"
 #include "Player.h"
 
 class Piggy :public Object {
