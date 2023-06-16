@@ -116,7 +116,6 @@ void PlayGame::run() {
     bool alreadyDead = false;
     bool restartGame = false;
     static sf::Clock speedIncreaseTimer;
-
     while (m_window->isOpen() && !restartGame) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
@@ -144,7 +143,6 @@ void PlayGame::run() {
                 case sf::Event::MouseButtonReleased: {
                     if (m_settingButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
-                        GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
                         restartGame = setting.run(PlayerStateManager::instance().getState());
                         m_control.LoopClock_t.restart();
                         m_scoreBoard.setScore();
@@ -163,8 +161,7 @@ void PlayGame::run() {
         if (m_lastCoin.x <= 0.f) {
             m_fallingCoins.clear();
         }
-        if (PlayerStateManager::instance().getState() == Regular || PlayerStateManager::instance().getState() == SuperPowerTank ||
-            PlayerStateManager::instance().getState() == SuperPowerRunner) {
+        if (PlayerStateManager::instance().getState() != DeadPlayer && PlayerStateManager::instance().getState() != GameOver) {
             moveObjects();
             dealWithCollision();
             dealWithEvent();
@@ -180,6 +177,9 @@ void PlayGame::run() {
             }
         }
         draw();
+    }
+    if (restartGame) {
+        GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
     }
 }
 
@@ -257,8 +257,6 @@ void PlayGame::dealWithEvent() {
             }
             case DeadOnTheGround: {
                 PlayerStateManager::instance().setState(GameOver, m_world);
-                m_player->getBody()->SetTransform(m_player->getBody()->GetPosition(), 0.5f * b2_pi); //Set rotation to 90 degrees
-                m_player->getObject().setOrigin(-50, PLAYER_POS_Y/3);
                 break;
             }
         }

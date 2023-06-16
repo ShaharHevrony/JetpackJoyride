@@ -30,12 +30,14 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
             m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
             b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             break;
         }
         case SuperPowerTank: {
             m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
             b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             break;
         }
         case SuperPowerRunner: {
@@ -43,18 +45,21 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
             m_player->getObject().setRotation(180.f);
             b2Vec2 deathGravity(- GRAVITATION_X, - GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             break;
         }
         case DeadPlayer: {
             m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
             m_world->SetGravity(deathGravity);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             break;
         }
         case GameOver: {
             m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y * 2);
             m_world->SetGravity(deathGravity);
+            m_player->getObject().setOrigin(m_player->getObject().getTexture()->getSize().x/2, m_player->getObject().getTexture()->getSize().y/2);
             break;
         }
         default:

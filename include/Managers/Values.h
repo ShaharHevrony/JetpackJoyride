@@ -58,7 +58,7 @@ const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
 
 const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
-const float PLAYER_POS_X    = WINDOW_WIDTH  / 7;
+const float PLAYER_POS_X    = WINDOW_WIDTH  / 6;
 const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
 const float FLOOR_POS_Y     = WINDOW_HEIGHT / 9;
 const float CEILING_POS_Y   = WINDOW_HEIGHT / 10;
@@ -76,7 +76,7 @@ const float SET_BUTTONS     = WINDOW_HEIGHT / 250;
 
 const float SETTING_CIRCLE  = WINDOW_WIDTH  / 100;
 const float SETTING_WIDTH   = WINDOW_WIDTH  / 2;
-const float SETTING_HEIGHT  = WINDOW_HEIGHT / 18;
+const float SETTING_HEIGHT  = WINDOW_HEIGHT / 20;
 const float SCALE_SIZE      = WINDOW_WIDTH  / 35;
 
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 500;

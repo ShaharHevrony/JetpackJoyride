@@ -1,17 +1,28 @@
 #Images:
 #All of the player's images:
-configure_file ("Images/Player/BerryWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/BerryAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/OriginalBerry/BerryWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/OriginalBerry/BerryHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/OriginalBerry/BerryDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/OriginalBerry/BerryAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("Images/Player/KingBerry/KingWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/KingBerry/KingHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/KingBerry/KingDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/KingBerry/KingAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("Images/Player/ScientistBerry/ScientistWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/ScientistBerry/ScientistHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/ScientistBerry/ScientistDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/ScientistBerry/ScientistAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("Images/Player/SoldierBerry/SoldierWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SoldierBerry/SoldierHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SoldierBerry/SoldierDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Player/SoldierBerry/SoldierAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("Images/Player/SuperPowerTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Player/SuperPowerFlyTank.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Player/SuperPowerRunner.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/KingHit.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/KingDead.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/KingWalking.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Player/KingAvatar.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 #All of the game object's images:
 configure_file ("Images/Objects/UpperZappers.png" ${CMAKE_BINARY_DIR} COPYONLY)

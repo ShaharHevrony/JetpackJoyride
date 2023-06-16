@@ -41,7 +41,6 @@ if(APPLE)
 endif()
 
 
-
 if(WIN32)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -65,6 +64,5 @@ if(WIN32)
     target_link_libraries(${CMAKE_PROJECT_NAME} box2d)
 
     configure_file (C:/SFML/SFML-2.5.1/bin/openal32.dll ${CMAKE_BINARY_DIR} COPYONLY)
-
 
 endif()
