@@ -40,6 +40,7 @@ public:
     sf::Texture* getArrow();
     sf::Texture* getBuy();
     sf::Texture* getWiteArrow();
+    sf::Texture* getEquip();
 
 
     sf::Texture* getAvatar(int index);
@@ -83,12 +84,14 @@ private:
     sf::Texture m_SuperPowerRunner;
     sf::Texture m_arrow;
     sf::Texture m_whitewArrow;
-    sf::Texture m_playerAva[2];
+    sf::Texture m_playerAva[4];
     sf::Texture m_help[3];
-
+    sf::Texture m_equip;
 
     sf::Texture m_buy;
 
+
+    
 
     //Define all audios:
     sf::SoundBuffer m_soundCoin;

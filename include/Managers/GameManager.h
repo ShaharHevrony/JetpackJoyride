@@ -25,6 +25,8 @@ public:
     int getCollectedSum() const;
     void setCharacter(int character);
     int getCharacter() const;
+    bool getOwned(int index) const;
+    void setOwned(int index);
 
 private:
     GameManager();
@@ -35,4 +37,7 @@ private:
     int m_soundVolume;
     int m_collectedSum;
     int m_chosenCharacter;
+
+    bool m_ownedGear[4] = { false };
+
 };

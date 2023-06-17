@@ -9,6 +9,7 @@
 #include "Values.h"
 #include "GameManager.h"
 #include "ResourcesManager.h"
+#include "Coin.h"
 
 class Shop {
 public:
@@ -31,6 +32,8 @@ private:
 
     sf::Sprite m_leftArrow;
     sf::Sprite m_rightArrow;
+
+   
 
     int m_avatarIndex = 0;
     std::vector<sf::Text> m_pricesText;

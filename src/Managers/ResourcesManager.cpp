@@ -100,6 +100,9 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
 
+    if (!m_equip.loadFromFile(PATH + "Equip.png")) {
+        throw OpenTextureFailed();
+    }
     //------------------- Define all of the game's arrays texture ------------------
     for (int index = 0; index < buttons.size(); index++) {
         if (!m_buttons[index].loadFromFile(PATH + buttons[index])) {
@@ -265,6 +268,10 @@ sf::Texture* ResourcesManager::getBuy() {
 
 sf::Texture* ResourcesManager::getWiteArrow() {
     return &m_whitewArrow;
+}
+
+sf::Texture* ResourcesManager::getEquip() {
+    return &m_equip;
 }
 //---------------------- Get all of the game's arrays texture ----------------------
 sf::Texture* ResourcesManager::getButtons(int index) {

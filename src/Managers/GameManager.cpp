@@ -126,3 +126,11 @@ void GameManager::setCharacter(int character) {
 int GameManager::getCharacter() const {
     return m_chosenCharacter;
 }
+
+bool GameManager::getOwned(int index) const {
+    return m_ownedGear[index];
+}
+
+void GameManager::setOwned(int index) {
+    m_ownedGear[index] = true;
+}

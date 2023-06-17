@@ -3,7 +3,7 @@
 PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     m_world   = new b2World(b2Vec2(GRAVITATION_X, GRAVITATION_Y));
     m_world->SetContactListener(&m_collisionBox2D);
-    m_floor   = std::make_unique<Bound>(m_world, B2Floor);   //Create the floor of the game
+    m_floor   = std::make_unique<Bound>(m_world, B2Floor);   //the prob starts
     m_ceiling = std::make_unique<Bound>(m_world, B2Ceiling); //Create the ceiling of the game
 
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);

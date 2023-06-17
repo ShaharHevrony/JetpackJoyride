@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -106,12 +106,12 @@ const std::vector<std::string> buttons     = {"PlayGameOff.png", "ShopOff.png", 
 const std::vector<std::string> missile     = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> superPower  = {"PowerUpBox.png", "SuperPowerTank.png" ,"SuperPowerFlyTank.png"};
 const std::vector<std::string> berrysDeath = {"BerryHit.png", "BerryDead.png"};
-const std::vector<std::string> squareNames = { "Berry", "King"};
+const std::vector<std::string> squareNames = { "Berry", "King","Scientist" , "Soldier"};
 const std::vector<std::string> help = { "helpone.png", "helptwo.png" , "helpthree.png"};
 
 
-const std::vector<std::string> playersAvatar = { "BerryAvatar.png", "KingAvatar.png"};
-const int prices[] = { 100, 2000 };
+const std::vector<std::string> playersAvatar = { "BerryAvatar.png", "KingAvatar.png", "ScientistAvatar.png" ,"SoldierAvatar.png"};
+const int prices[] = { 100, 2000, 3000, 4000 };
 
 
 const std::vector<std::string> MAP = { "--*---------*--\n"

@@ -62,6 +62,7 @@ configure_file ("Images/Other/whiteArrow.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/helpone.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/helptwo.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/helpthree.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Equip.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 
