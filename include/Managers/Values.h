@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -94,7 +94,6 @@ const int GAME_SETTINGS     = 3;
 const int NUM_OF_OBJECTS    = 15;
 const int COLLECTED_MONEY   = 5;
 const int TOP_FIVE          = 5;
-const int FLAME             = 0;
 const double PI             = 3.14159265358;
 
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);

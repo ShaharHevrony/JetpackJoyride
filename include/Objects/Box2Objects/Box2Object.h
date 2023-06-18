@@ -5,6 +5,7 @@
 class Player;
 class Coin;
 class Laser;
+class Bound;
 
 class Box2Object: public Object{
 public:
@@ -12,6 +13,7 @@ public:
     Box2Object(sf::Texture* texture, const sf::Vector2f& position, int type);
     virtual ~Box2Object();
     b2Body* getBody();
+    int getType() const;
 
     virtual void create(b2World *world, b2BodyType bodyType) = 0;
     virtual void move(float time) = 0;
@@ -30,4 +32,5 @@ public:
 protected:
     int m_type = 0;
     b2Body* m_body;
+    bool m_onFloor = false;
 };

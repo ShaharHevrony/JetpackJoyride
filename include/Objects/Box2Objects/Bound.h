@@ -11,8 +11,8 @@ public:
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time) {}
 
-    virtual void handleCollision(Object& object) {}
-    virtual void handleCollision(Player& player) {}
+    virtual void handleCollision(Object& object);
+    virtual void handleCollision(Player& player);
     virtual void handleCollision(Laser& laser) {}
     virtual void handleCollision(Beam& beam) {}
     virtual void handleCollision (Piggy& piggy) {}

@@ -67,6 +67,56 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
     }
 }
 
+void PlayerStateManager::setState(int state) {
+    m_state = state;
+    switch (m_state) {
+        case Regular: {
+            m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
+            m_gravityScale = 1.f;
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
+            //b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
+            //m_world->SetGravity(deathGravity);
+            break;
+        }
+        case SuperPowerTank: {
+            m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
+            //b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
+            //m_world->SetGravity(deathGravity);
+            m_gravityScale = 1.f; //FIXME
+            break;
+        }
+        case SuperPowerRunner: {
+            m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.18f);
+            m_player->getObject().setRotation(180.f);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
+            //b2Vec2 deathGravity(- GRAVITATION_X, - GRAVITATION_Y);
+            //m_world->SetGravity(deathGravity);
+            m_gravityScale = -1.f; //FIXME
+            break;
+        }
+        case DeadPlayer: {
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
+            m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
+            //b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
+            //m_world->SetGravity(deathGravity);
+            m_gravityScale = 2.f; //FIXME
+            break;
+        }
+        case GameOver: {
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
+            m_player->getObject().setOrigin(m_player->getObject().getTexture()->getSize().x/2, m_player->getObject().getTexture()->getSize().y/2);
+            //b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y * 2);
+            //m_world->SetGravity(deathGravity);
+            m_gravityScale = 10.f; //FIXME
+            break;
+        }
+        default:
+            break;
+    }
+    m_player->getBody()->SetGravityScale(m_gravityScale);
+}
+
 int PlayerStateManager::getState() const {
     return m_state;
 }

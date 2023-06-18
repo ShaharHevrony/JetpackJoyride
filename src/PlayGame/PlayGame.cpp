@@ -113,7 +113,6 @@ void PlayGame::createNonCollisionObjects() { //FIXME: move to the board class an
 void PlayGame::run() {
     create();
     GameSettings setting = GameSettings(*m_window, m_board, m_control);
-    bool alreadyDead = false;
     bool restartGame = false;
     static sf::Clock speedIncreaseTimer;
     while (m_window->isOpen() && !restartGame) {
@@ -166,8 +165,8 @@ void PlayGame::run() {
             dealWithCollision();
             dealWithEvent();
         } else {
-            deathMovement(alreadyDead);
-            if (alreadyDead) {
+            deathMovement();
+            if (PlayerStateManager::instance().getState() == GameOver) {
                 sf::Time elapsed = m_timer.getElapsedTime();
                 if (elapsed.asSeconds() >= 2.0) {
                     GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
@@ -211,7 +210,6 @@ void PlayGame::dealWithCollision() {
         m_player->handleCollision(*myMissile);
     }
     std::erase_if(m_missile, [](const auto& item) { return item->getDelete(); });
-
 }
 
 void PlayGame::dealWithEvent() {
@@ -295,7 +293,7 @@ void PlayGame::draw() {
     m_window->display();
 }
 
-void PlayGame::deathMovement(bool& berryState) {
+void PlayGame::deathMovement() {
     m_flame->setInUse(false);
     float timeStep = 1.5 * TIME_STEP;
     int32 velocityIterations = 6;
@@ -305,8 +303,8 @@ void PlayGame::deathMovement(bool& berryState) {
 
     float velocityDelta = 3/WINDOW_HEIGHT;
     if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDelta
-    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta && !berryState){
-        berryState = true;
+    && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta
+    && PlayerStateManager::instance().getState() != GameOver && m_player->getObject().getPosition().y != CEILING_POS_Y) {
         Event event = Event(DeadOnTheGround);
         EventsQueue::instance().push(event);
         dealWithEvent();

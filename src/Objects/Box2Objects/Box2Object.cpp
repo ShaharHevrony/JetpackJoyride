@@ -17,3 +17,7 @@ Box2Object::~Box2Object() {
 b2Body* Box2Object::getBody() {
     return m_body;
 }
+
+int Box2Object::getType() const {
+    return m_type;
+}

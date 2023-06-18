@@ -6,6 +6,7 @@
 #include "Piggy.h"
 #include "Coin.h"
 #include "Missile.h"
+#include "Bound.h"
 #include "SuperPower.h"
 #include "PlayerStateManager.h"
 

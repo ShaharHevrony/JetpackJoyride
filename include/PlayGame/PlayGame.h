@@ -29,7 +29,7 @@ public:
     void dealWithCollision();
     void dealWithEvent();
     void moveObjects();
-    void deathMovement(bool& berryState);
+    void deathMovement();
     void draw();
     int randMap();
 
