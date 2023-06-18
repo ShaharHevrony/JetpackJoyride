@@ -322,7 +322,7 @@ void PlayGame::moveObjects() {
     m_player->move(m_control.Time_t * m_control.Speed_t);
     sf::Vector2f playerPosition = m_player->getObject().getPosition();
     sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
-    m_flame->setPlayerPos(sf::Vector2f(playerPosition.x + 10, playerPosition.y + (playerSize.y * OBJECT_SCALE) - 10));
+    m_flame->setPlayerPos(sf::Vector2f(playerPosition.x - 35*OBJECT_SCALE, playerPosition.y + 70*OBJECT_SCALE));
     m_flame->move(m_control.Time_t * m_control.Speed_t);
 
     for (auto &pairedObj : m_pairedObjects) {
