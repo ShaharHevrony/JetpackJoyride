@@ -25,9 +25,7 @@ private:
     PlayerStateManager();
     ~PlayerStateManager();
 
-    float m_speed = 0.f;
     float m_gravityScale = 0.f;
-    bool m_wasPressed = false;
 
     int m_state;
     bool m_wasSuper = false;

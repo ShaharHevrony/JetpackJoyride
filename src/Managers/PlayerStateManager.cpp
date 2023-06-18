@@ -27,7 +27,7 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
     m_state = state;
     switch (m_state) {
         case Regular: {
-            m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter()), sf::Vector2u(4, 1), 0.18f);
             b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
@@ -49,14 +49,14 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
             break;
         }
         case DeadPlayer: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 0), sf::Vector2u(4, 1), 0.18f);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
             m_world->SetGravity(deathGravity);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             break;
         }
         case GameOver: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 1), sf::Vector2u(1, 1), 0.18f);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y * 2);
             m_world->SetGravity(deathGravity);
             m_player->getObject().setOrigin(m_player->getObject().getTexture()->getSize().x/2, m_player->getObject().getTexture()->getSize().y/2);
@@ -71,18 +71,14 @@ void PlayerStateManager::setState(int state) {
     m_state = state;
     switch (m_state) {
         case Regular: {
-            m_player->setAnimate(ResourcesManager::instance().getPlayer(), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter()), sf::Vector2u(4, 1), 0.18f);
             m_gravityScale = 1.f;
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
-            //b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
-            //m_world->SetGravity(deathGravity);
             break;
         }
         case SuperPowerTank: {
             m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
-            //b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
-            //m_world->SetGravity(deathGravity);
             m_gravityScale = 1.f; //FIXME
             break;
         }
@@ -90,24 +86,18 @@ void PlayerStateManager::setState(int state) {
             m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.18f);
             m_player->getObject().setRotation(180.f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
-            //b2Vec2 deathGravity(- GRAVITATION_X, - GRAVITATION_Y);
-            //m_world->SetGravity(deathGravity);
             m_gravityScale = -1.f; //FIXME
             break;
         }
         case DeadPlayer: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(0), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 0), sf::Vector2u(4, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
-            //b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
-            //m_world->SetGravity(deathGravity);
             m_gravityScale = 2.f; //FIXME
             break;
         }
         case GameOver: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(1), sf::Vector2u(1, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 1), sf::Vector2u(1, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTexture()->getSize().x/2, m_player->getObject().getTexture()->getSize().y/2);
-            //b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y * 2);
-            //m_world->SetGravity(deathGravity);
             m_gravityScale = 10.f; //FIXME
             break;
         }
@@ -139,22 +129,16 @@ void PlayerStateManager::setToSuperTank(bool change){
 
 void PlayerStateManager::setSpacePressed(bool pressed) {
     m_spacePressed = pressed;
-    if(!m_spacePressed) {
-        m_wasPressed = true;
-    } else if (m_spacePressed && m_wasPressed) {
-        setSpeed();
-        m_wasPressed = false;
-    }
 }
 
 void PlayerStateManager::setSpeed() {
-    if(m_wasPressed){
+    /*if(m_wasPressed){
         m_speed = ANTI_GRAVITY;
     } else if(m_speed >= ANTI_GRAVITY && m_speed <= -2.f){
         m_speed -= 1.f;
     } else {
         m_speed = -2.f;
-    }
+    }*/
 }
 
 void PlayerStateManager::moveByPress() {
@@ -162,11 +146,11 @@ void PlayerStateManager::moveByPress() {
         float jumpVelocity = ANTI_GRAVITY;
         switch (m_state) {
             case Regular: {
-                jumpVelocity = ANTI_GRAVITY * GRAVITATION_Y; //Adjust the jump velocity as needed
+                jumpVelocity = ANTI_GRAVITY * GRAVITATION_Y;   //Adjust the jump velocity as needed
                 break;
             }
             case SuperPowerTank: {
-                jumpVelocity = m_speed * GRAVITATION_Y; //Adjust the jump velocity as needed
+                jumpVelocity = m_gravityScale * GRAVITATION_Y; //Adjust the jump velocity as needed
                 break;
             }
             case SuperPowerRunner: {

@@ -13,10 +13,6 @@ Coin::Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, f
 
 //--------------- create the box2d values ---------------
 void Coin::create(b2World *world, b2BodyType bodyType) {
-    if (m_body) {
-        world->DestroyBody(m_body);
-        m_body = nullptr;
-    }
     //BodyDef
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;

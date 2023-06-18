@@ -162,7 +162,6 @@ void Shop::setAvatar() {
             m_buyButton.setColor(greyColor);
         }
     }
-    
 }
 
 

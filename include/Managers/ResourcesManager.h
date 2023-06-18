@@ -16,7 +16,7 @@ public:
     //Get all textures:
     sf::Texture* getGameMenu();
     sf::Texture* getTitle();
-    sf::Texture* getPlayer();
+    sf::Texture* getPlayer(int index);
     sf::Texture* getCoin();
     sf::Texture* getUpperZappers();
     sf::Texture* getLowerZappers();
@@ -31,7 +31,7 @@ public:
     sf::Texture* getSettingBackGround();
     sf::Texture* getQuitKey();
     sf::Texture* getButtons(int index);
-    sf::Texture* getBarryDeath(int index);
+    sf::Texture* getBarryDeath(int index1, int index);
     sf::Texture* getMissile(int index);
     sf::Texture* getSuperPower(int index);
     sf::Texture* getHelp(int index);
@@ -62,7 +62,8 @@ private:
     //Define all textures:
     sf::Texture m_gameMenu;
     sf::Texture m_title;
-    sf::Texture m_player;
+    //sf::Texture m_player;
+    sf::Texture m_player[4];
     sf::Texture m_coin;
     sf::Texture m_upperZappers;
     sf::Texture m_lowerZapper;
@@ -77,7 +78,7 @@ private:
     sf::Texture m_settingBackground;
     sf::Texture m_quit;
     sf::Texture m_buttons[8];
-    sf::Texture m_barryDeath[2];
+    sf::Texture m_barryDeath[4][2];
     sf::Texture m_missile[3];
     sf::Texture m_superPower[3];
     sf::Texture m_lights;

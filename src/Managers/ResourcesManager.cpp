@@ -24,10 +24,6 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
 
-    if (!m_player.loadFromFile(PATH + "BerryWalking.png")) {
-        throw OpenTextureFailed();
-    }
-
     if (!m_coin.loadFromFile(PATH + "Coin.png")) {
         throw OpenTextureFailed();
     }
@@ -104,15 +100,24 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     //------------------- Define all of the game's arrays texture ------------------
+    for (int index = 0; index < playerWalking.size(); index++) {
+        if (!m_player[index].loadFromFile(PATH + playerWalking[index])) {
+            throw OpenTextureFailed();
+        }
+    }
+
     for (int index = 0; index < buttons.size(); index++) {
         if (!m_buttons[index].loadFromFile(PATH + buttons[index])) {
             throw OpenTextureFailed();
         }
     }
 
-    for (int index = 0; index < berrysDeath.size(); index++) {
-        if (!m_barryDeath[index].loadFromFile(PATH + berrysDeath[index])) {
-            throw OpenTextureFailed();
+    for (int index1 = 0; index1 < berrysDeath.size(); index1++) {
+        for (int index = 0; index < berrysDeath[index1].size(); index++) {
+            std::string filePath = PATH + berrysDeath[index1][index];
+            if (!m_barryDeath[index1][index].loadFromFile(filePath)) {
+                throw OpenTextureFailed();
+            }
         }
     }
 
@@ -202,10 +207,6 @@ sf::Texture* ResourcesManager::getTitle() {
     return &m_title;
 }
 
-sf::Texture* ResourcesManager::getPlayer() {
-    return &m_player;
-}
-
 sf::Texture* ResourcesManager::getCoin() {
     return &m_coin;
 }
@@ -274,12 +275,16 @@ sf::Texture* ResourcesManager::getEquip() {
     return &m_equip;
 }
 //---------------------- Get all of the game's arrays texture ----------------------
+sf::Texture* ResourcesManager::getPlayer(int index) {
+    return &m_player[index];
+}
+
 sf::Texture* ResourcesManager::getButtons(int index) {
     return &m_buttons[index];
 }
 
-sf::Texture* ResourcesManager::getBarryDeath(int index) {
-    return &m_barryDeath[index];
+sf::Texture* ResourcesManager::getBarryDeath(int index1,int index) {
+    return &m_barryDeath[index1][index];
 }
 
 sf::Texture* ResourcesManager::getMissile(int index) {

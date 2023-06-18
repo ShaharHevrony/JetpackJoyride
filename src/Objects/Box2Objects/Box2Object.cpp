@@ -14,6 +14,7 @@ Box2Object::~Box2Object() {
         m_body = nullptr;
     }
 }
+
 b2Body* Box2Object::getBody() {
     return m_body;
 }

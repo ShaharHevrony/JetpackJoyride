@@ -100,13 +100,17 @@ const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
 const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
+const std::vector<std::string> playerWalking = {"BerryWalking.png","KingWalking.png", "ScientistWalking.png" , "SoldierWalking.png"};
 
 const std::vector<std::string> buttons     = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
 const std::vector<std::string> missile     = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> superPower  = {"PowerUpBox.png", "SuperPowerTank.png" ,"SuperPowerFlyTank.png"};
-const std::vector<std::string> berrysDeath = {"BerryHit.png", "BerryDead.png"};
+const std::vector<std::vector<std::string>> berrysDeath = {{"BerryHit.png", "BerryDead.png",},
+                                                           {"KingHit.png", "KingDead.png"},
+                                                           {"ScientistHit.png", "ScientistDead.png"},
+                                                            {"SoldierHit.png", "SoldierDead.png"}};
 const std::vector<std::string> squareNames = { "Berry", "King","Scientist" , "Soldier"};
-const std::vector<std::string> help = { "helpone.png", "helptwo.png" , "helpthree.png"};
+const std::vector<std::string> help        = { "helpone.png", "helptwo.png" , "helpthree.png"};
 
 
 const std::vector<std::string> playersAvatar = { "BerryAvatar.png", "KingAvatar.png", "ScientistAvatar.png" ,"SoldierAvatar.png"};

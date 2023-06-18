@@ -7,7 +7,7 @@ PlayGame::PlayGame(sf::RenderWindow &window) : m_window(&window) {
     m_ceiling = std::make_unique<Bound>(m_world, B2Ceiling); //Create the ceiling of the game
 
     sf::Vector2f playerPosition(PLAYER_POS_X, PLAYER_POS_Y);
-    m_player  = std::make_shared<Player>(ResourcesManager::instance().getPlayer(), playerPosition, m_world, B2Player);
+    m_player  = std::make_shared<Player>(ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter()), playerPosition, m_world, B2Player);
     m_flame   = std::make_unique<Flame>(ResourcesManager::instance().getFlame(), playerPosition);
     PlayerStateManager::instance().setPlayer(m_player);
 }
@@ -234,27 +234,32 @@ void PlayGame::dealWithEvent() {
             }
             case startSuperPower: {
                 if (!PlayerStateManager::instance().getIfSuperTank()) {
-                    PlayerStateManager::instance().setState(SuperPowerTank, m_world);
+                    //PlayerStateManager::instance().setState(SuperPowerTank, m_world);
+                    PlayerStateManager::instance().setState(SuperPowerTank);
                     PlayerStateManager::instance().setToSuperTank(true);
                 }
                 else {
-                    PlayerStateManager::instance().setState(SuperPowerRunner, m_world);
+                    //PlayerStateManager::instance().setState(SuperPowerRunner, m_world);
+                    PlayerStateManager::instance().setState(SuperPowerRunner);
                     PlayerStateManager::instance().setToSuperTank(false);
                 }
                 break;
             }
             case ReturnRegular: {
-                PlayerStateManager::instance().setState(Regular, m_world);
+                //PlayerStateManager::instance().setState(Regular, m_world);
+                PlayerStateManager::instance().setState(Regular);
                 break;
             }
             case DeathInTheAir: {
                 m_fallingCoins.clear();
-                PlayerStateManager::instance().setState(DeadPlayer, m_world);
+                //PlayerStateManager::instance().setState(DeadPlayer, m_world);
+                PlayerStateManager::instance().setState(DeadPlayer);
                 m_scoreBoard.setDead();
                 break;
             }
             case DeadOnTheGround: {
-                PlayerStateManager::instance().setState(GameOver, m_world);
+                //PlayerStateManager::instance().setState(GameOver, m_world);
+                PlayerStateManager::instance().setState(GameOver);
                 break;
             }
         }
@@ -304,7 +309,7 @@ void PlayGame::deathMovement() {
     float velocityDelta = 3/WINDOW_HEIGHT;
     if(std::abs(m_player->getBody()->GetLinearVelocity().x) <= velocityDelta
     && std::abs(m_player->getBody()->GetLinearVelocity().y) <= velocityDelta
-    && PlayerStateManager::instance().getState() != GameOver && m_player->getObject().getPosition().y != CEILING_POS_Y) {
+    && PlayerStateManager::instance().getState() != GameOver && m_player->getObject().getPosition().y > HEIGHT_CENTER) {
         Event event = Event(DeadOnTheGround);
         EventsQueue::instance().push(event);
         dealWithEvent();
