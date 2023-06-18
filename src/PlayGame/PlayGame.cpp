@@ -92,7 +92,7 @@ void PlayGame::createNonCollisionObjects() { //FIXME: move to the board class an
     //Create the player's flame:
     sf::Vector2f position;
     int numOfLights = (m_lastObject.x / WIDTH_CENTER) - 1;
-    for (int light = 0; light < numOfLights; light++){
+    for (int light = 0; light < numOfLights; light++) {
         position = sf::Vector2f(GAME_SETTING_X + light * WIDTH_CENTER, GAME_SETTING_Y);
         m_nonCollision.push_back(std::make_unique<Lights>(ResourcesManager::instance().getLights(), position));
         if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
@@ -101,7 +101,7 @@ void PlayGame::createNonCollisionObjects() { //FIXME: move to the board class an
     }
 
     int numOfObj = (m_lastObject.x / HEIGHT_CENTER) - 1;
-    for (int scientist = 0; scientist < numOfObj; scientist++){
+    for (int scientist = 0; scientist < numOfObj; scientist++) {
         position = sf::Vector2f(GAME_SETTING_X + scientist * HEIGHT_CENTER, CEILING_POS_Y + SCALE_SIZE * NUM_OF_OBJECTS);
         m_nonCollision.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
         if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
@@ -235,32 +235,27 @@ void PlayGame::dealWithEvent() {
             }
             case startSuperPower: {
                 if (!PlayerStateManager::instance().getIfSuperTank()) {
-                    //PlayerStateManager::instance().setState(SuperPowerTank, m_world);
-                    PlayerStateManager::instance().setState(SuperPowerTank);
+                    PlayerStateManager::instance().setState(SuperPowerTank, m_world);
                     PlayerStateManager::instance().setToSuperTank(true);
                 }
                 else {
-                    //PlayerStateManager::instance().setState(SuperPowerRunner, m_world);
-                    PlayerStateManager::instance().setState(SuperPowerRunner);
+                    PlayerStateManager::instance().setState(SuperPowerRunner, m_world);
                     PlayerStateManager::instance().setToSuperTank(false);
                 }
                 break;
             }
             case ReturnRegular: {
-                //PlayerStateManager::instance().setState(Regular, m_world);
-                PlayerStateManager::instance().setState(Regular);
+                PlayerStateManager::instance().setState(Regular, m_world);
                 break;
             }
             case DeathInTheAir: {
                 m_fallingCoins.clear();
-                //PlayerStateManager::instance().setState(DeadPlayer, m_world);
-                PlayerStateManager::instance().setState(DeadPlayer);
+                PlayerStateManager::instance().setState(DeadPlayer, m_world);
                 m_scoreBoard.setDead();
                 break;
             }
             case DeadOnTheGround: {
-                //PlayerStateManager::instance().setState(GameOver, m_world);
-                PlayerStateManager::instance().setState(GameOver);
+                PlayerStateManager::instance().setState(GameOver, m_world);
                 break;
             }
         }

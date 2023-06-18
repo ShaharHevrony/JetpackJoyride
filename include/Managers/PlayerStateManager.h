@@ -6,7 +6,6 @@ class PlayerStateManager {
 public:
     static PlayerStateManager& instance();
     void setState(int state, b2World* m_world);
-    void setState(int state);
     int getState() const;
     sf::Vector2f getPosition() const;
     sf::Vector2u getSize() const;
@@ -26,6 +25,8 @@ private:
     ~PlayerStateManager();
 
     float m_gravityScale = 0.f;
+    float m_speed = 0.f;
+    bool m_wasPressed = false;
 
     int m_state;
     bool m_wasSuper = false;
