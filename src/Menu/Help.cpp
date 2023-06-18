@@ -26,9 +26,9 @@ void Help::create() {
     m_rightArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
     m_leftArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
 
-    float arrowYPosition = WINDOW_HEIGHT / 1.3;
+    float arrowYPosition = WINDOW_HEIGHT / 1.18;
 
-    sf::Vector2f leftArrowPosition(WINDOW_WIDTH - 400 * OBJECT_SCALE, arrowYPosition);
+    sf::Vector2f leftArrowPosition(WINDOW_WIDTH - 300 * OBJECT_SCALE, arrowYPosition);
     sf::Vector2f rightArrowPosition(WINDOW_WIDTH - 150 * OBJECT_SCALE, arrowYPosition);
 
     // Set the positions and textures of the arrows

@@ -62,6 +62,9 @@ void PlayGame::createObjectMap() {
                 case MISSILE: {
                     position = sf::Vector2f(WINDOW_WIDTH+200, m_player->getObject().getPosition().x);
                     m_missile.push_back(std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position));
+                    if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                        m_lastObject = position;
+                    }
                     break;
                 }
                 case PIGGY: {
@@ -142,6 +145,7 @@ void PlayGame::run() {
                 case sf::Event::MouseButtonReleased: {
                     if (m_settingButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
+                        GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
                         restartGame = setting.run(PlayerStateManager::instance().getState());
                         m_control.LoopClock_t.restart();
                         m_scoreBoard.setScore();
