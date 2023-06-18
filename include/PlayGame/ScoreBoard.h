@@ -5,6 +5,7 @@
 
 #include "Values.h"
 #include "ResourcesManager.h"
+#include "GameManager.h"
 
 class ScoreBoard {
 public:

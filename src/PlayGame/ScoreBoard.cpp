@@ -48,6 +48,8 @@ void ScoreBoard::addPoints(int addToScore) {
     score += addToScore;
     if(best < score) {
         best = score;
+    } else {
+        best = GameManager::instance().getTopScore(0);
     }
 }
 

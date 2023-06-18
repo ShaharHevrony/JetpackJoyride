@@ -6,8 +6,9 @@
 #include <filesystem>
 #include <set>
 
-#include "box2d/box2d.h"
+//#include "box2d/box2d.h"
 #include "ResourcesManager.h"
+#include "NonCollisionObject.h"
 
 class Board {
 public:
@@ -21,7 +22,6 @@ public:
     std::vector<std::string> getMap(int index) const;
     sf::Sprite getFirstBackground() const;
     std::vector<sf::Sprite> getBackgrounds() const;
-    float getWidth() const;
     void setFirstBackground();
     void setBackgrounds(int size);
 

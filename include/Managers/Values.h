@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 enum Buttons {
     PlayButton,
@@ -99,7 +99,7 @@ const double PI             = 3.14159265358;
 const sf::Vector2f DEFAULT_VEC = sf::Vector2f(0.f,0.f);
 
 const std::vector<std::string> gameSettings = {"Resume", "Restart", "Quit"};
-const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "TOTAL: "};
+const std::vector<std::string> scoreBoard = {"MONEY: ","TIME: ", "BEST: "};
 const std::vector<std::string> playerWalking = {"BerryWalking.png","KingWalking.png", "ScientistWalking.png" , "SoldierWalking.png"};
 
 const std::vector<std::string> buttons     = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
@@ -114,7 +114,7 @@ const std::vector<std::string> help        = { "helpone.png", "helptwo.png" , "h
 
 
 const std::vector<std::string> playersAvatar = { "BerryAvatar.png", "KingAvatar.png", "ScientistAvatar.png" ,"SoldierAvatar.png"};
-const int prices[] = { 100, 2000, 3000, 4000 };
+const int prices[] = { 0, 2000, 3000, 4000 };
 
 
 const std::vector<std::string> MAP = { "--*---------*--\n"

@@ -95,7 +95,7 @@ void Board::moveBackgrounds(float time) {
         m_backgrounds[index].move(direction * time);
         if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
             sf::Vector2f position = m_backgrounds[(index + 2) % BACKGROUND].getPosition();
-            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width-10;
+            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width - 10;
             m_backgrounds[index].setPosition(position);
         }
     }
@@ -129,6 +129,3 @@ void Board::setFirstBackground() {
     m_firstBackground.setScale(WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y, WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y);
 }
 
-float Board::getWidth() const {
-    return ResourcesManager::instance().getGameBackground()->getSize().x;
-}

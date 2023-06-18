@@ -15,6 +15,7 @@ void Shop::create() {
     m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
+    GameManager::instance().setOwned(0);
 
     // Define the size and position of the big rectangle
     sf::Vector2f rectSize(PLAYER_POS_X * 2 + 100, PLAYER_POS_Y * 2 + 100);

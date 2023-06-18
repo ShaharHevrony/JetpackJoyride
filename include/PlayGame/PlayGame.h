@@ -50,7 +50,6 @@ private:
     std::vector<std::unique_ptr<Object>> m_singleObjects;
     std::vector<std::unique_ptr<Missile>> m_missile;
     std::vector<std::unique_ptr<Laser>> m_pairedObjects;
-    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollision;
     std::shared_ptr<Flame> m_flame;
 
     b2World* m_world;
@@ -58,4 +57,5 @@ private:
     std::unique_ptr<Box2Object> m_floor;
     std::unique_ptr<Box2Object> m_ceiling;
     std::vector<std::unique_ptr<Box2Object>> m_fallingCoins;
+    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollision;
 };

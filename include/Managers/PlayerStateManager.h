@@ -14,8 +14,6 @@ public:
     void setToSuperTank(bool change);
     void setPlayer(std::shared_ptr<Box2Object> player);
     void setSpacePressed(bool pressed);
-    void setSpeed();
-
     void moveByState();
     void moveByPress();
     void handleCollisionByState(float collidedType);
@@ -23,10 +21,6 @@ public:
 private:
     PlayerStateManager();
     ~PlayerStateManager();
-
-    float m_gravityScale = 0.f;
-    float m_speed = 0.f;
-    bool m_wasPressed = false;
 
     int m_state;
     bool m_wasSuper = false;

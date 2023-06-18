@@ -102,7 +102,7 @@ void PlayGame::createNonCollisionObjects() { //FIXME: move to the board class an
 
     int numOfObj = (m_lastObject.x / HEIGHT_CENTER) - 1;
     for (int scientist = 0; scientist < numOfObj; scientist++) {
-        position = sf::Vector2f(GAME_SETTING_X + scientist * HEIGHT_CENTER, CEILING_POS_Y + SCALE_SIZE * NUM_OF_OBJECTS);
+        position = sf::Vector2f(GAME_SETTING_X + scientist * HEIGHT_CENTER, WINDOW_HEIGHT/1.28);
         m_nonCollision.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
         if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
             m_lastObject = position;
@@ -227,7 +227,7 @@ void PlayGame::dealWithEvent() {
                 srand(time(nullptr));
                 for(int index = 0; index <= 80; index++) {
                     position.x += index / 4;
-                    random = (rand() % 10) + 1;
+                    random = (rand() % 8) + 1;
                     m_fallingCoins.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position, m_world, random, B2DynamicCoin));
                 }
                 m_lastCoin = m_fallingCoins[m_fallingCoins.size() - 1]->getObject().getPosition();
@@ -267,7 +267,9 @@ void PlayGame::draw() {
     m_floor->draw(m_window);
     m_ceiling->draw(m_window);
     m_board.draw(m_window, m_control, PlayerStateManager::instance().getState());
-
+    for (auto  &nonCollisionObj : m_nonCollision){
+        nonCollisionObj->draw(m_window);
+    }
     for (auto &singleObj : m_singleObjects) {
         singleObj->draw(m_window);
     }
@@ -281,9 +283,6 @@ void PlayGame::draw() {
     }
     for (auto &fallingCoin : m_fallingCoins) {
         fallingCoin->draw(m_window);
-    }
-    for (auto  &nonCollisionObj : m_nonCollision){
-        nonCollisionObj->draw(m_window);
     }
     m_window->draw(m_settingButton);
     m_scoreBoard.draw(m_window);
@@ -321,7 +320,6 @@ void PlayGame::moveObjects() {
     m_world->Step(timeStep, velocityIterations, positionIterations);
     m_player->move(m_control.Time_t * m_control.Speed_t);
     sf::Vector2f playerPosition = m_player->getObject().getPosition();
-    sf::Vector2u playerSize = m_player->getObject().getTexture()->getSize();
     m_flame->setPlayerPos(sf::Vector2f(playerPosition.x - 35*OBJECT_SCALE, playerPosition.y + 70*OBJECT_SCALE));
     m_flame->move(m_control.Time_t * m_control.Speed_t);
 

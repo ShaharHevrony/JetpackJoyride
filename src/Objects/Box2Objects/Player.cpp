@@ -23,7 +23,7 @@ void Player::create(b2World *world, b2BodyType bodyType) {
     m_body = world->CreateBody(&bodyDef);
 
     b2PolygonShape shape;
-    shape.SetAsBox(m_object.getGlobalBounds().width/8, m_object.getGlobalBounds().height/8);
+    shape.SetAsBox(m_object.getTextureRect().width/8, m_object.getTextureRect().height/8);
 
     //FixtureDef
     b2FixtureDef fixtureDef;
@@ -77,7 +77,7 @@ void Player::handleCollision(Laser& laser) {
 void Player::handleCollision(Beam &beam) {
     std::vector<sf::CircleShape> beamsCircles = beam.getCircles();
     for(auto circle : beamsCircles){
-        if(circle.getGlobalBounds().intersects(m_object.getGlobalBounds())){
+        if(circle.getGlobalBounds().intersects(m_object.getGlobalBounds())) {
             float beamTime = 1.f;
             PlayerStateManager::instance().handleCollisionByState(beamTime);
             m_ZapperSound.play();

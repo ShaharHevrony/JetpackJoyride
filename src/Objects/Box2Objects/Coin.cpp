@@ -22,15 +22,15 @@ void Coin::create(b2World *world, b2BodyType bodyType) {
 
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
-    shape.m_radius = 1.f;
+    shape.m_radius = 0.1f;
 
     //FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.5f;
-    fixtureDef.friction = 1.1f;
-    fixtureDef.restitution = 1.1f; //Add the restitution property
+    fixtureDef.friction = 1.f;
+    fixtureDef.restitution = 1.f; //Add the restitution property
     m_body->CreateFixture(&fixtureDef);
 
     b2MassData mass;
