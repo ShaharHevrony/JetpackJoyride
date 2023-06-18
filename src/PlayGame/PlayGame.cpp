@@ -170,6 +170,7 @@ void PlayGame::run() {
                 sf::Time elapsed = m_timer.getElapsedTime();
                 if (elapsed.asSeconds() >= 2.0) {
                     GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
+                    GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
                     m_scoreBoard.setScore();
                     restartGame = setting.run(PlayerStateManager::instance().getState());
                 }

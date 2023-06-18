@@ -7,7 +7,7 @@ Shop::~Shop() {}
 void Shop::create() {
     //create shop
 
-    GameManager::instance().setCollectedSum(2500);
+    //GameManager::instance().setCollectedSum(2500);
 
     m_shopBoard.setTexture(*ResourcesManager::instance().getGameMenu());
     m_shopBoard.setScale(WINDOW_WIDTH / m_shopBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_shopBoard.getTexture()->getSize().y);
@@ -88,7 +88,8 @@ void Shop::run() {
                 else if (m_buyButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) { //here is the connectiton to the game!!!!
                     if (prices[m_avatarIndex] <= GameManager::instance().getCollectedSum() && !(GameManager::instance().getOwned(m_avatarIndex))) {
                         GameManager::instance().setOwned(m_avatarIndex);
-                        GameManager::instance().setCollectedSum(-prices[m_avatarIndex]);
+                        //GameManager::instance().setCollectedSum(-prices[m_avatarIndex]);
+                        GameManager::instance().setcollctedSumBuy(prices[m_avatarIndex]);
                         GameManager::instance().setCharacter(m_avatarIndex);
                         setAvatar();
                     }

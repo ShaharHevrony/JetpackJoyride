@@ -115,6 +115,11 @@ void GameManager::setCollectedSum(int collected) {
     m_collectedSum += collected;
 }
 
+void GameManager::setcollctedSumBuy(int price)
+{
+    m_collectedSum -= price;
+}
+
 int GameManager::getCollectedSum() const {
     return m_collectedSum;
 }

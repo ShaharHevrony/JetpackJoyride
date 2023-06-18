@@ -22,6 +22,7 @@ public:
     void setMusic(int music);
     int getMusic() const;
     void setCollectedSum(int collected);
+    void setcollctedSumBuy(int price);
     int getCollectedSum() const;
     void setCharacter(int character);
     int getCharacter() const;
