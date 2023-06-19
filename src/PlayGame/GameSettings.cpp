@@ -1,8 +1,6 @@
-
 #include "GameSettings.h"
 
-GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& control)
-            :m_window(&window) , m_control(control){
+GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& control) :m_window(&window) , m_control(control) {
     create();
 }
 
@@ -11,19 +9,14 @@ GameSettings::~GameSettings() {}
 void GameSettings::create() {
     m_background.setTexture(*ResourcesManager::instance().getFirstBackground());
     m_background.setScale(WINDOW_HEIGHT/m_background.getTexture()->getSize().y, WINDOW_HEIGHT/m_background.getTexture()->getSize().y);
-    //Create the game over box
-    m_setting = sf::RectangleShape(sf::Vector2f(WIDTH_CENTER/2, HEIGHT_CENTER/2));
-    m_setting.setFillColor(sf::Color(150,150,150));
-    m_setting.setOutlineThickness(2);
-    m_setting.setOutlineColor(sf::Color::Black);
-    m_setting.setPosition(WIDTH_CENTER, HEIGHT_CENTER);
-    m_setting.setOrigin(WIDTH_CENTER/4, HEIGHT_CENTER/4);
+
 
     for(int index = 0; index < GAME_SETTINGS; index++) {
-        m_gameSettings[index] = sf::Text(gameSettings[index], ResourcesManager::instance().getFont(), SCALE_SIZE);
-        m_gameSettings[index].setFillColor(sf::Color::Black);
-        m_gameSettings[index].setPosition(m_setting.getPosition().x, m_setting.getPosition().y + SCALE_SIZE * index);
+        m_gameSettings[index].setTexture(*ResourcesManager::instance().getSettingButtons(index));
+        m_gameSettings[index].setPosition(WIDTH_CENTER, HEIGHT_CENTER / 2 + SCALE_SIZE * index*OBJECT_SCALE*3);
         m_gameSettings[index].setOrigin(WIDTH_CENTER/8, HEIGHT_CENTER/8);
+        m_gameSettings[index].setOrigin(m_gameSettings[index].getTexture()->getSize().x / 2, m_gameSettings[index].getTexture()->getSize().y / 2);
+        m_gameSettings[index].setScale(OBJECT_SCALE * 1.5, OBJECT_SCALE * 1.5); //Increase button size by 20%
     }
 }
 
@@ -43,13 +36,23 @@ bool GameSettings::run(int playerType) {
                     return true;       //Restart the game
                 }else if (m_gameSettings[2].getGlobalBounds().contains(mousePosF)) {
                     m_window->close();
-                    return false;      //Quit the game
+                    return false;     //Quit the game
                 }
             }
+            if (event.type == sf::Event::MouseMoved) {
+                for (int i = 0; i < settingsButtons.size() ; i++) {
+                    if (m_gameSettings[i].getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
+                        m_gameSettings[i].setScale(OBJECT_SCALE * 1.8, OBJECT_SCALE * 1.8); //Increase button size by 20%
+                    }
+                    else {
+                        m_gameSettings[i].setScale(OBJECT_SCALE * 1.5, OBJECT_SCALE * 1.5); //Reset button size
+                    }
+                }
+            }
+
         }
         m_window->clear();
         m_window->draw(m_background);
-        m_window->draw(m_setting);
         if(playerType != DeadPlayer && playerType != GameOver) {
             m_window->draw(m_gameSettings[0]);
         }

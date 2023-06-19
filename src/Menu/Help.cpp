@@ -1,4 +1,3 @@
-
 #include "Help.h"
 
 Help::Help(sf::RenderWindow& window) : m_window(&window) {}
@@ -7,18 +6,12 @@ Help::~Help() {}
 
 
 void Help::create() {
-    m_HelpBoard.resize(3);
-
-    m_HelpBoard[0].setTexture(*ResourcesManager::instance().getHelp(0));
-    m_HelpBoard[0].setScale(WINDOW_WIDTH / m_HelpBoard[0].getTexture()->getSize().x, WINDOW_HEIGHT / m_HelpBoard[0].getTexture()->getSize().y);
-
-    m_HelpBoard[1].setTexture(*ResourcesManager::instance().getHelp(1));
-    m_HelpBoard[1].setScale(WINDOW_WIDTH / m_HelpBoard[1].getTexture()->getSize().x, WINDOW_HEIGHT / m_HelpBoard[1].getTexture()->getSize().y);
-
-    m_HelpBoard[2].setTexture(*ResourcesManager::instance().getHelp(2));
-    m_HelpBoard[2].setScale(WINDOW_WIDTH / m_HelpBoard[2].getTexture()->getSize().x, WINDOW_HEIGHT / m_HelpBoard[2].getTexture()->getSize().y);
-
-
+    for(int index = 0; index < BACKGROUND; index++) {
+        sf::Sprite tempHelp;
+        tempHelp.setTexture(*ResourcesManager::instance().getHelp(index));
+        tempHelp.setScale(WINDOW_WIDTH/tempHelp.getTexture()->getSize().x,  WINDOW_HEIGHT/tempHelp.getTexture()->getSize().y);
+        m_helpBoard.push_back(tempHelp);
+    }
     m_backButton.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 8);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
@@ -95,7 +88,7 @@ void Help::run() {
 
 void Help::draw() {
     m_window->clear();
-    m_window->draw(m_HelpBoard[m_helpNum]);
+    m_window->draw(m_helpBoard[m_helpNum]);
 
     m_window->draw(m_backButton);
     m_window->draw(m_rightArrow);

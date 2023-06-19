@@ -41,6 +41,7 @@ public:
     sf::Texture* getBuy();
     sf::Texture* getWiteArrow();
     sf::Texture* getEquip();
+    sf::Texture* getSettingButtons(int index);
 
 
     sf::Texture* getAvatar(int index);
@@ -88,7 +89,7 @@ private:
     sf::Texture m_playerAva[4];
     sf::Texture m_help[3];
     sf::Texture m_equip;
-
+    sf::Texture m_gameSettingButtons[3];
     sf::Texture m_buy;
 
 

@@ -17,7 +17,6 @@ public:
 private:
     sf::RenderWindow* m_window;
     sf::Sprite m_background;
-    sf::RectangleShape m_setting;
-    sf::Text m_gameSettings[3];
+    sf::Sprite m_gameSettings[3];
     Control m_control;
 };

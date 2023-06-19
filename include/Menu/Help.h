@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 #include "Values.h"
 #include "GameManager.h"
@@ -15,7 +16,7 @@ public:
 
 private:
     sf::RenderWindow* m_window;
-    std::vector<sf::Sprite> m_HelpBoard ;
+    std::vector<sf::Sprite> m_helpBoard;
     sf::Sprite m_backButton;
     sf::Sprite m_leftArrow;
     sf::Sprite m_rightArrow;

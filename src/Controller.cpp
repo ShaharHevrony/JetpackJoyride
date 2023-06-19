@@ -17,7 +17,8 @@ Controller::~Controller() {}
 
 void Controller::create() {
     m_menuBackground.setTexture(*ResourcesManager::instance().getGameMenu());
-    m_menuBackground.setScale(WINDOW_WIDTH/m_menuBackground.getTexture()->getSize().x, WINDOW_HEIGHT/m_menuBackground.getTexture()->getSize().y);
+    float scale = std::max(WINDOW_WIDTH/m_menuBackground.getTexture()->getSize().x,  WINDOW_HEIGHT/m_menuBackground.getTexture()->getSize().y);
+    m_menuBackground.setScale(scale, scale);
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
     m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x/2, ResourcesManager::instance().getTitle()->getSize().y/2);
@@ -36,7 +37,7 @@ void Controller::create() {
             tempSpr.setPosition(WIDTH_CENTER + MENU_WIDTH_GAP, HEIGHT_CENTER + MENU_HEIGHT_GAP);
         }
         tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x/2,ResourcesManager::instance().getButtons(button)->getSize().y/2);
-        //tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
+        tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
         m_getButtonSpr.push_back(tempSpr);
     }
     for(int button = 0; button < NUM_OF_BUTTONS; button++){

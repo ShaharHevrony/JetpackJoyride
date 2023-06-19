@@ -173,6 +173,12 @@ ResourcesManager::ResourcesManager() {
     if (!m_soundGetPower.loadFromFile(PATH + "getPowerSound.wav")) {
         throw OpenAudioFailed();
     }
+
+    for (int index = 0; index < settingsButtons.size(); index++) {
+        if (!m_gameSettingButtons[index].loadFromFile(PATH + settingsButtons[index])) {
+            throw OpenTextureFailed();
+        }
+    }
 }
 
 ResourcesManager::~ResourcesManager() {}
@@ -274,6 +280,11 @@ sf::Texture* ResourcesManager::getWiteArrow() {
 sf::Texture* ResourcesManager::getEquip() {
     return &m_equip;
 }
+
+sf::Texture* ResourcesManager::getSettingButtons(int index) {
+    return &m_gameSettingButtons[index];
+}
+
 //---------------------- Get all of the game's arrays texture ----------------------
 sf::Texture* ResourcesManager::getPlayer(int index) {
     return &m_player[index];

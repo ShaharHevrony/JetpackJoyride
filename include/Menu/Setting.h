@@ -16,7 +16,6 @@ public:
     void create();
     void run();
     void draw();
-    int getVol();
     void setTopText();
 
 private:
@@ -29,7 +28,6 @@ private:
 
     sf::Sprite m_backButton;
     sf::Text m_backText;
-
     AudioManager m_music;
     AudioManager m_sound;
 };

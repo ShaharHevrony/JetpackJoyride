@@ -9,12 +9,12 @@ AudioManager::~AudioManager() {}
 void AudioManager::create(int index) {
     sf::Vector2f position = sf::Vector2f(WIDTH_CENTER / 6, HEIGHT_CENTER / 6);
     if (index == 2) {
-        m_start = sf::Vector2f(WIDTH_CENTER - 1.2 * position.x, HEIGHT_CENTER - 1.05 * index * position.y);
-        m_end = sf::Vector2f(WIDTH_CENTER + 1.2 * position.x, HEIGHT_CENTER - 1.05 * index * position.y);
+        m_start = sf::Vector2f(WIDTH_CENTER - 3.5 * position.x, HEIGHT_CENTER + index * position.y);
+        m_end = sf::Vector2f(WIDTH_CENTER - position.x, HEIGHT_CENTER + index * position.y);
     }
     if (index == 1) {
-        m_start = sf::Vector2f(WIDTH_CENTER - 1.2 * position.x, HEIGHT_CENTER - 0.8 * index * position.y);
-        m_end = sf::Vector2f(WIDTH_CENTER + 1.2 * position.x, HEIGHT_CENTER - 0.8 * index * position.y);
+        m_start = sf::Vector2f(WIDTH_CENTER - 3.5 * position.x, HEIGHT_CENTER + index / 15 * position.y);
+        m_end = sf::Vector2f(WIDTH_CENTER - position.x, HEIGHT_CENTER + index / 15 * position.y);
     }
 
     m_circle.setRadius(SETTING_CIRCLE);

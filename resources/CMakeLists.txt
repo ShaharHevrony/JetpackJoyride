@@ -59,12 +59,13 @@ configure_file ("Images/Other/Scientist.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/arrow.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/Buy.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/whiteArrow.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Other/helpone.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Other/helptwo.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Images/Other/helpthree.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/HelpMenuOne.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/HelpMenuTwo.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/HelpMenuThree.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Images/Other/Equip.png" ${CMAKE_BINARY_DIR} COPYONLY)
-
-
+configure_file ("Images/Other/SettingQuit.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Resume.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Images/Other/Retry.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 #The font of the game:
 configure_file ("Images/Other/Jetpackia.ttf" ${CMAKE_BINARY_DIR} COPYONLY)

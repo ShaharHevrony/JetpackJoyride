@@ -66,8 +66,6 @@ void Setting::draw() {
             sf::Vertex(m_music.getEnd(), sf::Color(150, 150, 150))
     };
     m_window->draw(musicLine, 2, sf::Lines);
-    m_music.setType("MUSIC: ");
-    m_window->draw(m_music.getType());
     m_window->draw(m_music.getCircle());
 
     sf::Vertex soundLine[] = {
@@ -75,8 +73,6 @@ void Setting::draw() {
             sf::Vertex(m_sound.getEnd(), sf::Color(150, 150, 150))
     };
     m_window->draw(soundLine, 2, sf::Lines);
-    m_sound.setType("SOUND: ");
-    m_window->draw(m_sound.getType());
     m_window->draw(m_sound.getCircle());
 
     m_window->draw(m_backButton);
@@ -101,8 +97,8 @@ void Setting::create() {
     }
 
     for(int index = 0; index < TOP_FIVE; index++) {
-        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SCALE_SIZE * 1.2));
-        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER, HEIGHT_CENTER + GAME_SETTING_Y * 2 + SCALE_SIZE * 1.4 * index)); //-position.y));
+        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SCALE_SIZE * 1.5));
+        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER * 1.35, HEIGHT_CENTER + SCALE_SIZE * 1.5 * index)); //-position.y));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/2, m_topBoard->getSize().y/2);
         m_topBoard[index].setFillColor(sf::Color(97,106,132));
         m_topBoard[index].setOutlineThickness(2);
@@ -115,19 +111,12 @@ void Setting::create() {
         m_topText[index].setOutlineThickness(3);
     }
 
-    m_music.setType("MUSIC: ");
-    m_sound.setType("SOUND: ");
-
     m_backButton.setPosition(WIDTH_CENTER + OBJECT_SCALE * 26, m_music.getStart().y + OBJECT_SCALE * 26);
     m_backButton.setOrigin(SETTING_WIDTH - 2 * OBJECT_SCALE, m_music.getStart().y);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
 }
 
 Setting::~Setting() {}
-
-int Setting::getVol() {
-    return m_music.getVolume();
-}
 
 void Setting::setTopText() {
     GameManager::instance().sort();

@@ -38,7 +38,6 @@ void GameManager::readFile() {
     }
     managerFile >> m_soundVolume;
     managerFile >> m_musicVolume;
-    managerFile >> m_chosenCharacter;
     for (int index = 0; index < TOP_FIVE; index++) {
         managerFile >> m_topScore[index];
     }
@@ -57,7 +56,7 @@ void GameManager::writeFile() {
     if (!managerFile.is_open()) {
         throw OpenFileFailed();
     }
-    managerFile << m_soundVolume << " " << m_musicVolume << " " << m_chosenCharacter << "\n";
+    managerFile << m_soundVolume << " " << m_musicVolume << "\n";
     for(int index = 0; index < TOP_FIVE; index++) {
         managerFile << m_topScore[index] << "\n";
     }
