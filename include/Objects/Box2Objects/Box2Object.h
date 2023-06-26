@@ -16,7 +16,6 @@ public:
     int getType() const;
 
     virtual void create(b2World *world, b2BodyType bodyType) = 0;
-    virtual void move(float time) = 0;
     virtual void draw(sf::RenderWindow* window) = 0;
     virtual void updateCollisionTime(float time) = 0;
 

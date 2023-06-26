@@ -31,7 +31,7 @@ public:
     bool getCollided() const;
     virtual void setCollided();
 
-    virtual void move(float time) = 0;
+    virtual void move(float time);
     virtual void draw(sf::RenderWindow* window) = 0;
     virtual void updateCollisionTime(float time) = 0;
 

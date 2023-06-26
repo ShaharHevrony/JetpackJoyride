@@ -16,8 +16,8 @@ void Help::create() {
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
 
-    m_rightArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
-    m_leftArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
+    m_rightArrow.setTexture(*ResourcesManager::instance().getWhiteArrow());
+    m_leftArrow.setTexture(*ResourcesManager::instance().getWhiteArrow());
 
     float arrowYPosition = WINDOW_HEIGHT / 1.18;
 

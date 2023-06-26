@@ -5,6 +5,7 @@
 
 #include "Values.h"
 #include "ResourcesManager.h"
+#include "PlayerStateManager.h"
 #include "GameManager.h"
 
 class ScoreBoard {
@@ -13,19 +14,19 @@ public:
     ~ScoreBoard();
     void draw(sf::RenderWindow *window);
     int getScore() const;
-    void setScore() const;
+    void setScore();
+    void setTime();
     void addPoints(int addToScore);
-    int getBest() const;
-    void setBest(int newBest);
-    void setDead();
-
-    static sf::Clock timer;
-    static int score;
-    static int best;
+    //int getBest() const;
+    //void setBest(int newBest);
+    //void setDead();
 
 private:
-    bool m_dead = false;
-    float m_lastTime;
+    static sf::Clock clock;
+    static int score;
+    static std::string time;
+    static int best;
+
     std::stringstream m_str[3];
     sf::Text m_scoreBoard[3];
 };

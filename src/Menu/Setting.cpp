@@ -83,14 +83,14 @@ void Setting::draw() {
 
 void Setting::create() {
     setTopText();
-    int music = 1;
-    int sound = 2;
+    int sound = 1;
+    int music = 2;
     m_settingBoard.setTexture(*ResourcesManager::instance().getSettingBackGround());
     m_settingBoard.setScale(WINDOW_WIDTH / m_settingBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_settingBoard.getTexture()->getSize().y);
-    m_music.create(music);
-    m_music.setVolume(GameManager::instance().getMusic());
     m_sound.create(sound);
     m_sound.setVolume(GameManager::instance().getSound());
+    m_music.create(music);
+    m_music.setVolume(GameManager::instance().getMusic());
 
     for(int index = 0; index < TOP_FIVE; index++) {
         m_topScore[index] = GameManager::instance().getTopScore(index);
@@ -112,7 +112,7 @@ void Setting::create() {
     }
 
     m_backButton.setPosition(WIDTH_CENTER + OBJECT_SCALE * 26, m_music.getStart().y + OBJECT_SCALE * 26);
-    m_backButton.setOrigin(SETTING_WIDTH - 2 * OBJECT_SCALE, m_music.getStart().y);
+    m_backButton.setOrigin(WIDTH_CENTER - 2 * OBJECT_SCALE, m_music.getStart().y);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
 }
 

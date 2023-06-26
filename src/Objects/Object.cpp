@@ -10,6 +10,10 @@ Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(
     }
 }
 
+void Object::move(float time) {
+    m_object.move(DIRECTION * time);
+}
+
 void Object::setDelete() {
     m_isDelete = !m_isDelete;
 }

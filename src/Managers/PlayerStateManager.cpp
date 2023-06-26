@@ -32,35 +32,35 @@ void PlayerStateManager::setState(int state, b2World* m_world) {
     m_state = state;
     switch (m_state) {
         case Regular: {
-            m_player->setAnimate(ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter()), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular), sf::Vector2u(4, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
             break;
         }
         case SuperPowerTank: {
-            m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.2f);
+            m_player->setAnimate(ResourcesManager::instance().getSuperPower(WalkingTank), sf::Vector2u(2, 1), 0.2f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             b2Vec2 deathGravity(GRAVITATION_X, GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
             break;
         }
         case SuperPowerRunner: {
-            m_player->setAnimate(ResourcesManager::instance().getSuperPowerRunner(), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getSuperPower(Runner), sf::Vector2u(4, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             b2Vec2 deathGravity(- GRAVITATION_X, - GRAVITATION_Y);
             m_world->SetGravity(deathGravity);
             break;
         }
         case DeadPlayer: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 0), sf::Vector2u(4, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), DeadPlayer), sf::Vector2u(4, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
             m_world->SetGravity(deathGravity);
             break;
         }
         case GameOver: {
-            m_player->setAnimate(ResourcesManager::instance().getBarryDeath(GameManager::instance().getCharacter(), 1), sf::Vector2u(1, 1), 0.18f);
+            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), GameOver), sf::Vector2u(1, 1), 0.18f);
             m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height/2);
             b2Vec2 deathGravity(DEATH_GRAVITY_X, DEATH_GRAVITY_Y * 2);
             m_world->SetGravity(deathGravity);
@@ -81,6 +81,10 @@ sf::Vector2f PlayerStateManager::getPosition() const {
     return m_player->getObject().getPosition();
 }
 
+sf::Vector2f PlayerStateManager::getOrigin() const {
+    return m_player->getObject().getOrigin();
+}
+
 sf::Vector2u PlayerStateManager::getSize() const {
     return m_player->getObject().getTexture()->getSize();
 }
@@ -98,17 +102,19 @@ void PlayerStateManager::moveByPress() {
     if (m_spacePressed) {
         switch (m_state) {
             case Regular: {
-                jumpVelocity = ANTI_GRAVITY * GRAVITATION_Y;   //Adjust the jump velocity as needed
+                jumpVelocity = ANTI_GRAVITY;   //Adjust the jump velocity as needed
                 break;
             }
             case SuperPowerTank: {
-                jumpVelocity = ANTI_GRAVITY/2 * GRAVITATION_Y; //Adjust the jump velocity as needed
+                jumpVelocity = ANTI_GRAVITY/2; //Adjust the jump velocity as needed
                 break;
             }
             case SuperPowerRunner: {
-                jumpVelocity = -ANTI_GRAVITY * GRAVITATION_Y;
+                jumpVelocity = - ANTI_GRAVITY;  //Adjust the jump velocity as needed
                 break;
             }
+            default:
+                break;
         }
         m_player->getBody()->SetLinearVelocity(b2Vec2(m_player->getBody()->GetLinearVelocity().x, jumpVelocity));
         b2Vec2 bodyPosition = m_player->getBody()->GetPosition();
@@ -118,7 +124,7 @@ void PlayerStateManager::moveByPress() {
     }
 }
 
-void PlayerStateManager::moveByState() {
+void PlayerStateManager::animateByState() {
     float length = m_player->getObject().getTexture()->getSize().x / 4;
     switch (m_state) {
         case Regular: {
@@ -133,10 +139,10 @@ void PlayerStateManager::moveByState() {
         }
         case SuperPowerTank: {
             if(m_spacePressed) {
-                m_player->setAnimate(ResourcesManager::instance().getSuperPower(2), sf::Vector2u(1, 1), 0.18f);
+                m_player->setAnimate(ResourcesManager::instance().getSuperPower(FlyingTank), sf::Vector2u(1, 1), 0.18f);
             } else {
                 if(m_player->getBody()->GetLinearVelocity().y > 0.0f) {
-                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(1), sf::Vector2u(2, 1), 0.18f);
+                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(WalkingTank), sf::Vector2u(2, 1), 0.18f);
                     length *= 2;
                     m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
                 } else {

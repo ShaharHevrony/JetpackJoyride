@@ -8,8 +8,8 @@ Beam::Beam(sf::Texture* texture, const sf::Vector2f &position, float rotate, flo
 }
 
 void Beam::calculatePoints(float distance) {
-    float size = std::min(ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter())->getSize().x,
-                          ResourcesManager::instance().getPlayer(GameManager::instance().getCharacter())->getSize().y) * 0.8/PLAYER_SCALE;
+    float size = std::min(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular)->getSize().x,
+                          ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular)->getSize().y) * 0.8/PLAYER_SCALE;
     int numOfCircle = (distance/size) + 1;
     float radius = WINDOW_HEIGHT * 0.02;
     float angleRadians = (m_object.getRotation() + 90.f) * (PI / 180.0f);
@@ -31,11 +31,9 @@ std::vector<sf::CircleShape> Beam::getCircles() const{
 }
 
 void Beam::move(float time) {
-    animate();
-    sf::Vector2f direction(-1,0);
-    m_object.move(direction*time);
+    m_object.move(DIRECTION * time);
     for(auto &point : m_circles)
-        point.move(direction*time);
+        point.move(DIRECTION * time);
 }
 
 void Beam::handleCollision(Object& object) {

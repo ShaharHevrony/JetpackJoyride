@@ -1,4 +1,6 @@
- #include "Board.h"
+#include "Board.h"
+
+sf::Clock Board::speedIncreaseTimer;
 
 Board::Board() {
     m_allMaps.clear();
@@ -59,40 +61,34 @@ void Board::readObjectFile(int index) {
     readingFile.close();
 }
 
-void Board::draw(sf::RenderWindow* window, Control& control, int playerType) {
-    float changeInterval = 3.0f;
-    //Calculate the elapsed time in seconds
-    control.Time_t = control.LoopClock_t.getElapsedTime().asSeconds();
-    float elapsedTime = control.Time_t;
-    if (elapsedTime >= changeInterval) {
-        control.Speed_t += 15.f;
-    }
-
-    control.LoopClock_t.restart();
-    if(playerType == Regular || playerType == SuperPowerTank || playerType == SuperPowerRunner) {
-        moveBackgrounds(control.Time_t * control.Speed_t);
-    }
+void Board::draw(sf::RenderWindow* window) {
     for (int i = 0; i < BACKGROUND; ++i) {
         window->draw(getBackgrounds()[i]);
     }
     window->draw(getFirstBackground());
 }
 
-void Board::moveBackgrounds(float time) {
-    sf::Vector2f direction(-1,0);
-    m_firstBackground.move(direction*time);
+void Board::moveBackgrounds() {
+    if(speedIncreaseTimer.getElapsedTime().asSeconds() >= CHANGE_INTERVAL) {
+        m_speed += ACCELERATION;
+        speedIncreaseTimer.restart();
+    }
+    m_time = m_loopClock.getElapsedTime().asSeconds();
+    m_loopClock.restart();
+
+    m_firstBackground.move(DIRECTION * m_time * m_speed);
     if (m_firstBackground.getPosition().x > -(WINDOW_WIDTH)) {
-        // Move the second background sprite based on the first one
+        //Move the second background sprite based on the first one
         sf::Vector2f position = m_backgrounds[1].getPosition();
         position.x = m_firstBackground.getPosition().x + m_firstBackground.getGlobalBounds().width;
         m_backgrounds[1].setPosition(position);
-        // Move the third background sprite based on the second one
+        //Move the third background sprite based on the second one
         position = m_backgrounds[2].getPosition();
         position.x = m_backgrounds[1].getPosition().x + m_backgrounds[1].getGlobalBounds().width;
         m_backgrounds[2].setPosition(position);
     }
     for (int index = 0; index < 3; index++) {
-        m_backgrounds[index].move(direction * time);
+        m_backgrounds[index].move(DIRECTION * m_time * m_speed);
         if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
             sf::Vector2f position = m_backgrounds[(index + 2) % BACKGROUND].getPosition();
             position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width - 10;
@@ -101,9 +97,9 @@ void Board::moveBackgrounds(float time) {
     }
 }
 
-std::vector<std::string> Board::getMap(int index) const {
+std::vector<std::string> Board::getMap() const {
     auto ptr = m_allMaps.begin();
-    std::advance(ptr, index);
+    std::advance(ptr, m_random);
     return *ptr;
 }
 
@@ -129,3 +125,27 @@ void Board::setFirstBackground() {
     m_firstBackground.setScale(WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y, WINDOW_HEIGHT/m_firstBackground.getTexture()->getSize().y);
 }
 
+void Board::randMap() {
+    srand(time(nullptr));
+    m_random = rand() % MAP.size();
+    if (m_mapCount.size() != MAP.size()) {
+        while (m_mapCount.contains(m_random)) {
+            m_random = rand() % MAP.size();
+        }
+        m_mapCount.insert(m_random);
+    } else {
+        m_mapCount.clear();
+    }
+}
+
+float Board::getTime() const {
+    return m_time;
+}
+
+float Board::getMovement() const {
+    return m_time * m_speed;
+}
+
+void Board::setClock() {
+    m_loopClock.restart();
+}

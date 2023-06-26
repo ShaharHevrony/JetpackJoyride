@@ -11,7 +11,6 @@ public:
     float calculateAngle(sf::Vector2f otherPosition);
     float calculateDistance(sf::Vector2f otherPosition);
 
-    virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time){}
 

@@ -8,13 +8,14 @@ public:
     void setState(int state, b2World* m_world);
     int getState() const;
     sf::Vector2f getPosition() const;
+    sf::Vector2f getOrigin() const;
     sf::Vector2u getSize() const;
     bool getIfSuperTank() const;
 
     void setToSuperTank(bool change);
     void setPlayer(std::shared_ptr<Box2Object> player);
     void setSpacePressed(bool pressed);
-    void moveByState();
+    void animateByState();
     void moveByPress();
     void handleCollisionByState(float collidedType);
 

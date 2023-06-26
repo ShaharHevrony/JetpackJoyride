@@ -6,7 +6,6 @@ public:
     SuperPower(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
     virtual ~SuperPower() = default;
 
-    virtual void move(float time);
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time) {}
 

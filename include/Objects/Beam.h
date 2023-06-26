@@ -9,7 +9,7 @@ public:
     void calculatePoints(float distance);
     std::vector<sf::CircleShape> getCircles() const;
 
-    virtual void move(float time);
+    virtual void move(float time) override;
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time){}
 

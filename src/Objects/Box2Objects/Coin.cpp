@@ -46,7 +46,6 @@ void Coin::create(b2World *world, b2BodyType bodyType) {
 
 //-------------- handle all collisions --------------
 void Coin::move(float time) {
-    animate();
     if(m_body->GetType() == b2_dynamicBody) {
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
         if(m_scale >= 4.f){
@@ -60,8 +59,7 @@ void Coin::move(float time) {
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
     } else if(m_body->GetType() == b2_staticBody) {
-        sf::Vector2f direction(-1,0);
-        m_object.move(direction*time);
+        m_object.move(DIRECTION * time);
     }
 }
 

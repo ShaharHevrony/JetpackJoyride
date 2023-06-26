@@ -9,7 +9,7 @@
 
 class GameSettings {
 public:
-    GameSettings(sf::RenderWindow& window, Board& board, Control& control);
+    GameSettings(sf::RenderWindow& window);
     ~GameSettings();
     void create();
     bool run(int playerType);
@@ -18,5 +18,4 @@ private:
     sf::RenderWindow* m_window;
     sf::Sprite m_background;
     sf::Sprite m_gameSettings[3];
-    Control m_control;
 };

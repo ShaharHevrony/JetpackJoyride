@@ -1,4 +1,3 @@
-
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -9,16 +8,17 @@
 class ResourcesManager {
 public:
     static ResourcesManager& instance();
-    //Get font
+
+    //Get font:
     sf::Font& getFont();
-    //Get icon
+
+    //Get icon:
     sf::Image* getIcon();
+
     //Get all textures:
     sf::Texture* getGameMenu();
     sf::Texture* getTitle();
-    sf::Texture* getPlayer(int index);
     sf::Texture* getCoin();
-    sf::Texture* getUpperZappers();
     sf::Texture* getLowerZappers();
     sf::Texture* getZappersBeam();
     sf::Texture* getGameSetting();
@@ -31,20 +31,18 @@ public:
     sf::Texture* getSettingBackGround();
     sf::Texture* getQuitKey();
     sf::Texture* getButtons(int index);
-    sf::Texture* getBarryDeath(int index1, int index);
+    sf::Texture* getPlayerStates(int type, int state);
     sf::Texture* getMissile(int index);
     sf::Texture* getSuperPower(int index);
     sf::Texture* getHelp(int index);
     sf::Texture* getLights();
-    sf::Texture* getSuperPowerRunner();
     sf::Texture* getArrow();
     sf::Texture* getBuy();
-    sf::Texture* getWiteArrow();
+    sf::Texture* getWhiteArrow();
     sf::Texture* getEquip();
     sf::Texture* getSettingButtons(int index);
-
-
     sf::Texture* getAvatar(int index);
+
     //Get all audios:
     sf::SoundBuffer& getSoundCoin();
     sf::SoundBuffer& getSoundZapper();
@@ -56,15 +54,16 @@ public:
 private:
     ResourcesManager();
     ~ResourcesManager();
-    //Define font
-    sf::Font     m_font;
-    //Define icon
-    sf::Image   m_icon;
+
+    //Define font:
+    sf::Font m_font;
+
+    //Define icon:
+    sf::Image m_icon;
+
     //Define all textures:
     sf::Texture m_gameMenu;
     sf::Texture m_title;
-    //sf::Texture m_player;
-    sf::Texture m_player[4];
     sf::Texture m_coin;
     sf::Texture m_upperZappers;
     sf::Texture m_lowerZapper;
@@ -79,21 +78,17 @@ private:
     sf::Texture m_settingBackground;
     sf::Texture m_quit;
     sf::Texture m_buttons[8];
-    sf::Texture m_barryDeath[4][2];
+    sf::Texture m_playerStates[4][3];
     sf::Texture m_missile[3];
-    sf::Texture m_superPower[3];
+    sf::Texture m_superPower[4];
     sf::Texture m_lights;
-    sf::Texture m_SuperPowerRunner;
     sf::Texture m_arrow;
-    sf::Texture m_whitewArrow;
-    sf::Texture m_playerAva[4];
+    sf::Texture m_whiteArrow;
+    sf::Texture m_playerAvatar[4];
     sf::Texture m_help[3];
     sf::Texture m_equip;
     sf::Texture m_gameSettingButtons[3];
     sf::Texture m_buy;
-
-
-    
 
     //Define all audios:
     sf::SoundBuffer m_soundCoin;

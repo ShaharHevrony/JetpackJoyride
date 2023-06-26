@@ -80,9 +80,11 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
 
+    /*
     if (!m_SuperPowerRunner.loadFromFile(PATH + "SuperPowerRunner.png")) {
         throw OpenTextureFailed();
     }
+    */
 
     if (!m_arrow.loadFromFile(PATH + "arrow.png")) {
         throw OpenTextureFailed();
@@ -92,7 +94,7 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
 
-    if (!m_whitewArrow.loadFromFile(PATH + "whiteArrow.png")) {
+    if (!m_whiteArrow.loadFromFile(PATH + "whiteArrow.png")) {
         throw OpenTextureFailed();
     }
 
@@ -100,24 +102,18 @@ ResourcesManager::ResourcesManager() {
         throw OpenTextureFailed();
     }
     //------------------- Define all of the game's arrays texture ------------------
-    for (int index = 0; index < playerWalking.size(); index++) {
-        if (!m_player[index].loadFromFile(PATH + playerWalking[index])) {
-            throw OpenTextureFailed();
+    for (int type = 0; type < playerStates.size(); type++) {
+        for (int state = 0; state < playerStates[type].size(); state++) {
+            std::string filePath = PATH + playerStates[type][state];
+            if (!m_playerStates[type][state].loadFromFile(filePath)) {
+                throw OpenTextureFailed();
+            }
         }
     }
 
     for (int index = 0; index < buttons.size(); index++) {
         if (!m_buttons[index].loadFromFile(PATH + buttons[index])) {
             throw OpenTextureFailed();
-        }
-    }
-
-    for (int index1 = 0; index1 < berrysDeath.size(); index1++) {
-        for (int index = 0; index < berrysDeath[index1].size(); index++) {
-            std::string filePath = PATH + berrysDeath[index1][index];
-            if (!m_barryDeath[index1][index].loadFromFile(filePath)) {
-                throw OpenTextureFailed();
-            }
         }
     }
 
@@ -134,7 +130,7 @@ ResourcesManager::ResourcesManager() {
     }
 
     for (int index = 0; index < playersAvatar.size(); index++) {
-        if (!m_playerAva[index].loadFromFile(PATH + playersAvatar[index])) {
+        if (!m_playerAvatar[index].loadFromFile(PATH + playersAvatar[index])) {
             throw OpenTextureFailed();
         }
     }
@@ -217,9 +213,11 @@ sf::Texture* ResourcesManager::getCoin() {
     return &m_coin;
 }
 
+/*
 sf::Texture* ResourcesManager::getUpperZappers() {
     return &m_upperZappers;
 }
+*/
 
 sf::Texture* ResourcesManager::getLowerZappers() {
     return &m_lowerZapper;
@@ -273,8 +271,8 @@ sf::Texture* ResourcesManager::getBuy() {
     return &m_buy;
 }
 
-sf::Texture* ResourcesManager::getWiteArrow() {
-    return &m_whitewArrow;
+sf::Texture* ResourcesManager::getWhiteArrow() {
+    return &m_whiteArrow;
 }
 
 sf::Texture* ResourcesManager::getEquip() {
@@ -286,16 +284,12 @@ sf::Texture* ResourcesManager::getSettingButtons(int index) {
 }
 
 //---------------------- Get all of the game's arrays texture ----------------------
-sf::Texture* ResourcesManager::getPlayer(int index) {
-    return &m_player[index];
+sf::Texture* ResourcesManager::getPlayerStates(int type, int state) {
+    return &m_playerStates[type][state];
 }
 
 sf::Texture* ResourcesManager::getButtons(int index) {
     return &m_buttons[index];
-}
-
-sf::Texture* ResourcesManager::getBarryDeath(int index1,int index) {
-    return &m_barryDeath[index1][index];
 }
 
 sf::Texture* ResourcesManager::getMissile(int index) {
@@ -314,12 +308,8 @@ sf::Texture* ResourcesManager::getLights() {
     return &m_lights;
 }
 
-sf::Texture* ResourcesManager::getSuperPowerRunner() {
-    return &m_SuperPowerRunner;
-}
-
 sf::Texture* ResourcesManager::getAvatar(int index) {
-    return &m_playerAva[index];
+    return &m_playerAvatar[index];
 }
 
 //-------------------------- Get all of the game's audios --------------------------

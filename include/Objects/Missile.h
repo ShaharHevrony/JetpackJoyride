@@ -1,13 +1,13 @@
 #pragma once
 #include "Object.h"
+#include "PlayerStateManager.h"
 
 class Missile : public Object {
 public:
-    Missile(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC);
+    Missile(sf::Texture* texture = nullptr, const sf::Vector2f& position = DEFAULT_VEC, int missileCount = 0);
     virtual ~Missile() = default;
-    void changeByTime(float time, sf::Vector2f playerPosition, int index);
 
-    virtual void move(float time);
+    virtual void move(float time) override;
     virtual void draw(sf::RenderWindow* window);
     virtual void updateCollisionTime(float time);
 
@@ -22,10 +22,11 @@ public:
 
 
 protected:
+    int m_missileCount = 0;
     float m_countTime = 0.0f;
-    float m_currPosition;
+    float m_positionY;
     sf::Sound m_soundMissileLaunch;
     sf::Sound m_soundMissileAlarm;
-    bool firstChange = false;
-    bool secondChange = false;
+    bool m_firstChange = false;
+    bool m_secondChange = false;
 };

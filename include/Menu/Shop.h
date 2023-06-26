@@ -32,8 +32,6 @@ private:
     sf::Sprite m_leftArrow;
     sf::Sprite m_rightArrow;
 
-   
-
     int m_avatarIndex = 0;
     std::vector<sf::Text> m_pricesText;
 };
