@@ -90,7 +90,7 @@ void PlayGame::run() {
 }
 
 void PlayGame::checkIfNeedToClear() {
-    if (m_lastObject.x <= 0.f) {
+    if (m_lastObject.x <= LAST_POSITION) {
         m_singleObj.clear();
         m_pairedObj.clear();
         m_missiles.clear();
@@ -98,16 +98,49 @@ void PlayGame::checkIfNeedToClear() {
         m_board.randMap();
         std::cout << "\n\n#### In clear ####\n\tFIRST num of missiles: " << m_missiles.size() << "\n";
         createObjectMap();
-        createNonCollisionObjects();
+        createNonCollisionObj();
         std::cout << "\tFINAL num of missiles: " << m_missiles.size() << "\n";
     }
-    if (m_lastCoin.x <= 0.f) {
-        m_fallingCoins.clear();
+    //Delete objects that are out of range:
+    for (auto &singleObj: m_singleObj) {
+        if (singleObj->getObject().getPosition().x <= LAST_POSITION) {
+            singleObj->setDelete();
+        }
     }
+    std::erase_if(m_singleObj, [](const auto &item) {return item->getDelete();});
+
+    for (auto &fallingCoin: m_fallingCoins) {
+        if (fallingCoin->getObject().getPosition().x <= LAST_POSITION) {
+            fallingCoin->setDelete();
+        }
+    }
+    std::erase_if(m_fallingCoins, [](const auto &item) {return item->getDelete();});
+
+    for (auto &pair: m_pairedObj) {
+        if (pair->getObject().getPosition().x <= LAST_POSITION) {
+            pair->setDelete();
+        }
+    }
+    std::erase_if(m_pairedObj, [](const auto& item) { return item->getDelete(); });
+
+    for (auto &missile: m_missiles) {
+        if (missile->getObject().getPosition().x <= LAST_POSITION) {
+            missile->setDelete();
+        }
+    }
+    std::erase_if(m_missiles, [](const auto& item) { return item->getDelete(); });
+
+    for (auto &fallingCoins: m_fallingCoins) {
+        if (fallingCoins->getObject().getPosition().x <= LAST_POSITION) {
+            fallingCoins->setDelete();
+        }
+    }
+    std::erase_if(m_fallingCoins, [](const auto& item) { return item->getDelete(); });
 }
 
 void PlayGame::createObjectMap() {
     sf::Vector2f position = sf::Vector2f(GAME_SETTING_X, GAME_SETTING_Y);
+    m_lastObject.x = 0.f;
     for (int row = 0; row < m_board.getMap().size(); row++) {
         for (int col = 0; col < NUM_OF_OBJECTS; col++) {
             char type = m_board.getMap()[row][col];
@@ -125,7 +158,7 @@ void PlayGame::createObjectMap() {
                     if (m_pairedObj.size() % 2 == 0) {
                         sf::Vector2f otherPosition = m_pairedObj[m_pairedObj.size()-2]->getObject().getPosition();
                         m_pairedObj[m_pairedObj.size()-1]->calculateAngle(otherPosition);
-                        if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                        if (position.x > m_lastObject.x) {
                             m_lastObject = position;
                         }
                         float distance = m_pairedObj[m_pairedObj.size()-2]->calculateDistance(position);
@@ -136,9 +169,9 @@ void PlayGame::createObjectMap() {
                     break;
                 }
                 case MISSILE: {
-                    position = sf::Vector2f(WINDOW_WIDTH+200, m_player->getObject().getPosition().x);
+                    position = sf::Vector2f(WINDOW_WIDTH - 2*LAST_POSITION, m_player->getObject().getPosition().x);
                     m_missiles.push_back(std::make_unique<Missile>(ResourcesManager::instance().getMissile(0), position, m_missiles.size()));
-                    if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                    if (position.x > m_lastObject.x) {
                         m_lastObject = position;
                     }
                     std::cout << "\tCURRENT num of missiles: " << m_missiles.size() << ". this missile's position is: ( " << position.x << " , " << position.y << " )\n";
@@ -146,14 +179,14 @@ void PlayGame::createObjectMap() {
                 }
                 case PIGGY: {
                     m_singleObj.push_back(std::make_unique<Piggy>(ResourcesManager::instance().getPiggy(), position));
-                    if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                    if (position.x > m_lastObject.x) {
                         m_lastObject = position;
                     }
                     break;
                 }
                 case SUPERPOWER: {
                     m_singleObj.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(Box), position));
-                    if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+                    if (position.x > m_lastObject.x) {
                         m_lastObject = position;
                     }
                     break;
@@ -165,14 +198,14 @@ void PlayGame::createObjectMap() {
     }
 }
 
-void PlayGame::createNonCollisionObjects() {
+void PlayGame::createNonCollisionObj() {
     //Create the player's flame:
     sf::Vector2f position;
     int numOfLights = (m_lastObject.x / WIDTH_CENTER) - 1;
     for (int light = 0; light < numOfLights; light++) {
         position = sf::Vector2f(GAME_SETTING_X + light * WIDTH_CENTER, GAME_SETTING_Y);
         m_nonCollisionObj.push_back(std::make_unique<Light>(ResourcesManager::instance().getLights(), position));
-        if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+        if (position.x > m_lastObject.x) {
             m_lastObject = position;
         }
     }
@@ -181,7 +214,7 @@ void PlayGame::createNonCollisionObjects() {
     for (int scientist = 0; scientist < numOfObj; scientist++) {
         position = sf::Vector2f(GAME_SETTING_X + scientist * HEIGHT_CENTER, WINDOW_HEIGHT/1.28);
         m_nonCollisionObj.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), position));
-        if (m_lastObject.x <= 0.f || position.x > m_lastObject.x) {
+        if (position.x > m_lastObject.x) {
             m_lastObject = position;
         }
     }
@@ -235,6 +268,13 @@ void PlayGame::moveObj() {
             lastPosition = singleObj->getObject().getPosition();
         }
     }
+    for (auto &missile: m_missiles) {
+        missile->updateCollisionTime(m_board.getTime());
+        missile->move(movement);
+        if (lastPosition.x <= 0.f || missile->getObject().getPosition().x > lastPosition.x) {
+            lastPosition = missile->getObject().getPosition();
+        }
+    }
     m_lastObject = lastPosition;
 
     for (auto &fallingCoin : m_fallingCoins) {
@@ -242,10 +282,6 @@ void PlayGame::moveObj() {
     }
     for (auto &nonCollision : m_nonCollisionObj) {
         nonCollision->move(movement);
-    }
-    for (auto &missile: m_missiles) {
-        missile->updateCollisionTime(m_board.getTime());
-        missile->move(movement);
     }
 }
 
@@ -323,7 +359,7 @@ void PlayGame::dealWithCollision() {
 
     //Check if the player collision with missile
     for (auto &missile: m_missiles) {
-        //std::cout << "missile position: ( " << missile->getObject().getPosition().x << " , " << missile->getObject().getPosition().y << " )\n";
+        std::cout << "missile position: ( " << missile->getObject().getPosition().x << " , " << missile->getObject().getPosition().y << " )\n";
         m_player->handleCollision(*missile);
     }
     std::erase_if(m_missiles, [](const auto& item) { return item->getDelete(); });

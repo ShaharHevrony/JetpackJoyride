@@ -26,11 +26,11 @@ public:
     void run();
     void checkIfNeedToClear();
     void createObjectMap();
-    void createNonCollisionObjects();
-    void draw();
-    void moveObj();
+    void createNonCollisionObj();
     void animateObj();
+    void moveObj();
     void deathMoveObj();
+    void draw();
     void dealWithCollision();
     void dealWithEvent();
 
