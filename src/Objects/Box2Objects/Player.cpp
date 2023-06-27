@@ -47,18 +47,11 @@ void Player::create(b2World *world, b2BodyType bodyType) {
 //------------- SFML functions on window -------------
 void Player::move(float time) {
     PlayerStateManager::instance().moveByPress();
-    PlayerStateManager::instance().moveByState();
-}
-
-void Player::draw(sf::RenderWindow* window) {
-    auto angle = m_body->GetAngle() * 180 / b2_pi;
-    m_object.setRotation(angle);
-    m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
-    window->draw(m_object);
+    PlayerStateManager::instance().animateByState();
 }
 
 //-------------- handle all collisions --------------
-void Player::handleCollision(Object& object) {
+void Player::handleCollision(Object &object) {
     if (&object != this) {
         object.handleCollision(*this);
     }
@@ -67,7 +60,7 @@ void Player::handleCollision(Object& object) {
 void Player::handleCollision(Player &player) {}
 
 void Player::handleCollision(Laser& laser) {
-    if (laser.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
+    if (laser.getShape().getGlobalBounds().intersects(m_object.getGlobalBounds())) {
         float obstacleTime = 0.7f;
         PlayerStateManager::instance().handleCollisionByState(obstacleTime);
         m_ZapperSound.play();
@@ -88,7 +81,7 @@ void Player::handleCollision(Beam &beam) {
 void Player::handleCollision(Piggy& piggy) {
     if (piggy.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         piggy.setDelete();
-        Event event = Event(CollectedPiggy, 0, piggy.getObject().getPosition());
+        Event event = Event(CollectedPiggy, COLLECTED_PIGGY, piggy.getObject().getPosition());
         EventsQueue::instance().push(event);
         m_CoinCollect.play();
     }
@@ -106,7 +99,7 @@ void Player::handleCollision (Coin& coin) {
 }
 
 void Player::handleCollision(Missile &missile) {
-    if (missile.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())){
+    if (missile.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds())) {
         missile.setDelete();
         float missileTime = 0.f;
         PlayerStateManager::instance().handleCollisionByState(missileTime);
@@ -118,7 +111,7 @@ void Player::handleCollision(SuperPower& SuperPower) {
     if (SuperPower.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !SuperPower.getCollided()) {
         SuperPower.setCollided();
         SuperPower.setDelete();
-        Event event = Event(startSuperPower);
+        Event event = Event(startSuperPower, COLLECTED_SUPER);
         EventsQueue::instance().push(event);
         m_soundGetPowerBox.play();
     }

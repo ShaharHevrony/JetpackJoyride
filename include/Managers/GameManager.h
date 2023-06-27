@@ -17,12 +17,13 @@ public:
 
     void setTopScore(int* top);
     int getTopScore(int index) const;
+    int getBest () const;
     void setSound(int sound);
     float getSound() const;
     void setMusic(int music);
     int getMusic() const;
     void setCollectedSum(int collected);
-    void setcollctedSumBuy(int price);
+    void setCollectedSumBuy(int price);
     int getCollectedSum() const;
     void setCharacter(int character);
     int getCharacter() const;
@@ -39,6 +40,5 @@ private:
     int m_collectedSum;
     int m_chosenCharacter;
 
-    bool m_ownedGear[4] = { false };
-
+    bool m_ownedGear[4] = {false};
 };

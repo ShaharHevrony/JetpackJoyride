@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <filesystem>
 #include <set>
 
-//#include "box2d/box2d.h"
 #include "ResourcesManager.h"
+#include "PlayerStateManager.h"
 #include "NonCollisionObject.h"
 
 class Board {
@@ -16,18 +17,26 @@ public:
     ~Board();
     void readObjectFile(int index);
     void writeObjectFile();
-    void moveBackgrounds(float time);
-    void draw(sf::RenderWindow* window, Control& control, int playerType);
-
-    std::vector<std::string> getMap(int index) const;
-    sf::Sprite getFirstBackground() const;
-    std::vector<sf::Sprite> getBackgrounds() const;
-    void setFirstBackground();
+    void moveBackgrounds();
+    void animate();
+    void randMap();
+    float getTime() const;
+    float getMovement() const;
+    void setClock();
+    void draw(sf::RenderWindow* window);
+    std::vector<std::string> getMap() const;
     void setBackgrounds(int size);
 
 private:
+    float m_speedIncrease;
+    int m_random = 0;
+    sf::Clock m_loopClock = sf::Clock();  //Clock to measure loop time
+    float m_speed = 320.f;
+    float m_time  = 0.f;
+    std::unordered_set<int> m_mapCount;
     std::vector<sf::Sprite> m_backgrounds;
     sf::Sprite m_firstBackground;
     std::vector<std::string> m_map;
+    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollObj;
     std::set<std::vector<std::string>> m_allMaps;
 };

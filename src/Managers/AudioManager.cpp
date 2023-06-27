@@ -67,10 +67,6 @@ void AudioManager::volumeToPosition() {
     m_circle.setPosition(newPosition);
 }
 
-int AudioManager::getVolume() const{
-    return m_volume;
-}
-
 void AudioManager::setVolume(int volume) {
     m_volume = volume;
     volumeToPosition();
@@ -86,15 +82,6 @@ sf::Vector2f AudioManager::getStart() const {
 
 sf::Vector2f AudioManager::getEnd() const {
     return m_end;
-}
-
-sf::Text AudioManager::getType() const {
-    return m_type;
-}
-
-void AudioManager::setType(std::string string) {
-    positionToVolume();
-    m_type.setString(string + std::to_string(m_volume));
 }
 
 void AudioManager::setGrabbed(bool grabbed) {

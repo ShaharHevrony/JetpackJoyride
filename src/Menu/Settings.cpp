@@ -1,8 +1,8 @@
-#include "Setting.h"
+#include "Settings.h"
 
-Setting::Setting(sf::RenderWindow &window):m_window(&window) {}
+Settings::Settings(sf::RenderWindow &window): m_window(&window) {}
 
-void Setting::run() {
+void Settings::run() {
     create();
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
@@ -52,7 +52,7 @@ void Setting::run() {
     }
 }
 
-void Setting::draw() {
+void Settings::draw() {
     m_window->clear();
     m_window->draw(m_settingBoard);
 
@@ -81,16 +81,16 @@ void Setting::draw() {
     m_window->display();
 }
 
-void Setting::create() {
+void Settings::create() {
     setTopText();
-    int music = 1;
-    int sound = 2;
+    int sound = 1;
+    int music = 2;
     m_settingBoard.setTexture(*ResourcesManager::instance().getSettingBackGround());
     m_settingBoard.setScale(WINDOW_WIDTH / m_settingBoard.getTexture()->getSize().x, WINDOW_HEIGHT / m_settingBoard.getTexture()->getSize().y);
-    m_music.create(music);
-    m_music.setVolume(GameManager::instance().getMusic());
     m_sound.create(sound);
     m_sound.setVolume(GameManager::instance().getSound());
+    m_music.create(music);
+    m_music.setVolume(GameManager::instance().getMusic());
 
     for(int index = 0; index < TOP_FIVE; index++) {
         m_topScore[index] = GameManager::instance().getTopScore(index);
@@ -112,13 +112,13 @@ void Setting::create() {
     }
 
     m_backButton.setPosition(WIDTH_CENTER + OBJECT_SCALE * 26, m_music.getStart().y + OBJECT_SCALE * 26);
-    m_backButton.setOrigin(SETTING_WIDTH - 2 * OBJECT_SCALE, m_music.getStart().y);
+    m_backButton.setOrigin(WIDTH_CENTER - 2 * OBJECT_SCALE, m_music.getStart().y);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
 }
 
-Setting::~Setting() {}
+Settings::~Settings() {}
 
-void Setting::setTopText() {
+void Settings::setTopText() {
     GameManager::instance().sort();
     for(int i = 0; i < TOP_FIVE; i++) {
         m_topText[i] = sf::Text(std::to_string(GameManager::instance().getTopScore(i)), ResourcesManager::instance().getFont(), SCALE_SIZE);

@@ -1,29 +1,26 @@
 #include "PlayGame/ScoreBoard.h"
 #include <cmath>
 
-sf::Clock ScoreBoard::timer;
+sf::Clock ScoreBoard::clock;
+std::string ScoreBoard::time;
 int ScoreBoard::score;
 int ScoreBoard::best;
 
 ScoreBoard::ScoreBoard() {
-    timer.restart().asSeconds();
+    clock.restart().asSeconds();
+    score = 0;
+    best = GameManager::instance().getBest();
 }
 
 ScoreBoard::~ScoreBoard() {}
 
 void ScoreBoard::draw(sf::RenderWindow *window) {
-    float elapse = round(timer.getElapsedTime().asSeconds());
     for (int i = 0; i < scoreBoard.size(); i++){
         m_str[i].str("");
     }
+    setTime();
     m_str[0] << score;
-    if (!m_dead) {
-        m_str[1] << elapse;
-        m_lastTime = elapse;
-    }
-    else {
-        m_str[1] << m_lastTime;
-    }
+    m_str[1] << time;
     m_str[2] << best;
 
     for(int board = 0; board < scoreBoard.size(); board++){
@@ -34,33 +31,29 @@ void ScoreBoard::draw(sf::RenderWindow *window) {
     }
 }
 
-int ScoreBoard::getScore() const
-{
+int ScoreBoard::getScore() const {
     return score;
 }
 
-void ScoreBoard::setScore() const
-{
+void ScoreBoard::setScore() {
     score = 0;
+}
+
+void ScoreBoard::setTime() {
+    if (PlayerStateManager::instance().getState() != DeadPlayer && PlayerStateManager::instance().getState() != GameOver) {
+        int elapse = round(clock.getElapsedTime().asSeconds());
+        int minute = 0;
+        while (elapse >= MINUTE) {
+            minute++;
+            elapse -= MINUTE;
+        }
+        time = std::to_string(minute) + ":" + std::to_string(elapse);
+    }
 }
 
 void ScoreBoard::addPoints(int addToScore) {
     score += addToScore;
     if(best < score) {
         best = score;
-    } else {
-        best = GameManager::instance().getTopScore(0);
     }
-}
-
-int ScoreBoard::getBest() const {
-    return best;
-}
-
-void ScoreBoard::setBest(int newBest) {
-    best = newBest;
-}
-
-void ScoreBoard::setDead() {
-    m_dead = true;
 }

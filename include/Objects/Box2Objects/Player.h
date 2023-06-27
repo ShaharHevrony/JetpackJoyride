@@ -9,25 +9,24 @@
 #include "Bound.h"
 #include "SuperPower.h"
 #include "PlayerStateManager.h"
+#include "EventsQueue.h"
 
 class Player: public Box2Object {
 public:
     Player(sf::Texture* texture = nullptr, sf::Vector2f position = DEFAULT_VEC, b2World* world = nullptr, int type = 3);
     virtual ~Player() = default;
 
-    virtual void create(b2World *world, b2BodyType bodyType);
-    virtual void move(float time);
-    virtual void draw(sf::RenderWindow* window);
-    virtual void updateCollisionTime(float time) {}
+    virtual void create(b2World *world, b2BodyType bodyType) override;
+    virtual void move(float time) override;
 
-    virtual void handleCollision(Object& object);
-    virtual void handleCollision(Player& player);
-    virtual void handleCollision(Laser& laser);
-    virtual void handleCollision(Beam& beam);
-    virtual void handleCollision (Piggy& piggy);
-    virtual void handleCollision (Coin& coin);
-    virtual void handleCollision(Missile& missile);
-    virtual void handleCollision(SuperPower& SuperPower);
+    virtual void handleCollision(Object& object) override;
+    virtual void handleCollision(Player& player) override;
+    virtual void handleCollision(Laser& laser) override;
+    virtual void handleCollision(Beam& beam) override;
+    virtual void handleCollision (Piggy& piggy) override;
+    virtual void handleCollision (Coin& coin) override;
+    virtual void handleCollision(Missile& missile) override;
+    virtual void handleCollision(SuperPower& SuperPower) override;
 
 private:
     sf::Sound m_CoinCollect;

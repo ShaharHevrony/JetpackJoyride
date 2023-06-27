@@ -16,8 +16,8 @@ void Help::create() {
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
     m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / 2, m_backButton.getTexture()->getSize().y / 2);
 
-    m_rightArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
-    m_leftArrow.setTexture(*ResourcesManager::instance().getWiteArrow());
+    m_rightArrow.setTexture(*ResourcesManager::instance().getArrow());
+    m_leftArrow.setTexture(*ResourcesManager::instance().getArrow());
 
     float arrowYPosition = WINDOW_HEIGHT / 1.18;
 
@@ -27,7 +27,7 @@ void Help::create() {
     // Set the positions and textures of the arrows
     m_rightArrow.setOrigin(m_rightArrow.getTexture()->getSize().x / 2, m_rightArrow.getTexture()->getSize().y / 2);
     m_leftArrow.setOrigin(m_leftArrow.getTexture()->getSize().x / 2, m_leftArrow.getTexture()->getSize().y / 2);
-    m_leftArrow.setRotation(180);
+    m_rightArrow.setRotation(180);
     m_leftArrow.setPosition(leftArrowPosition);
     m_leftArrow.setScale(PLAYER_SCALE / 5, PLAYER_SCALE / 5);
     m_rightArrow.setPosition(rightArrowPosition);
@@ -43,8 +43,7 @@ void Help::run() {
                 m_window->close();
                 return;
             }
-                                  //if the user clicks on the window
-            case sf::Event::MouseButtonReleased: {
+            case sf::Event::MouseButtonReleased: { //If the user clicks on the window
                 if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                     return;
                 }
@@ -59,15 +58,14 @@ void Help::run() {
             }
             case sf::Event::MouseMoved: {
                 if (m_leftArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
-                    m_leftArrow.setScale(PLAYER_SCALE / 3, PLAYER_SCALE/3); // Increase left arrow size by 20%
+                    m_leftArrow.setScale(PLAYER_SCALE / 4, PLAYER_SCALE/4); // Increase left arrow size by 20%
                     m_rightArrow.setScale(PLAYER_SCALE / 5, PLAYER_SCALE / 5); // Reset right arrow size
                 }
                 else if (m_rightArrow.getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
-                    m_rightArrow.setScale(PLAYER_SCALE/3, PLAYER_SCALE/3); // Increase right arrow size by 20%
+                    m_rightArrow.setScale(PLAYER_SCALE/4, PLAYER_SCALE/4); // Increase right arrow size by 20%
                     m_leftArrow.setScale(PLAYER_SCALE / 5, PLAYER_SCALE / 5); // Reset left arrow size
 
-                }
-                else {
+                } else {
                     m_leftArrow.setScale(PLAYER_SCALE / 5, PLAYER_SCALE / 5); // Reset left arrow size
                     m_rightArrow.setScale(PLAYER_SCALE / 5, PLAYER_SCALE / 5); // Reset right arrow size
                 }

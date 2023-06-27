@@ -1,35 +1,48 @@
 #include "NonCollisionObject.h"
 
 //---------------------------------- NonCollisionObject ---------------------------------
-NonCollisionObject::NonCollisionObject(sf::Texture *texture, const sf::Vector2f &position): Object(texture, position) {}
+NonCollisionObject::NonCollisionObject(sf::Texture *texture, const sf::Vector2f &position): Object(texture, position), m_firstPosition(position) {}
 
-void NonCollisionObject::draw(sf::RenderWindow* window) {
-    window->draw(m_object);
+void NonCollisionObject::setPosition() {
+    m_object.setPosition(m_firstPosition);
+}
+
+void NonCollisionObject::setInUse(bool inUse) {
+    m_inUse = inUse;
+}
+
+bool NonCollisionObject::inUse() const {
+    return m_inUse;
+}
+
+void NonCollisionObject::handleCollision(Object &object) {
+    if (&object != this) {
+        object.handleCollision(*this);
+    }
+}
+
+void NonCollisionObject::handleCollision(Player& player) {
+    player.handleCollision(*this);
 }
 
 //---------------------------------------- Flame ----------------------------------------
-Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
+Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) :NonCollisionObject(texture, position){
     m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.1f);
 }
 
 void Flame::move(float time) {
-    animate();
-    m_object.setPosition(m_playerLoc);
-}
-
-void Flame::setPlayerPos(sf::Vector2f pos) {
-    m_playerLoc = pos;
+    float flamePosX = PlayerStateManager::instance().getPosition().x - PlayerStateManager::instance().getOrigin().x;
+    float flamePosY = PlayerStateManager::instance().getPosition().y + PlayerStateManager::instance().getOrigin().y;
+    m_object.setPosition(sf::Vector2f(flamePosX, flamePosY));
 }
 
 //---------------------------------------- Lights ---------------------------------------
-Lights::Lights(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.14f);
+Light::Light(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
+    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.12f);
 }
 
-void Lights::move(float time) {
-    animate();
-    sf::Vector2f direction(-1, 0);
-    m_object.move(direction * time);
+void Light::move(float time) {
+    m_object.move(DIRECTION * time);
 }
 
 //-------------------------------------- Scientist --------------------------------------
@@ -38,7 +51,5 @@ Scientist::Scientist(sf::Texture* texture, const sf::Vector2f& position) : NonCo
 }
 
 void Scientist::move(float time) {
-    animate();
-    sf::Vector2f direction(-1.5, 0);
-    m_object.move(direction * time);
+    m_object.move(DIRECTION * time * FASTER_SPEED);
 }

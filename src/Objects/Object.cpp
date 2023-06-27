@@ -11,19 +11,11 @@ Object::Object(sf::Texture* texture, const sf::Vector2f& position) :m_animation(
 }
 
 void Object::setDelete() {
-    m_isDelete = !m_isDelete;
+    m_isDelete = true;
 }
 
 bool Object::getDelete() const {
     return m_isDelete;
-}
-
-void Object::setInUse(bool inUse) {
-    m_inUse = inUse;
-}
-
-bool Object::getInUse() const{
-    return m_inUse;
 }
 
 void Object::setCollided() {
@@ -32,6 +24,14 @@ void Object::setCollided() {
 
 bool Object::getCollided() const{
     return m_collided;
+}
+
+void Object::move(float time) {
+    m_object.move(DIRECTION * time);
+}
+
+void Object::draw(sf::RenderWindow *window) {
+    window->draw(m_object);
 }
 
 sf::Sprite& Object::getObject() {

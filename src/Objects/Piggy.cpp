@@ -6,16 +6,10 @@ Piggy::Piggy(sf::Texture* texture, const sf::Vector2f& position): Object(texture
 }
 
 void Piggy::move(float time) {
-    animate();
-    sf::Vector2f direction(-1,0);
-    m_object.move(direction*time);
+    m_object.move(DIRECTION * time);
 }
 
-void Piggy::draw(sf::RenderWindow* window) {
-    window->draw(m_object);
-}
-
-void Piggy::handleCollision(Object& object) {
+void Piggy::handleCollision(Object &object) {
     if (&object != this) {
         object.handleCollision(*this);
     }
@@ -24,5 +18,3 @@ void Piggy::handleCollision(Object& object) {
 void Piggy::handleCollision(Player& player) {
     player.handleCollision(*this);
 }
-
-void Piggy::handleCollision(Piggy& piggy) {}

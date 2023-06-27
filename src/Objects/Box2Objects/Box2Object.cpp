@@ -15,10 +15,15 @@ Box2Object::~Box2Object() {
     }
 }
 
-b2Body* Box2Object::getBody() {
-    return m_body;
+void Box2Object::draw(sf::RenderWindow *window) {
+    if(m_body->GetType() == b2_dynamicBody) {
+        auto angle = m_body->GetAngle() * 180.0f / b2_pi;
+        m_object.setRotation(angle);
+        m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
+    }
+    window->draw(m_object);
 }
 
-int Box2Object::getType() const {
-    return m_type;
+b2Body* Box2Object::getBody() {
+    return m_body;
 }

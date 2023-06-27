@@ -93,12 +93,15 @@ int GameManager::getTopScore(int index) const {
     return m_topScore[index];
 }
 
+int GameManager::getBest() const {
+    return m_topScore[0];
+}
+
 void GameManager::setSound(int sound) {
     m_soundVolume = sound;
 }
 
 float GameManager::getSound() const {
-
     return (sf::Listener::getGlobalVolume() * (m_soundVolume / 100.0f));
 }
 
@@ -114,7 +117,7 @@ void GameManager::setCollectedSum(int collected) {
     m_collectedSum += collected;
 }
 
-void GameManager::setcollctedSumBuy(int price)
+void GameManager::setCollectedSumBuy(int price)
 {
     m_collectedSum -= price;
 }

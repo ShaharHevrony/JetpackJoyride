@@ -1,6 +1,6 @@
 #include "GameSettings.h"
 
-GameSettings::GameSettings(sf::RenderWindow &window, Board& board, Control& control) :m_window(&window) , m_control(control) {
+GameSettings::GameSettings(sf::RenderWindow &window) :m_window(&window) {
     create();
 }
 
@@ -10,10 +10,9 @@ void GameSettings::create() {
     m_background.setTexture(*ResourcesManager::instance().getFirstBackground());
     m_background.setScale(WINDOW_HEIGHT/m_background.getTexture()->getSize().y, WINDOW_HEIGHT/m_background.getTexture()->getSize().y);
 
-
     for(int index = 0; index < GAME_SETTINGS; index++) {
         m_gameSettings[index].setTexture(*ResourcesManager::instance().getSettingButtons(index));
-        m_gameSettings[index].setPosition(WIDTH_CENTER, HEIGHT_CENTER / 2 + SCALE_SIZE * index*OBJECT_SCALE*3);
+        m_gameSettings[index].setPosition(WIDTH_CENTER, PLAYER_POS_Y + 2 * GAME_SETTING_Y * index);
         m_gameSettings[index].setOrigin(WIDTH_CENTER/8, HEIGHT_CENTER/8);
         m_gameSettings[index].setOrigin(m_gameSettings[index].getTexture()->getSize().x / 2, m_gameSettings[index].getTexture()->getSize().y / 2);
         m_gameSettings[index].setScale(OBJECT_SCALE * 1.5, OBJECT_SCALE * 1.5); //Increase button size by 20%

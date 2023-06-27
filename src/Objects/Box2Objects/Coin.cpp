@@ -44,9 +44,7 @@ void Coin::create(b2World *world, b2BodyType bodyType) {
     m_body->SetGravityScale(m_scale);
 }
 
-//-------------- handle all collisions --------------
 void Coin::move(float time) {
-    animate();
     if(m_body->GetType() == b2_dynamicBody) {
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
         if(m_scale >= 4.f){
@@ -59,31 +57,12 @@ void Coin::move(float time) {
         float bodyAngle = m_body->GetAngle();
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-    } else if(m_body->GetType() == b2_staticBody) {
-        sf::Vector2f direction(-1,0);
-        m_object.move(direction*time);
+    } else {
+        m_object.move(DIRECTION * time);
     }
 }
 
-void Coin::draw(sf::RenderWindow* window) {
-    if(m_body->GetType() == b2_dynamicBody) {
-        auto angle = m_body->GetAngle() * 180.0f / b2_pi;
-        m_object.setRotation(angle);
-        m_object.setPosition(sf::Vector2f(m_body->GetPosition().x, m_body->GetPosition().y));
-    }
-    window->draw(m_object);
-}
-
-void Coin::handleCollision(Object& object) {
-    if (&object != this) {
-        object.handleCollision(*this);
-    }
-}
-
-void Coin::handleCollision(Player& player) {
-    player.handleCollision(*this);
-}
-
+//-------------- handle all collisions --------------
 void Coin::updateCollisionTime(float time) {
     if (m_collided) {
         m_collisionTime += time;
@@ -91,4 +70,14 @@ void Coin::updateCollisionTime(float time) {
     if ((m_collisionTime >= 0.1f && m_body->GetType() == b2_dynamicBody) || (m_collisionTime >= 0.3f && m_body->GetType() == b2_staticBody)) {
         m_isDelete = true;
     }
+}
+
+void Coin::handleCollision(Object &object) {
+    if (&object != this) {
+        object.handleCollision(*this);
+    }
+}
+
+void Coin::handleCollision(Player& player) {
+    player.handleCollision(*this);
 }

@@ -4,7 +4,7 @@
 #include "ResourcesManager.h"
 #include "PlayGame.h"
 #include "Shop.h"
-#include "Setting.h"
+#include "Settings.h"
 #include "Help.h"
 
 Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Jetpack Joyride", sf::Style::Close | sf::Style::Titlebar) {
@@ -28,13 +28,13 @@ void Controller::create() {
     for(int button = 0; button < 8; button++) {
         tempSpr.setTexture(*ResourcesManager::instance().getButtons(button));
         if((button % 4) == PlayButton){
-            tempSpr.setPosition(WIDTH_CENTER - MENU_WIDTH_GAP, HEIGHT_CENTER);
+            tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER);
         } else if((button % 4) == ShopButton) {
-            tempSpr.setPosition(WIDTH_CENTER + MENU_WIDTH_GAP, HEIGHT_CENTER);
+            tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER);
         } else if((button % 4) == SettingButton) {
-            tempSpr.setPosition(WIDTH_CENTER - MENU_WIDTH_GAP, HEIGHT_CENTER + MENU_HEIGHT_GAP);
+            tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
         } else {
-            tempSpr.setPosition(WIDTH_CENTER + MENU_WIDTH_GAP, HEIGHT_CENTER + MENU_HEIGHT_GAP);
+            tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
         }
         tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x/2,ResourcesManager::instance().getButtons(button)->getSize().y/2);
         tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
@@ -104,7 +104,7 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
                 }
                 case SettingButton:{
                     try{
-                        Setting *setting = new Setting(m_window);
+                        Settings *setting = new Settings(m_window);
                         setting->run();
                     } catch (std::exception& e){
                         std::cout << e.what() << std::endl;

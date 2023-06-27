@@ -14,9 +14,6 @@ public:
 
     sf::Vector2f getStart() const;
     sf::Vector2f getEnd() const;
-    sf::Text getType() const;
-    void setType(std::string string);
-    int getVolume() const;
     void setVolume(int volume);
     sf::CircleShape getCircle() const;
     void setGrabbed(bool grabbed);

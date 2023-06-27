@@ -1,5 +1,6 @@
 #pragma once
 #include "Values.h"
+#include "Object.h"
 
 class Event {
 public:
@@ -7,7 +8,8 @@ public:
     Event(EventsTypes type, int pointsToAdd = 0, const sf::Vector2f& position = DEFAULT_VEC);
     ~Event();
     int getPoints() const;
-    sf::Vector2f getPiggyPosition() const;
+    void setSuper() const;
+    std::vector<std::unique_ptr<Object>> createFallingCoins();
     EventsTypes getEventType() const;
 
 private:

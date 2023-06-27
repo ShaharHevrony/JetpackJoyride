@@ -9,10 +9,10 @@
 #include "ResourcesManager.h"
 #include "AudioManager.h"
 
-class Setting {
+class Settings {
 public:
-    Setting(sf::RenderWindow& window);
-    ~Setting();
+    Settings(sf::RenderWindow& window);
+    ~Settings();
     void create();
     void run();
     void draw();
@@ -22,9 +22,9 @@ private:
     sf::RenderWindow* m_window;
     sf::Sprite m_settingBoard;
 
-    sf::Text m_topText[5];
-    sf::RectangleShape m_topBoard[5];
-    int m_topScore[5];
+    sf::Text m_topText[TOP_FIVE];
+    sf::RectangleShape m_topBoard[TOP_FIVE];
+    int m_topScore[TOP_FIVE];
 
     sf::Sprite m_backButton;
     sf::Text m_backText;

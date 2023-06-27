@@ -2,6 +2,10 @@
 
 Laser::Laser(sf::Texture* texture, const sf::Vector2f &position) : Object(texture, position) {
     m_object.setOrigin(m_object.getTextureRect().width/2, m_object.getTextureRect().height/2);
+    float radius = WINDOW_HEIGHT * 0.02;
+    m_laserShape.setRadius(radius);
+    m_laserShape.setPosition(m_object.getPosition());
+    m_laserShape.setOrigin(radius, radius);
 }
 
 float Laser::calculateAngle(sf::Vector2f otherPosition) {
@@ -21,13 +25,16 @@ float Laser::calculateDistance(sf::Vector2f otherPosition) {
     return distance;
 }
 
-void Laser::move(float time) {
-    animate();
-    sf::Vector2f direction(-1,0);
-    m_object.move(direction*time);
+sf::CircleShape Laser::getShape() const {
+    return m_laserShape;
 }
 
-void Laser::handleCollision(Object& object) {
+void Laser::move(float time) {
+    m_object.move(DIRECTION * time);
+    m_laserShape.move(DIRECTION * time);
+}
+
+void Laser::handleCollision(Object &object) {
     if (&object != this) {
         object.handleCollision(*this);
     }
@@ -35,8 +42,4 @@ void Laser::handleCollision(Object& object) {
 
 void Laser::handleCollision(Player& player) {
     player.handleCollision(*this);
-}
-
-void Laser::draw(sf::RenderWindow* window){
-    window->draw(m_object);
 }
