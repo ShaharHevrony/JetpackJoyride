@@ -15,14 +15,15 @@ void Bound::create(b2World* world, b2BodyType bodyType) {
     if (m_type == B2Floor) {
         // If this bound is a floor
         bodyDef.position.Set(WIDTH_CENTER, WINDOW_HEIGHT);
+        boxShape.SetAsBox(WINDOW_WIDTH, FLOOR_POS_X);
         m_object.setPosition(WIDTH_CENTER, WINDOW_HEIGHT);
     }
     else {
         // If this bound is a ceiling
         bodyDef.position.Set(WIDTH_CENTER, 0.f);
+        boxShape.SetAsBox(WINDOW_WIDTH, CEILING_POS_X);
         m_object.setPosition(WIDTH_CENTER, 0.f);
     }
-    boxShape.SetAsBox(WINDOW_WIDTH, BOUND_POS_Y);
     m_body = world->CreateBody(&bodyDef);
 
     b2FixtureDef fixtureDef;

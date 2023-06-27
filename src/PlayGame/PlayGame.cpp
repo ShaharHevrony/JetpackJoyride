@@ -123,7 +123,7 @@ void PlayGame::createObjectMap() {
             //Get the type of the object at the current position in the map
             char type = m_board.getMap()[row][col];
             //Calculate the position of the object based on the row and column indices
-            position = sf::Vector2f(WINDOW_WIDTH + SETTING_SIZE * row, BOUND_POS_Y + SETTING_SIZE * col);
+            position = sf::Vector2f(WINDOW_WIDTH + SETTING_SIZE * row, CEILING_POS_X + SETTING_SIZE * col);
             //Create game objects based on the type
             switch (type) {
                 case COIN: {
@@ -141,9 +141,9 @@ void PlayGame::createObjectMap() {
                         //Calculate the angle between the current and previous laser objects
                         m_pairedObj[m_pairedObj.size() - FIRST]->calculateAngle(otherPosition);
                         //Calculate the distance between the current and previous laser objects
-                        float distance = m_pairedObj[m_pairedObj.size() - DIV_TWO]->calculateDistance(position);
+                        float distance = m_pairedObj[m_pairedObj.size() - SECOND]->calculateDistance(position);
                         //Calculate the angle between the current and previous laser objects
-                        float angle = m_pairedObj[m_pairedObj.size() - DIV_TWO]->calculateAngle(position);
+                        float angle = m_pairedObj[m_pairedObj.size() - SECOND]->calculateAngle(position);
                         //Create a Beam object and add it to the single objects container
                         m_singleObj.push_back(std::make_unique<Beam>(ResourcesManager::instance().getLasersBeam(), position, angle,distance));
                         //Set the scale of the Beam object
@@ -163,8 +163,7 @@ void PlayGame::createObjectMap() {
                 }
                 case SUPERPOWER: {
                     //Create a SuperPower object and add it to the single objects container
-                    m_singleObj.push_back(
-                            std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(Box), position));
+                    m_singleObj.push_back(std::make_unique<SuperPower>(ResourcesManager::instance().getSuperPower(Box), position));
                     break;
                 }
                 default:
@@ -173,6 +172,7 @@ void PlayGame::createObjectMap() {
         }
     }
 }
+
 /**
  * Checks if objects need to be cleared and deletes objects that are out of range.
  * If objects need to be cleared, it clears the single objects, paired objects, and missiles containers,
@@ -189,7 +189,6 @@ void PlayGame::checkIfNeedToClear() {
         createObjectMap(); //Create new objects on the map
     }
     //Delete objects that are out of range:
-
     //Iterate over each single object
     for (auto& singleObj : m_singleObj) {
         // Check if the x position of the object is less than or equal to the last position
@@ -197,7 +196,6 @@ void PlayGame::checkIfNeedToClear() {
             singleObj->setDelete(); //Set the object for deletion
         }
     }
-
     //Iterate over each missile
     for (auto& missile : m_missiles) {
         // Check if the x position of the missile is less than or equal to the last position
@@ -205,7 +203,6 @@ void PlayGame::checkIfNeedToClear() {
             missile->setDelete(); //Set the object for deletion
         }
     }
-
     //Iterate over each falling coin
     for (auto& fallingCoins : m_fallingCoins) {
         //Check if the x position of the falling coin is less than or equal to the last position
@@ -227,7 +224,7 @@ void PlayGame::animateObj() {
 
     //Animate the paired objects (except for the last object if the number of paired objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % SECOND == ZERO) {
             pairedObj->animate();
         }
     }
@@ -260,7 +257,7 @@ void PlayGame::moveObj() {
 
     //Move the paired objects (except for the last object if the number of paired objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % SECOND == ZERO) {
             pairedObj->move(movement);
             //Update the lastObjectX if the x position of the object is greater than the current lastObjectX
             if (pairedObj->getObject().getPosition().x >= m_lastObjectX) {
@@ -302,7 +299,7 @@ void PlayGame::dealWithCollision() {
     for (auto &fallingCoin: m_fallingCoins) {
         m_player->handleCollision(*fallingCoin);
     }
-   //check if the player collision with obstacles
+    //check if the player collision with obstacles
     for (auto &pair: m_pairedObj) {
         m_player->handleCollision(*pair);
     }
@@ -325,42 +322,40 @@ void PlayGame::dealWithEvent() {
 
         //Process the event based on its event type
         switch (event.getEventType()) {
-        case CollectedMoney: {
-            //Add points to the score board based on the event's points value
-            m_scoreBoard.addPoints(event.getPoints());
-            break;
-        }
-        case CollectedPiggy: {
-            //Add points to the score board based on the event's points value
-            m_scoreBoard.addPoints(event.getPoints());
-
-            //Create falling coins based on the event and assign them to the falling coins collection
-            m_fallingCoins = event.createFallingCoins();
-            break;
-        }
-        case startSuperPower: {
-            //Add points to the score board based on the event's points value
-            m_scoreBoard.addPoints(event.getPoints());
-
-            //Set the player's state to super
-            event.setSuper();
-            break;
-        }
-        case ReturnRegular: {
-            //Set the player's state to regular
-            PlayerStateManager::instance().setState(Regular);
-            break;
-        }
-        case DeathInTheAir: {
-            //Set the player's state to dead player
-            PlayerStateManager::instance().setState(DeadPlayer);
-            break;
-        }
-        case DeadOnTheGround: {
-            //Set the player's state to game over
-            PlayerStateManager::instance().setState(GameOver);
-            break;
-        }
+            case CollectedMoney: {
+                //Add points to the score board based on the event's points value
+                m_scoreBoard.addPoints(event.getPoints());
+                break;
+            }
+            case CollectedPiggy: {
+                //Add points to the score board based on the event's points value
+                m_scoreBoard.addPoints(event.getPoints());
+                //Create falling coins based on the event and assign them to the falling coins collection
+                m_fallingCoins = event.createFallingCoins();
+                break;
+            }
+            case startSuperPower: {
+                //Add points to the score board based on the event's points value
+                m_scoreBoard.addPoints(event.getPoints());
+                //Set the player's state to super
+                event.setSuper();
+                break;
+            }
+            case ReturnRegular: {
+                //Set the player's state to regular
+                PlayerStateManager::instance().setState(Regular);
+                break;
+            }
+            case DeathInTheAir: {
+                //Set the player's state to dead player
+                PlayerStateManager::instance().setState(DeadPlayer);
+                break;
+            }
+            case DeadOnTheGround: {
+                //Set the player's state to game over
+                PlayerStateManager::instance().setState(GameOver);
+                break;
+            }
         }
     }
 }
@@ -386,7 +381,7 @@ void PlayGame::deathMoveObj() {
     }
     //Move falling coins if they are above the floor position
     for (auto& fallingCoin : m_fallingCoins) {
-        if (fallingCoin->getObject().getPosition().y <= BOUND_POS_Y) {
+        if (fallingCoin->getObject().getPosition().y <= CEILING_POS_X) {
             fallingCoin->move(m_board.getMovement());
         }
     }
@@ -394,7 +389,9 @@ void PlayGame::deathMoveObj() {
     for (auto& missile : m_missiles) {
         missile->move(m_board.getMovement());
     }
+    m_board.moveNonColl(false);
 }
+
 /**
  * Deletes game objects that have been marked for deletion.
  * Updates collision times for remaining game objects.
@@ -434,7 +431,7 @@ void PlayGame::draw() {
     }
     //Draw paired objects (except the last one if the number of objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % SECOND == ZERO) {
             pairedObj->draw(m_window);
         }
     }

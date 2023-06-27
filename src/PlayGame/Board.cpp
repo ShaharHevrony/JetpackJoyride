@@ -67,8 +67,12 @@ void Board::draw(sf::RenderWindow* window) {
         window->draw(background);  //Draw the background sprites
     }
     window->draw(m_firstBackground);
-    for (auto& nonCollObj : m_nonCollObj) {
-        nonCollObj->draw(window);  //Draw non-collidable objects
+    for (auto& nonCollLight : m_nonCollLights) {
+        nonCollLight->draw(window);  //Draw non-collidable objects
+    }
+
+    for (auto& nonCollSci : m_nonCollScis) {
+        nonCollSci->draw(window);  //Draw non-collidable objects
     }
 }
 
@@ -102,19 +106,15 @@ void Board::moveBackgrounds() {
             m_backgrounds[index].setPosition(position);
         }
     }
-
-    for (auto& nonCollObj : m_nonCollObj) {
-        nonCollObj->animate();              //Animate non-collidable objects
-        nonCollObj->move(m_time * m_speed); //Move non-collidable objects
-        if (nonCollObj->getObject().getPosition().x <= LAST_POSITION) {
-            nonCollObj->setPosition();      //Reset the position of non-collidable objects if they reach a certain position
-        }
-    }
+    moveNonColl(true);
 }
 
 void Board::animate() {
-    for (auto& nonCollObj : m_nonCollObj) {
-        nonCollObj->animate();  //Animate non-collidable objects
+    for (auto& nonCollLight : m_nonCollLights) {
+        nonCollLight->animate(); //Animate non-collidable objects
+    }
+    for (auto& nonCollSci : m_nonCollScis) {
+        nonCollSci->animate();   //Animate non-collidable objects
     }
 }
 
@@ -134,22 +134,22 @@ void Board::setBackgrounds() {
     for (int index = 0; index < BACKGROUND; index++) {
         //Create a temporary background sprite
         tempBackground.setTexture(*ResourcesManager::instance().getGameBackground());
-        tempBackground.setPosition(index * ResourcesManager::instance().getGameBackground()->getSize().x - index, ZERO);
+        tempBackground.setPosition(index * ResourcesManager::instance().getGameBackground()->getSize().x - index, 0);
         tempBackground.setScale(WINDOW_HEIGHT / tempBackground.getTexture()->getSize().y, WINDOW_HEIGHT / tempBackground.getTexture()->getSize().y);
         m_backgrounds.push_back(tempBackground);     //Add the temporary background sprite to the vector
         mapLength += tempBackground.getPosition().x; //Calculate the total length of the map
     }
     int space = mapLength / WIDTH_GAP; //Calculate the number of spaces between non-collidable objects
-    int centerMod = TEN; //Modulo value for generating random positions
+    int centerMod = TEN;               //Modulo value for generating random positions
     int randSci;
-    for (int index = 0; index <= space; index++) {
+    for (int index = FIRST; index <= space; index++) {
         randSci = FIRST + rand() % centerMod; //Generate a random value for scientist position
         sf::Vector2f lightPosition = sf::Vector2f(WINDOW_WIDTH + index * WIDTH_CENTER * tempBackground.getScale().y, GAME_SETTING_Y);
         //Create a Light object and add it to the non-collidable objects vector
-        m_nonCollObj.push_back(std::make_unique<Light>(ResourcesManager::instance().getLights(), lightPosition));
-        sf::Vector2f scientistPosition = sf::Vector2f(WINDOW_WIDTH + randSci * randSci * tempBackground.getScale().y, WINDOW_HEIGHT / ONE_POINT_TWO_EIGHT);
+        m_nonCollLights.push_back(std::make_unique<Light>(ResourcesManager::instance().getLights(), lightPosition));
+        sf::Vector2f scientistPosition = sf::Vector2f(WINDOW_WIDTH + randSci * randSci * tempBackground.getScale().y, WINDOW_HEIGHT / 1.28);
         //Create a Scientist object and add it to the non-collidable objects vector
-        m_nonCollObj.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), scientistPosition));
+        m_nonCollScis.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), scientistPosition));
     }
 }
 
@@ -164,7 +164,7 @@ void Board::randMap() {
         m_mapCount.insert(m_random); //Add the random index to the map count set
     }
     else {
-        m_mapCount.clear(); //If all maps have been used, clear the map count set
+        m_mapCount.clear();         //If all maps have been used, clear the map count set
     }
 }
 
@@ -181,4 +181,27 @@ float Board::getMovement() const {
 //Restart the clock to measure the elapsed time
 void Board::setClock() {
     loopClock.restart();
+}
+
+void Board::moveNonColl(bool alive) {
+    for (auto& nonCollSci : m_nonCollScis) {
+        nonCollSci->animate();                       //Animate non-collidable objects
+        if (!alive) {
+            nonCollSci->move(m_time * ACCELERATION); //Move non-collidable objects
+        } else {
+            nonCollSci->move(m_time * m_speed);     //Move non-collidable objects
+        }
+        if (nonCollSci->getObject().getPosition().x <= LAST_POSITION) {
+            nonCollSci->setPosition();              //Reset the position of non-collidable objects if they reach a certain position
+        }
+    }
+    if (alive) {
+        for (auto& nonCollLight : m_nonCollLights) {
+            nonCollLight->animate();              //Animate non-collidable objects
+            nonCollLight->move(m_time * m_speed); //Move non-collidable objects
+            if (nonCollLight->getObject().getPosition().x <= LAST_POSITION) {
+                nonCollLight->setPosition();      //Reset the position of non-collidable objects if they reach a certain position
+            }
+        }
+    }
 }

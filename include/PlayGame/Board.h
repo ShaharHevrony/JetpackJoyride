@@ -26,6 +26,7 @@ public:
     void draw(sf::RenderWindow* window);
     std::vector<std::string> getMap() const;
     void setBackgrounds();
+    void moveNonColl(bool);
 
 private:
     static sf::Clock loopClock; //Clock to measure loop time
@@ -38,6 +39,8 @@ private:
     std::vector<sf::Sprite> m_backgrounds;
     sf::Sprite m_firstBackground;
     std::vector<std::string> m_map;
-    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollObj;
+    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollLights;
+    std::vector<std::unique_ptr<NonCollisionObject>> m_nonCollScis;
+
     std::set<std::vector<std::string>> m_allMaps;
 };

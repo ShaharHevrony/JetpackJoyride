@@ -3,8 +3,8 @@
 #include <box2d/box2d.h>
 #include <iostream>
 
-//const std::string PATH = "../../../";
-const std::string PATH = "";
+const std::string PATH = "../../../";
+//const std::string PATH = "";
 
 //------------------------------ Enums definitions ------------------------------
 enum Buttons {
@@ -60,7 +60,7 @@ const char SUPERPOWER = '@';
 
 //Floats:
 const float WINDOW_HEIGHT   = sf::VideoMode::getDesktopMode().height * 0.9;
-const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width * 0.9;
+const float WINDOW_WIDTH    = sf::VideoMode::getDesktopMode().width  * 0.9;
 
 const float WIDTH_CENTER    = WINDOW_WIDTH  / 2;
 const float HEIGHT_CENTER   = WINDOW_HEIGHT / 2;
@@ -75,16 +75,17 @@ const float GAME_SETTING_Y  = WINDOW_HEIGHT / 12;
 
 const float SETTING_CIRCLE  = WINDOW_WIDTH  / 100;
 const float SETTING_HEIGHT  = WINDOW_HEIGHT / 20;
-const float SETTING_SIZE    = WINDOW_WIDTH / 35;
+const float SETTING_SIZE    = WINDOW_WIDTH  / 35;
 
 const float PLAYER_SCALE    = WINDOW_HEIGHT / 1200;
 const float OBJECT_SCALE    = WINDOW_HEIGHT / 1000;
 
 const float PLAYER_POS_X    = WINDOW_WIDTH  / 5;
 const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
-const float BOUND_POS_Y     = WINDOW_HEIGHT / 9;
-const float VELOCITY_DELTA  = 3 / WINDOW_HEIGHT;
+const float CEILING_POS_X   = WINDOW_HEIGHT / 5;
+const float FLOOR_POS_X     = WINDOW_HEIGHT / 14;
 
+const float VELOCITY_DELTA  = 3 / WINDOW_HEIGHT;
 const float GRAVITATION_Y   = WINDOW_HEIGHT / 1500;
 const float GRAVITATION_X   = 0.f;
 const float DEATH_GRAVITY_Y = GRAVITATION_Y / 3;

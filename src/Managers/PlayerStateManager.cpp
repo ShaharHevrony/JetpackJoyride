@@ -39,7 +39,7 @@ void PlayerStateManager::setState(int state) {
     m_state = state;
     switch (m_state) {
         case Regular: {          //Set the player animation and gravity for the regular state
-            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular), sf::Vector2u(4, 1), DEFAULT_SPEED);
+            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular), DEFAULT_ANIMATION, DEFAULT_SPEED);
             gravity = b2Vec2(GRAVITATION_X, GRAVITATION_Y);
             break;
         }
@@ -49,12 +49,12 @@ void PlayerStateManager::setState(int state) {
             break;
         }
         case SuperPowerRunner: { //Set the player animation and gravity for the runner superpower state
-            m_player->setAnimate(ResourcesManager::instance().getSuperPower(Runner), sf::Vector2u(4, 1), DEFAULT_SPEED);
+            m_player->setAnimate(ResourcesManager::instance().getSuperPower(Runner), DEFAULT_ANIMATION, DEFAULT_SPEED);
             gravity = b2Vec2(-GRAVITATION_X, -GRAVITATION_Y);
             break;
         }
         case DeadPlayer: {       //Set the player animation and gravity for the dead player state
-            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), DeadPlayer), sf::Vector2u(4, 1), DEFAULT_SPEED);
+            m_player->setAnimate(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), DeadPlayer), DEFAULT_ANIMATION, DEFAULT_SPEED);
             gravity = b2Vec2(DEATH_GRAVITY_X, DEATH_GRAVITY_Y);
             break;
         }
@@ -68,11 +68,10 @@ void PlayerStateManager::setState(int state) {
     }
     world->SetGravity(gravity);
     m_player->getObject().setScale(PLAYER_SCALE, PLAYER_SCALE);
-    m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width / 2, m_player->getObject().getTextureRect().height);
+    m_player->getObject().setOrigin(m_player->getObject().getTextureRect().width/2, m_player->getObject().getTextureRect().height);
     moveByPress();
     m_spacePressed = false;
 }
-
 
 int PlayerStateManager::getState() const {
     return m_state;
@@ -104,9 +103,8 @@ void PlayerStateManager::setToSuperTank(bool change){
 
 //Updates the player's movement based on key presses.
 void PlayerStateManager::moveByPress() {
-    float jumpVelocity = ANTI_GRAVITY; //Set the initial jump velocity to the value of ANTI_GRAVITY
-    //Check if the space key is pressed
-    if (m_spacePressed) { //Adjust the jump velocity based on the player's state
+    float jumpVelocity;                                          //Set the initial jump velocity to the value of ANTI_GRAVITY
+    if (m_spacePressed) {                                        //Adjust the jump velocity based on the player's state
         switch (m_state) {
             case Regular: {
                 jumpVelocity = ANTI_GRAVITY * GRAVITATION_Y;     //Adjust the jump velocity as needed
@@ -117,19 +115,23 @@ void PlayerStateManager::moveByPress() {
                 break;
             }
             case SuperPowerRunner: {
-                jumpVelocity = -ANTI_GRAVITY * GRAVITATION_Y;    //Adjust the jump velocity as needed
+                jumpVelocity = - ANTI_GRAVITY * GRAVITATION_Y;    //Adjust the jump velocity as needed
+                break;
+            }
+            default:{
+
                 break;
             }
         }
-
-        //Set the linear velocity of the player's physics body
-        m_player->getBody()->SetLinearVelocity(b2Vec2(m_player->getBody()->GetLinearVelocity().x, jumpVelocity));
-
-        //Update the position and rotation of the graphical object based on the physics body
-        b2Vec2 bodyPosition = m_player->getBody()->GetPosition();
-        float bodyAngle = m_player->getBody()->GetAngle();
-        m_player->getObject().setPosition(bodyPosition.x, bodyPosition.y);
-        m_player->getObject().setRotation(bodyAngle * ANGLE_CALC);
+        if (m_state != DeadPlayer && m_state != GameOver) {
+            //Set the linear velocity of the player's physics body
+            m_player->getBody()->SetLinearVelocity(b2Vec2(m_player->getBody()->GetLinearVelocity().x, jumpVelocity));
+            //Update the position and rotation of the graphical object based on the physics body
+            b2Vec2 bodyPosition = m_player->getBody()->GetPosition();
+            float bodyAngle = m_player->getBody()->GetAngle();
+            m_player->getObject().setPosition(bodyPosition.x, bodyPosition.y);
+            m_player->getObject().setRotation(bodyAngle * ANGLE_CALC);
+        }
     }
 }
 
@@ -152,12 +154,12 @@ void PlayerStateManager::animateByState() {
         }
         case SuperPowerTank: {    //Check if the space key is pressed
             if (m_spacePressed) { //Set the animation of the player's graphical object to the "FlyingTank" superpower animation
-                m_player->setAnimate(ResourcesManager::instance().getSuperPower(FlyingTank), sf::Vector2u(1, 1), 0.18f);
+                m_player->setAnimate(ResourcesManager::instance().getSuperPower(FlyingTank), sf::Vector2u(1, 1), DEFAULT_SPEED);
             } else {
                 //Check if the player's body is moving upward
                 if (m_player->getBody()->GetLinearVelocity().y > 0.f) {
                     //Set the animation of the player's graphical object to the "WalkingTank" superpower animation and adjust the length
-                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(WalkingTank), sf::Vector2u(2, 1), 0.18f);
+                    m_player->setAnimate(ResourcesManager::instance().getSuperPower(WalkingTank), sf::Vector2u(2, 1), DEFAULT_SPEED);
                     length *= 2;
                     //Set the texture rectangle of the player's graphical object to display the adjusted length
                     m_player->getObject().setTextureRect(sf::IntRect(length, 0, length, m_player->getObject().getTexture()->getSize().y));
