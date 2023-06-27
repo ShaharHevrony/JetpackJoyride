@@ -1,19 +1,20 @@
 #include "Coin.h"
 
 Coin::Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
-                :Box2Object(texture, position, type), m_scale(scale) {
+    : Box2Object(texture, position, type), m_scale(scale) {
+    // Constructor
     setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
     if (type == B2StaticCoin) {
         create(world, b2_staticBody);
-    } else if (type == B2DynamicCoin) {
-        m_object.setOrigin(m_object.getTexture()->getSize().x/2, m_object.getTexture()->getSize().y/2);
+    }
+    else if (type == B2DynamicCoin) {
+        m_object.setOrigin(m_object.getTexture()->getSize().x / 2, m_object.getTexture()->getSize().y / 2);
         create(world, b2_dynamicBody);
     }
 }
 
-//--------------- create the box2d values ---------------
-void Coin::create(b2World *world, b2BodyType bodyType) {
-    //BodyDef
+void Coin::create(b2World* world, b2BodyType bodyType) {
+    // Function to create the Box2D body for the coin
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
@@ -24,13 +25,13 @@ void Coin::create(b2World *world, b2BodyType bodyType) {
     shape.m_p.Set(0, 0);
     shape.m_radius = 0.1f;
 
-    //FixtureDef
+    // FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.5f;
     fixtureDef.friction = 1.f;
-    fixtureDef.restitution = 1.f; //Add the restitution property
+    fixtureDef.restitution = 1.f; // Add the restitution property
     m_body->CreateFixture(&fixtureDef);
 
     b2MassData mass;
@@ -45,11 +46,13 @@ void Coin::create(b2World *world, b2BodyType bodyType) {
 }
 
 void Coin::move(float time) {
-    if(m_body->GetType() == b2_dynamicBody) {
+    // Function to handle coin movement
+    if (m_body->GetType() == b2_dynamicBody) {
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-        if(m_scale >= 4.f){
+        if (m_scale >= 4.f) {
             bodyVelocity.x = -time * m_scale;
-        } else {
+        }
+        else {
             bodyVelocity.x = -4 * time * m_scale;
         }
         m_body->SetLinearVelocity(bodyVelocity);
@@ -57,13 +60,14 @@ void Coin::move(float time) {
         float bodyAngle = m_body->GetAngle();
         m_object.setPosition(bodyPosition.x, bodyPosition.y);
         m_object.setRotation(bodyAngle * 180.0f / b2_pi);
-    } else {
+    }
+    else {
         m_object.move(DIRECTION * time);
     }
 }
 
-//-------------- handle all collisions --------------
 void Coin::updateCollisionTime(float time) {
+    // Function to update collision time and check if the coin should be deleted
     if (m_collided) {
         m_collisionTime += time;
     }
@@ -72,12 +76,13 @@ void Coin::updateCollisionTime(float time) {
     }
 }
 
-void Coin::handleCollision(Object &object) {
+void Coin::handleCollision(Object& object) {
+    // Function to handle collision with another object
     if (&object != this) {
         object.handleCollision(*this);
     }
 }
 
 void Coin::handleCollision(Player& player) {
-    player.handleCollision(*this);
+    // Function to handle collision
 }

@@ -1,9 +1,9 @@
+
 cmake_minimum_required (VERSION 3.20)
 
 project (JetpackJoyride)
+#set (MY_AUTHORS "Lior_yakobovich-Shahar_hevrony_Aviv-erez")
 
-# New CMake versions map C++20 to /std:c++20 instead of c++latest, so <format>
-# and other unstable ABI features aren't supported. Use C++23 for such versions
 if (MSVC AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.21)
     set(CMAKE_CXX_STANDARD 23)
 else ()
@@ -17,9 +17,8 @@ endif ()
 
 
 if(APPLE)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.app/Contents/MacOS)
 
-    add_executable (JetpackJoyride MACOSX_BUNDLE "")
+    add_executable (pacmanProject MACOSX_BUNDLE "")
 
     add_subdirectory (include)
     add_subdirectory (src)
@@ -32,24 +31,20 @@ if(APPLE)
     find_package (SFML 2.5 COMPONENTS audio graphics REQUIRED)
 
     set_target_properties ( PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
-
-    target_link_libraries (JetpackJoyride sfml-graphics sfml-audio)
-    target_link_libraries(${CMAKE_PROJECT_NAME} box2d)
+    target_link_libraries (pacmanProject sfml-graphics sfml-audio)
 
 endif()
 
 
 if(WIN32)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
     add_executable (${CMAKE_PROJECT_NAME})
-
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE $<$<CONFIG:DEBUG>:-fsanitize=address>)
 
     add_subdirectory (include)
     add_subdirectory (src)
     add_subdirectory (resources)
     add_subdirectory(external/box2d/src)
+
 
     set (SFML_STATIC_LIBRARIES TRUE)
     set (SFML_DIR "C:/SFML/SFML-2.5.1/lib/cmake/SFML")

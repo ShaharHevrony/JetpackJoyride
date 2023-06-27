@@ -1,51 +1,56 @@
 #include "Settings.h"
 
-Settings::Settings(sf::RenderWindow &window): m_window(&window) {}
+Settings::Settings(sf::RenderWindow& window) : m_window(&window) {}
 
 void Settings::run() {
     create();
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
-                case sf::Event::Closed: {
-                    GameManager::instance().setSound(m_sound.positionToVolume());
-                    GameManager::instance().setMusic(m_music.positionToVolume());
-                    GameManager::instance().setTopScore(m_topScore);
-                    GameManager::instance().sort();
-                    m_window->close();
-                    return;
-                }
-                case sf::Event::MouseButtonPressed:{
-                    if (event.mouseButton.button == sf::Mouse::Left) {
-                        //Check if the circle is clicked
-                        if (m_music.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
-                            m_music.setGrabbed(true);
-                        } else if (m_sound.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))){
-                            m_sound.setGrabbed(true);
-                        }
-                        else if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
-                            GameManager::instance().setSound(m_sound.positionToVolume());
-                            GameManager::instance().setMusic(m_music.positionToVolume());
-                            GameManager::instance().setTopScore(m_topScore);
-                            GameManager::instance().sort();
-                            return;
-                        }
+            case sf::Event::Closed: {
+                // Save settings and close the window when the "Closed" event is triggered
+                GameManager::instance().setSound(m_sound.positionToVolume());
+                GameManager::instance().setMusic(m_music.positionToVolume());
+                GameManager::instance().setTopScore(m_topScore);
+                GameManager::instance().sort();
+                m_window->close();
+                return;
+            }
+            case sf::Event::MouseButtonPressed: {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    // Check if the music circle or sound circle is clicked
+                    if (m_music.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        m_music.setGrabbed(true);
                     }
-                    break;
-                }
-                case sf::Event::MouseButtonReleased:{
-                    if (event.mouseButton.button == sf::Mouse::Left) {
-                        m_music.setGrabbed(false);
-                        m_sound.setGrabbed(false);
+                    else if (m_sound.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        m_sound.setGrabbed(true);
                     }
-                    break;
+                    else if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
+                        // Save settings and return when the back button is clicked
+                        GameManager::instance().setSound(m_sound.positionToVolume());
+                        GameManager::instance().setMusic(m_music.positionToVolume());
+                        GameManager::instance().setTopScore(m_topScore);
+                        GameManager::instance().sort();
+                        return;
+                    }
                 }
-                case sf::Event::MouseMoved: {
-                    sf::Vector2f mouseMoved = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
-                    m_music.handleMouseMoved(mouseMoved);
-                    m_sound.handleMouseMoved(mouseMoved);
-                    break;
+                break;
+            }
+            case sf::Event::MouseButtonReleased: {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    // Reset the grabbed state when the mouse button is released
+                    m_music.setGrabbed(false);
+                    m_sound.setGrabbed(false);
                 }
+                break;
+            }
+            case sf::Event::MouseMoved: {
+                // Handle mouse movement for the music and sound circles
+                sf::Vector2f mouseMoved = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
+                m_music.handleMouseMoved(mouseMoved);
+                m_sound.handleMouseMoved(mouseMoved);
+                break;
+            }
             }
         }
         draw();
@@ -56,7 +61,7 @@ void Settings::draw() {
     m_window->clear();
     m_window->draw(m_settingBoard);
 
-    for(int index = 0; index < TOP_FIVE; index++){
+    for (int index = 0; index < TOP_FIVE; index++) {
         m_window->draw(m_topBoard[index]);
         m_window->draw(m_topText[index]);
     }

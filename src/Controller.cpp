@@ -16,32 +16,39 @@ Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "
 Controller::~Controller() {}
 
 void Controller::create() {
+    // Set the texture and scale of the menu background sprite
     m_menuBackground.setTexture(*ResourcesManager::instance().getGameMenu());
-    float scale = std::max(WINDOW_WIDTH/m_menuBackground.getTexture()->getSize().x,  WINDOW_HEIGHT/m_menuBackground.getTexture()->getSize().y);
+    float scale = std::max(WINDOW_WIDTH / m_menuBackground.getTexture()->getSize().x, WINDOW_HEIGHT / m_menuBackground.getTexture()->getSize().y);
     m_menuBackground.setScale(scale, scale);
+
+    // Set the texture, position, origin, and scale of the title sprite
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
-    m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x/2, ResourcesManager::instance().getTitle()->getSize().y/2);
+    m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x / 2, ResourcesManager::instance().getTitle()->getSize().y / 2);
     m_title.setScale(PLAYER_SCALE, PLAYER_SCALE);
 
     sf::Sprite tempSpr;
-    for(int button = 0; button < 8; button++) {
+    for (int button = 0; button < 8; button++) {
         tempSpr.setTexture(*ResourcesManager::instance().getButtons(button));
-        if((button % 4) == PlayButton){
+        if ((button % 4) == PlayButton) {
             tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER);
-        } else if((button % 4) == ShopButton) {
+        }
+        else if ((button % 4) == ShopButton) {
             tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER);
-        } else if((button % 4) == SettingButton) {
+        }
+        else if ((button % 4) == SettingButton) {
             tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
-        } else {
+        }
+        else {
             tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
         }
-        tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x/2,ResourcesManager::instance().getButtons(button)->getSize().y/2);
+        tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x / 2, ResourcesManager::instance().getButtons(button)->getSize().y / 2);
         tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
-        m_getButtonSpr.push_back(tempSpr);
+        m_getButtonSpr.push_back(tempSpr);  // Add the temporary button sprite to the vector
     }
-    for(int button = 0; button < NUM_OF_BUTTONS; button++){
-        m_gameButtons.push_back(m_getButtonSpr[button]);
+
+    for (int button = 0; button < NUM_OF_BUTTONS; button++) {
+        m_gameButtons.push_back(m_getButtonSpr[button]);  // Add the button sprite to the game buttons vector
     }
 }
 
@@ -125,14 +132,14 @@ void Controller::handleMouseButton(sf::Event::MouseButtonEvent& event) {
 }
 
 void Controller::handleMouseMoved(sf::Event::MouseMoveEvent& event) {
-    for(int button = 0; button < NUM_OF_BUTTONS; button++){
-        m_gameButtons[button] = (m_getButtonSpr[button]);
+    for (int button = 0; button < NUM_OF_BUTTONS; button++) {
+        m_gameButtons[button] = (m_getButtonSpr[button]);  // Reset the game buttons to their default sprites
     }
 
-    auto location = m_window.mapPixelToCoords({ event.x, event.y });
-    for (int button = 0; button < NUM_OF_BUTTONS; button++){
-        if (m_gameButtons[button].getGlobalBounds().contains(location)) {
-            m_gameButtons[button].setTexture(*m_getButtonSpr[button + 4].getTexture());
+    auto location = m_window.mapPixelToCoords({ event.x, event.y });  // Map the mouse position to coordinates relative to the window
+    for (int button = 0; button < NUM_OF_BUTTONS; button++) {
+        if (m_gameButtons[button].getGlobalBounds().contains(location)) {  // Check if the mouse is over a game button
+            m_gameButtons[button].setTexture(*m_getButtonSpr[button + 4].getTexture());  // Set the texture of the game button to the highlighted version
         }
     }
 }
