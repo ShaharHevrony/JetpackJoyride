@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "Values.h"
 
-Object::Object(sf::Texture* texture, const sf::Vector2f& position) : m_animation(texture, sf::Vector2u(4, 1), 0.18f) {
+Object::Object(sf::Texture* texture, const sf::Vector2f& position) : m_animation(texture, DEFAULT_ANIMATION, DEFAULT_SPEED) {
     // Constructor
     if (texture != nullptr) {
         m_object.setTexture(*texture);

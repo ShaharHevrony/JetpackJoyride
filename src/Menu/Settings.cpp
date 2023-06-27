@@ -102,14 +102,14 @@ void Settings::create() {
     }
 
     for(int index = 0; index < TOP_FIVE; index++) {
-        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SCALE_SIZE * 1.5));
-        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER * 1.35, HEIGHT_CENTER + SCALE_SIZE * 1.5 * index)); //-position.y));
+        m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SETTING_SIZE * 1.5));
+        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER * 1.35, HEIGHT_CENTER + SETTING_SIZE * 1.5 * index)); //-position.y));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/2, m_topBoard->getSize().y/2);
         m_topBoard[index].setFillColor(sf::Color(97,106,132));
         m_topBoard[index].setOutlineThickness(2);
         m_topBoard[index].setOutlineColor(sf::Color::Black);
 
-        m_topText[index].setPosition(m_topBoard[index].getPosition().x, m_topBoard[index].getPosition().y - SCALE_SIZE/5);
+        m_topText[index].setPosition(m_topBoard[index].getPosition().x, m_topBoard[index].getPosition().y - SETTING_SIZE / 5);
         m_topText[index].setOrigin(m_topText[index].getLocalBounds().width/2, m_topText[index].getLocalBounds().height/2);
         m_topText[index].setFillColor(sf::Color::White);
         m_topText[index].setOutlineColor(sf::Color::Black);
@@ -126,6 +126,6 @@ Settings::~Settings() {}
 void Settings::setTopText() {
     GameManager::instance().sort();
     for(int i = 0; i < TOP_FIVE; i++) {
-        m_topText[i] = sf::Text(std::to_string(GameManager::instance().getTopScore(i)), ResourcesManager::instance().getFont(), SCALE_SIZE);
+        m_topText[i] = sf::Text(std::to_string(GameManager::instance().getTopScore(i)), ResourcesManager::instance().getFont(), SETTING_SIZE);
     }
 }

@@ -20,7 +20,7 @@ public:
     virtual void move(float time) override;
 
     virtual void handleCollision(Object& object) override;
-    virtual void handleCollision(Player& player) override;
+    virtual void handleCollision(Player& player) override {}
     virtual void handleCollision(Laser& laser) override;
     virtual void handleCollision(Beam& beam) override;
     virtual void handleCollision (Piggy& piggy) override;

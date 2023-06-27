@@ -17,8 +17,9 @@ endif ()
 
 
 if(APPLE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.app/Contents/MacOS)
 
-    add_executable (pacmanProject MACOSX_BUNDLE "")
+    add_executable (JetpackJoyride MACOSX_BUNDLE "")
 
     add_subdirectory (include)
     add_subdirectory (src)
@@ -31,7 +32,9 @@ if(APPLE)
     find_package (SFML 2.5 COMPONENTS audio graphics REQUIRED)
 
     set_target_properties ( PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
-    target_link_libraries (pacmanProject sfml-graphics sfml-audio)
+
+    target_link_libraries (JetpackJoyride sfml-graphics sfml-audio)
+    target_link_libraries(${CMAKE_PROJECT_NAME} box2d)
 
 endif()
 

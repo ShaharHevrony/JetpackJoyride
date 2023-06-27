@@ -25,12 +25,13 @@ public:
     void setClock();
     void draw(sf::RenderWindow* window);
     std::vector<std::string> getMap() const;
-    void setBackgrounds(int size);
+    void setBackgrounds();
 
 private:
-    float m_speedIncrease;
+    static sf::Clock loopClock; //Clock to measure loop time
+
+    float m_speedIncrease = 0.f;
     int m_random = 0;
-    sf::Clock m_loopClock = sf::Clock();  //Clock to measure loop time
     float m_speed = 320.f;
     float m_time  = 0.f;
     std::unordered_set<int> m_mapCount;

@@ -30,12 +30,12 @@ void Beam::calculatePoints(float distance) {
 }
 
 std::vector<sf::CircleShape> Beam::getCircles() const {
-    // Function to get the vector of circles representing the points along the beam
+    //Function to get the vector of circles representing the points along the beam
     return m_circles;
 }
 
 void Beam::move(float time) {
-    // Function to move the beam and its points
+    //Function to move the beam and its points
     m_object.move(DIRECTION * time);
     for (auto& point : m_circles) {
         point.move(DIRECTION * time);

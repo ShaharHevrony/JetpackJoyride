@@ -15,7 +15,6 @@ public:
     b2Body* getBody();
 
     virtual void create(b2World *world, b2BodyType bodyType) = 0;
-    virtual void move(float time) override = 0;
     virtual void draw(sf::RenderWindow* window) override;
 
     virtual void handleCollision(Object& object) override = 0;

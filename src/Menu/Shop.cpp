@@ -45,10 +45,10 @@ void Shop::create() {
     m_rightArrow.setScale(PLAYER_SCALE / 2, PLAYER_SCALE / 2);
 
     for (int i = 0; i < playersAvatar.size(); i++) {
-        sf::Text tempPrice("price: " + std::to_string(prices[i]), ResourcesManager::instance().getFont(), SCALE_SIZE);
+        sf::Text tempPrice("price: " + std::to_string(prices[i]), ResourcesManager::instance().getFont(), SETTING_SIZE);
         tempPrice.setPosition(SHOP_POS_X, SHOP_POS_Y / 2);
         m_pricesText.push_back(tempPrice);
-        sf::Text tempName(squareNames[i], ResourcesManager::instance().getFont(), SCALE_SIZE);
+        sf::Text tempName(squareNames[i], ResourcesManager::instance().getFont(), SETTING_SIZE);
         tempName.setPosition(rectPosition.x + (rectSize.x / 2) - (tempName.getLocalBounds().width / 2),
                              rectPosition.y + rectSize.y + 20);
         m_names.push_back(tempName);
@@ -164,7 +164,7 @@ void Shop::draw() {
 
     auto collectedSum = GameManager::instance().getCollectedSum();
     // Draw the money text
-    sf::Text money("you have: " + std::to_string(collectedSum), ResourcesManager::instance().getFont(), SCALE_SIZE);
+    sf::Text money("you have: " + std::to_string(collectedSum), ResourcesManager::instance().getFont(), SETTING_SIZE);
     money.setPosition(SHOP_POS_X, SHOP_POS_Y);
 
     m_window->draw(money);
