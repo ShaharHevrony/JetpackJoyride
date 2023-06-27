@@ -3,8 +3,8 @@
 #include <box2d/box2d.h>
 #include <iostream>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 //------------------------------ Enums definitions ------------------------------
 enum Buttons {
@@ -82,22 +82,22 @@ const float OBJECT_SCALE    = WINDOW_HEIGHT / 1000;
 
 const float PLAYER_POS_X    = WINDOW_WIDTH  / 5;
 const float PLAYER_POS_Y    = WINDOW_HEIGHT / 4;
-const float CEILING_POS_X   = WINDOW_HEIGHT / 5;
+const float CEILING_POS_X   = WINDOW_HEIGHT / 6;
 const float FLOOR_POS_X     = WINDOW_HEIGHT / 14;
 
 const float VELOCITY_DELTA  = 3 / WINDOW_HEIGHT;
-const float GRAVITATION_Y   = WINDOW_HEIGHT / 1500;
+const float GRAVITATION_Y   = WINDOW_HEIGHT / 1400;
 const float GRAVITATION_X   = 0.f;
 const float DEATH_GRAVITY_Y = GRAVITATION_Y / 3;
 const float DEATH_GRAVITY_X = GRAVITATION_Y / 10;
 const float MASS            = WINDOW_HEIGHT / 1000;
 const float FRICTION        = WINDOW_WIDTH  / 70;
-const float TIME_STEP       = GRAVITATION_Y / 10;
+const float TIME_STEP       = GRAVITATION_Y / 9;
 
 const float DEFAULT_SPEED   = 0.18f;
 const float LAST_POSITION   = -50.f;
 const float FASTER_SPEED    = 1.2f;
-const float ANTI_GRAVITY    = -9.f;
+const float ANTI_GRAVITY    = -10.f;
 const float CHANGE_INTERVAL = 2.5f;
 const float ACCELERATION    = 35.f;
 const float MINUTE          = 60.f;
@@ -123,6 +123,7 @@ const int FOUR = 4;
 const int SIX = 6;
 const int SEVEN = 7;
 const int TEN = 10;
+const int EIGHTEEN = 18;
 const int TWENTY = 20;
 const int TWENTY_SIX = 26;
 const int EIGHTY = 80;
@@ -158,16 +159,6 @@ const float ZERO_POINT_SEVEN = 0.7;
 const float ZERO_POINT__ONE_EIGHT = 0.18;
 const float ONE_POINT_TWO_EIGHT = 1.28;
 
-
-
-
-
-
-
-
-
-
-
 //Double:
 const double PI             = 3.14159265358;
 
@@ -175,11 +166,11 @@ const double PI             = 3.14159265358;
 const sf::Vector2f DEFAULT_VEC       = sf::Vector2f(0.f,0.f);
 const sf::Vector2f DIRECTION         = sf::Vector2f (-1,0);
 const sf::Vector2u DEFAULT_ANIMATION = sf::Vector2u(4,1);
+
 //Vectors:
 const std::vector<int> prices                  = {0, 520, 760, 1100};
 const std::vector<std::string> scoreBoard      = {"MONEY: ","TIME: ", "BEST: "};
-const std::vector<std::string> squareNames     = {"Berry", "King","Scientist" , "Soldier"};
-
+const std::vector<std::string> squareNames     = {"Berry", "Scientist" , "Soldier", "King"};
 const std::vector<std::string> buttons         = {"PlayGameOff.png", "ShopOff.png", "SettingsOff.png", "HelpOff.png", "PlayGameOn.png", "ShopOn.png", "SettingsOn.png", "HelpOn.png"};
 const std::vector<std::string> missile         = {"MissileWarning.png","MissileIncoming.png", "Missile.png"};
 const std::vector<std::string> superPower      = {"PowerUpBox.png", "SuperPowerTank.png" ,"SuperPowerFlyTank.png", "SuperPowerRunner.png"};
@@ -190,8 +181,9 @@ const std::vector<std::vector<std::string>> playerStates = {{"BerryWalking.png",
                                                             {"ScientistWalking.png", "ScientistHit.png", "ScientistDead.png"},
                                                             {"SoldierWalking.png", "SoldierHit.png", "SoldierDead.png"},
                                                             {"KingWalking.png", "KingHit.png", "KingDead.png"}};
+const int MAP_SIZE = 11;
 
-const std::vector<std::string> MAP = { "--*---------*--\n"
+/*const std::vector<std::string> MAP = {"--*---------*--\n"
                                        "--*---------*--\n"
                                        "---*-------*---\n"
                                        "----*-----*<---\n"
@@ -222,6 +214,7 @@ const std::vector<std::string> MAP = { "--*---------*--\n"
                                        "------*--*-----\n"
                                        "-------**------\n"
                                        "-------**------\n"
+                                       "---------------\n"
                                        "---!---$-------",
 
                                        "--*--*---*--*--\n"
@@ -237,6 +230,7 @@ const std::vector<std::string> MAP = { "--*---------*--\n"
                                        "-----**-**-----\n"
                                        "------***------\n"
                                        "-------*-------\n"
+                                       "---------------\n"
                                        "---<---$-------",
 
                                        "----***-<-----<\n"
@@ -351,6 +345,7 @@ const std::vector<std::string> MAP = { "--*---------*--\n"
                                        "----**---**----\n"
                                        "-----*****-----\n"
                                        "------***------\n"
+                                       "---------------\n"
                                        "-------$-------" ,
 
                                        "------<------<-\n"
@@ -450,6 +445,7 @@ const std::vector<std::string> MAP = { "--*---------*--\n"
                                        "-----**-**-----\n"
                                        "------***------\n"
                                        "-------*-------\n"
+                                       "---------------\n"
                                        "-------$-------\n"
                                        "---------------\n"
                                        "---------------\n"
@@ -528,4 +524,5 @@ const std::vector<std::string> MAP = { "--*---------*--\n"
                                        "-----*---------\n"
                                        "----*----------\n"
                                        "---*-----------\n"
-                                       "---$-----------", };
+                                       "---------------\n"
+                                       "---$-----------", }; */

@@ -38,10 +38,11 @@ Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionO
 
 //Function to move the flame
 void Flame::move(float time) {
-    float flamePosX = PlayerStateManager::instance().getPosition().x - PlayerStateManager::instance().getOrigin().x;
+    float flamePosX = PlayerStateManager::instance().getPosition().x - PlayerStateManager::instance().getOrigin().x / SECOND;
     float flamePosY = PlayerStateManager::instance().getPosition().y;
     m_object.setPosition(sf::Vector2f(flamePosX, flamePosY));
 }
+
 
 //---------------------------------------- Lights ---------------------------------------
 Light::Light(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {

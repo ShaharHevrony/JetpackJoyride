@@ -15,8 +15,7 @@ class Board {
 public:
     Board();
     ~Board();
-    void readObjectFile(int index);
-    void writeObjectFile();
+    void readObjectFile();
     void moveBackgrounds();
     void animate();
     void randMap();

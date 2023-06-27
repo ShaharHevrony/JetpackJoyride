@@ -6,11 +6,7 @@ Board::Board() {
     m_allMaps.clear();
     loopClock.restart();
     try {
-        writeObjectFile();           //Write object files for each map
-        for (int index = 0; index < MAP.size(); index++) {
-            readObjectFile(index);   //Read object files for each map
-            m_allMaps.insert(m_map); //Insert the map into the set of all maps
-        }
+        readObjectFile();   //Read object files for each map
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
         throw;
@@ -19,47 +15,31 @@ Board::Board() {
 
 Board::~Board() {}
 
-void Board::writeObjectFile() {
-    std::ofstream writingFile;
-    for (int index = 0; index < MAP.size(); index++) {
-        std::string filePath = "mapNum" + std::to_string(index);
-        if (std::filesystem::exists(filePath)) {
-            //If the file exists, clear all the file contents and create a new empty file.
-            writingFile.open(filePath, std::ios::out | std::ios::trunc);
-        } else {
-            writingFile.open(filePath);
+void Board::readObjectFile() {
+    for (int index = 0; index < MAP_SIZE; index++) {
+        m_map.clear();
+        std::ifstream readingFile;
+        std::string filePath = "mapNum" + std::to_string(index) + ".txt";
+        if (!std::filesystem::exists(filePath)) { //Check if the file exists
+            throw FileNotExist();
         }
-
-        if (!writingFile.is_open()) {
+        readingFile.open(filePath, std::fstream::in);
+        if (!readingFile.is_open()) {             //Check if the file opened successfully
             throw OpenFileFailed();
         }
-        writingFile << MAP[index];  //Write the map data to the file
-        writingFile.close();
-    }
-}
 
-void Board::readObjectFile(int index) {
-    m_map.clear();
-    std::ifstream readingFile;
-    std::string filePath = "mapNum" + std::to_string(index);
-    if (!std::filesystem::exists(filePath)) { //Check if the file exists
-        throw FileNotExist();
-    }
-    readingFile.open(filePath, std::fstream::in);
-    if (!readingFile.is_open()) {             //Check if the file opened successfully
-        throw OpenFileFailed();
-    }
-
-    while (!readingFile.eof()) {
-        std::string str;
-        char my_line[NUM_OF_OBJECTS];
-        std::getline(readingFile, str);
-        for (int i = 0; i < str.size(); i++) {
-            my_line[i] = str[i];
+        while (!readingFile.eof()) {
+            std::string str;
+            char my_line[NUM_OF_OBJECTS];
+            std::getline(readingFile, str);
+            for (int i = 0; i < str.size(); i++) {
+                my_line[i] = str[i];
+            }
+            m_map.push_back(my_line); //Read each line of the map from the file
         }
-        m_map.push_back(my_line);  //Read each line of the map from the file
+        readingFile.close();
+        m_allMaps.insert(m_map);     //Insert the map into the set of all maps
     }
-    readingFile.close();
 }
 
 void Board::draw(sf::RenderWindow* window) {
@@ -155,11 +135,11 @@ void Board::setBackgrounds() {
 
 void Board::randMap() {
     srand(time(nullptr));           //Seed the random number generator with the current time
-    m_random = rand() % MAP.size(); //Generate a random map index
-    if (m_mapCount.size() != MAP.size()) {
+    m_random = rand() % MAP_SIZE;   //Generate a random map index
+    if (m_mapCount.size() != MAP_SIZE) {
         while (m_mapCount.contains(m_random)) {
             //If the randomly generated index is already present in the map count set, generate a new random index until a unique one is found
-            m_random = rand() % MAP.size();
+            m_random = rand() % MAP_SIZE;
         }
         m_mapCount.insert(m_random); //Add the random index to the map count set
     }

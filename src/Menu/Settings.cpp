@@ -2,13 +2,15 @@
 
 Settings::Settings(sf::RenderWindow& window) : m_window(&window) {}
 
+Settings::~Settings() {}
+
 void Settings::run() {
     create();
     while (m_window->isOpen()) {
         if (auto event = sf::Event{}; m_window->pollEvent(event)) {
             switch (event.type) {
             case sf::Event::Closed: {
-                // Save settings and close the window when the "Closed" event is triggered
+                //Save settings and close the window when the "Closed" event is triggered
                 GameManager::instance().setSound(m_sound.positionToVolume());
                 GameManager::instance().setMusic(m_music.positionToVolume());
                 GameManager::instance().setTopScore(m_topScore);
@@ -18,7 +20,7 @@ void Settings::run() {
             }
             case sf::Event::MouseButtonPressed: {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    // Check if the music circle or sound circle is clicked
+                    //Check if the music circle or sound circle is clicked
                     if (m_music.getCircle().getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
                         m_music.setGrabbed(true);
                     }
@@ -26,7 +28,7 @@ void Settings::run() {
                         m_sound.setGrabbed(true);
                     }
                     else if (m_backButton.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y))) {
-                        // Save settings and return when the back button is clicked
+                        //Save settings and return when the back button is clicked
                         GameManager::instance().setSound(m_sound.positionToVolume());
                         GameManager::instance().setMusic(m_music.positionToVolume());
                         GameManager::instance().setTopScore(m_topScore);
@@ -103,7 +105,7 @@ void Settings::create() {
 
     for(int index = 0; index < TOP_FIVE; index++) {
         m_topBoard[index].setSize(sf::Vector2f (m_music.getStart().x - m_music.getEnd().x, SETTING_SIZE * ONE_POINT_FIVE));
-        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER * ONE_POINT_THIRTY_FIVE, HEIGHT_CENTER + SETTING_SIZE * ONE_POINT_FIVE * index)); //-position.y));
+        m_topBoard[index].setPosition(sf::Vector2f(WIDTH_CENTER * ONE_POINT_THIRTY_FIVE, HEIGHT_CENTER + SETTING_SIZE * ONE_POINT_FIVE * index));
         m_topBoard[index].setOrigin(m_topBoard->getSize().x/DIV_TWO, m_topBoard->getSize().y/DIV_TWO);
         m_topBoard[index].setFillColor(sf::Color(97,106,132));
         m_topBoard[index].setOutlineThickness(SECOND);
@@ -116,12 +118,10 @@ void Settings::create() {
         m_topText[index].setOutlineThickness(3);
     }
 
-    m_backButton.setPosition(WIDTH_CENTER + OBJECT_SCALE * TWENTY_SIX, m_music.getStart().y + OBJECT_SCALE * TWENTY_SIX);
-    m_backButton.setOrigin(WIDTH_CENTER - SECOND * OBJECT_SCALE, m_music.getStart().y);
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
+    m_backButton.setPosition(WINDOW_WIDTH / TEN, WINDOW_HEIGHT / EIGHTEEN);
+    m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / SECOND, m_backButton.getTexture()->getSize().y / SECOND);
 }
-
-Settings::~Settings() {}
 
 void Settings::setTopText() {
     GameManager::instance().sort();

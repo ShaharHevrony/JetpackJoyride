@@ -77,6 +77,16 @@ configure_file ("Audios/missileLaunch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Audios/MissileAlarm.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("Audios/getPowerSound.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
-
-
-
+#Files:
+configure_file ("Files/GameManager.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum0.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum1.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum2.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum3.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum4.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum5.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum6.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum7.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum8.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum9.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Files/mapNum10.txt" ${CMAKE_BINARY_DIR} COPYONLY)

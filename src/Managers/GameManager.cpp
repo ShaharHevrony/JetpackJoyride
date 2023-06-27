@@ -32,15 +32,14 @@ GameManager::~GameManager() {
 void GameManager::readFile() {
     //Check if the file exists, create it if it doesn't
     std::ifstream managerFile;
-    std::string filePath = "GameManager";
+    std::string filePath = "GameManager.txt";
     if (!std::filesystem::exists(filePath)) {
-        writeFile();
+        throw FileNotExist();
     }
     managerFile.open(filePath, std::fstream::in); //Open the file for reading
     if (!managerFile.is_open()) {
         throw OpenFileFailed(); //Throw an exception if the file cannot be opened
     }
-
     //Read data from the file
     managerFile >> m_soundVolume;
     managerFile >> m_musicVolume;
@@ -50,19 +49,16 @@ void GameManager::readFile() {
     managerFile.close(); //Close the file
 }
 
-
 void GameManager::writeFile() {
     //Open the file for writing
     std::ofstream managerFile;
-    std::string filePath = "GameManager";
+    std::string filePath = "GameManager.txt";
     //If the file exists, clear its contents and create a new empty file
     if (std::filesystem::exists(filePath)) {
         managerFile.open(filePath, std::ios::out | std::ios::trunc);
-    }
-    else {
+    } else {
         managerFile.open(filePath); //If the file doesn't exist, create a new file
     }
-
     if (!managerFile.is_open()) { //Check if the file is open
         throw OpenFileFailed(); //Throw an exception if the file cannot be opened
     }

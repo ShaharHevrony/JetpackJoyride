@@ -4,9 +4,8 @@ Help::Help(sf::RenderWindow& window) : m_window(&window) {}
 
 Help::~Help() {}
 
-
 void Help::create() {
-    // Load help images and scale them to fit the window size
+    //Load help images and scale them to fit the window size
     for (int index = 0; index < BACKGROUND; index++) {
         sf::Sprite tempHelp;
         tempHelp.setTexture(*ResourcesManager::instance().getHelp(index));
@@ -14,12 +13,12 @@ void Help::create() {
         m_helpBoard.push_back(tempHelp);
     }
 
-    // Set the position and texture of the back button
-    m_backButton.setPosition(WINDOW_WIDTH / TEN, WINDOW_HEIGHT / BUTTON_NUM);
+    //Set the position and texture of the back button
     m_backButton.setTexture(*ResourcesManager::instance().getQuitKey());
-    m_backButton.setOrigin(m_backButton.getTexture()->getSize().x / DIV_TWO, m_backButton.getTexture()->getSize().y / DIV_TWO);
+    m_backButton.setPosition(WINDOW_WIDTH/TEN, WINDOW_HEIGHT/EIGHTEEN);
+    m_backButton.setOrigin(m_backButton.getTexture()->getSize().x/SECOND, m_backButton.getTexture()->getSize().y/SECOND);
 
-    // Set the textures and positions of the arrows
+    //Set the textures and positions of the arrows
     m_rightArrow.setTexture(*ResourcesManager::instance().getArrow());
     m_leftArrow.setTexture(*ResourcesManager::instance().getArrow());
 
@@ -28,7 +27,7 @@ void Help::create() {
     sf::Vector2f leftArrowPosition(WINDOW_WIDTH - THREE_HUNDRED * OBJECT_SCALE, arrowYPosition);
     sf::Vector2f rightArrowPosition(WINDOW_WIDTH - ONE_FIFTHY * OBJECT_SCALE, arrowYPosition);
 
-    // Set the positions and scales of the arrows
+    //Set the positions and scales of the arrows
     m_rightArrow.setOrigin(m_rightArrow.getTexture()->getSize().x / DIV_TWO, m_rightArrow.getTexture()->getSize().y / DIV_TWO);
     m_leftArrow.setOrigin(m_leftArrow.getTexture()->getSize().x / DIV_TWO, m_leftArrow.getTexture()->getSize().y / DIV_TWO);
     m_rightArrow.setRotation(ONE_EIGHTY);
