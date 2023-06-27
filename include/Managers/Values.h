@@ -3,8 +3,8 @@
 #include <box2d/box2d.h>
 #include <iostream>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 //------------------------------ Enums definitions ------------------------------
 enum Buttons {

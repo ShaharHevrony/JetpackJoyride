@@ -30,10 +30,6 @@ bool Object::getCollided() const{
     return m_collided;
 }
 
-void Object::move(float time) {
-    m_object.move(DIRECTION * time);
-}
-
 void Object::draw(sf::RenderWindow *window) {
     window->draw(m_object);
 }

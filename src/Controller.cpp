@@ -11,7 +11,6 @@ Controller::Controller() :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "
     create();
     sf::Image image = (*ResourcesManager::instance().getIcon());
     m_window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
-    std::cout << "Width: " << sf::VideoMode::getDesktopMode().width << ", Height: " << sf::VideoMode::getDesktopMode().height << ", Height RATIO: " << HEIGHT_RATIO<< "\n";
 }
 
 Controller::~Controller() {}
