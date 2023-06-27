@@ -3,13 +3,13 @@
 
 GameManager::GameManager() {
     //Initialize member variables
-    m_chosenCharacter = 0;
-    m_collectedSum = 0;
-    m_musicVolume = 0;
-    m_soundVolume = 0;
+    m_chosenCharacter = ZERO;
+    m_collectedSum = ZERO;
+    m_musicVolume = ZERO;
+    m_soundVolume = ZERO;
 
     for (int top = 0; top < TOP_FIVE; top++) { //Initialize top scores to zero
-        m_topScore[top] = 0;
+        m_topScore[top] = ZERO;
     }
     readFile(); //Read data from file
 }
@@ -77,12 +77,12 @@ void GameManager::writeFile() {
 void GameManager::sort() {
     //Bubble sort algorithm to sort the top scores in descending order
     for (int i = 0; i < TOP_FIVE - 1; i++) {
-        for (int j = 0; j < TOP_FIVE - i - 1; j++) {
-            if (m_topScore[j] < m_topScore[j + 1]) {
+        for (int j = 0; j < TOP_FIVE - i - FIRST; j++) {
+            if (m_topScore[j] < m_topScore[j + FIRST]) {
                 //Swap the elements
                 int temp = m_topScore[j];
-                m_topScore[j] = m_topScore[j + 1];
-                m_topScore[j + 1] = temp;
+                m_topScore[j] = m_topScore[j + FIRST];
+                m_topScore[j + FIRST] = temp;
             }
         }
     }
@@ -90,8 +90,8 @@ void GameManager::sort() {
 
 //Update the potential best score and sort the top scores
 void GameManager::checkPotentialBest(int score) {
-    if (score > m_topScore[4]) {
-        m_topScore[4] = score;
+    if (score > m_topScore[FOUR]) {
+        m_topScore[FOUR] = score;
         sort();
     }
 }
@@ -110,7 +110,7 @@ int GameManager::getTopScore(int index) const {
 
 //Get the highest top score
 int GameManager::getBest() const {
-    return m_topScore[0];
+    return m_topScore[ZERO];
 }
 
 //Set the sound volume

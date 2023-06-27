@@ -84,21 +84,21 @@ void Board::moveBackgrounds() {
     m_firstBackground.move(DIRECTION * m_time * m_speed);  //Move the first background sprite
     if (m_firstBackground.getPosition().x > -(WINDOW_WIDTH)) {
         //Move the second background sprite based on the first one
-        sf::Vector2f position = m_backgrounds[1].getPosition();
+        sf::Vector2f position = m_backgrounds[FIRST].getPosition();
         position.x = m_firstBackground.getPosition().x + m_firstBackground.getGlobalBounds().width;
-        m_backgrounds[1].setPosition(position);
+        m_backgrounds[FIRST].setPosition(position);
         //Move the third background sprite based on the second one
-        position = m_backgrounds[2].getPosition();
-        position.x = m_backgrounds[1].getPosition().x + m_backgrounds[1].getGlobalBounds().width;
-        m_backgrounds[2].setPosition(position);
+        position = m_backgrounds[SECOND].getPosition();
+        position.x = m_backgrounds[FIRST].getPosition().x + m_backgrounds[FIRST].getGlobalBounds().width;
+        m_backgrounds[SECOND].setPosition(position);
     }
 
-    for (int index = 0; index < 3; index++) {
+    for (int index = 0; index < THIRD; index++) {
         m_backgrounds[index].move(DIRECTION * m_time * m_speed);  //Move the background sprites
-        if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < 0) {
+        if (m_backgrounds[index].getPosition().x + m_backgrounds[index].getGlobalBounds().width < ZERO) {
             //If a background sprite goes off the screen, move it to the right side of the screen
-            sf::Vector2f position = m_backgrounds[(index + 2) % BACKGROUND].getPosition();
-            position.x += m_backgrounds[(index + 2) % BACKGROUND].getGlobalBounds().width - 10;
+            sf::Vector2f position = m_backgrounds[(index + SECOND) % BACKGROUND].getPosition();
+            position.x += m_backgrounds[(index + SECOND) % BACKGROUND].getGlobalBounds().width - TEN;
             m_backgrounds[index].setPosition(position);
         }
     }
@@ -134,20 +134,20 @@ void Board::setBackgrounds() {
     for (int index = 0; index < BACKGROUND; index++) {
         //Create a temporary background sprite
         tempBackground.setTexture(*ResourcesManager::instance().getGameBackground());
-        tempBackground.setPosition(index * ResourcesManager::instance().getGameBackground()->getSize().x - index, 0);
+        tempBackground.setPosition(index * ResourcesManager::instance().getGameBackground()->getSize().x - index, ZERO);
         tempBackground.setScale(WINDOW_HEIGHT / tempBackground.getTexture()->getSize().y, WINDOW_HEIGHT / tempBackground.getTexture()->getSize().y);
         m_backgrounds.push_back(tempBackground);     //Add the temporary background sprite to the vector
         mapLength += tempBackground.getPosition().x; //Calculate the total length of the map
     }
     int space = mapLength / WIDTH_GAP; //Calculate the number of spaces between non-collidable objects
-    int centerMod = 10; //Modulo value for generating random positions
+    int centerMod = TEN; //Modulo value for generating random positions
     int randSci;
     for (int index = 0; index <= space; index++) {
-        randSci = 1 + rand() % centerMod; //Generate a random value for scientist position
+        randSci = FIRST + rand() % centerMod; //Generate a random value for scientist position
         sf::Vector2f lightPosition = sf::Vector2f(WINDOW_WIDTH + index * WIDTH_CENTER * tempBackground.getScale().y, GAME_SETTING_Y);
         //Create a Light object and add it to the non-collidable objects vector
         m_nonCollObj.push_back(std::make_unique<Light>(ResourcesManager::instance().getLights(), lightPosition));
-        sf::Vector2f scientistPosition = sf::Vector2f(WINDOW_WIDTH + randSci * randSci * tempBackground.getScale().y, WINDOW_HEIGHT / 1.28);
+        sf::Vector2f scientistPosition = sf::Vector2f(WINDOW_WIDTH + randSci * randSci * tempBackground.getScale().y, WINDOW_HEIGHT / ONE_POINT_TWO_EIGHT);
         //Create a Scientist object and add it to the non-collidable objects vector
         m_nonCollObj.push_back(std::make_unique<Scientist>(ResourcesManager::instance().getScientist(), scientistPosition));
     }

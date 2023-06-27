@@ -2,7 +2,7 @@
 
 SuperPower::SuperPower(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
     // Constructor
-    m_animation.setAnimation(texture, sf::Vector2u(1, 1), 0.18f);
+    m_animation.setAnimation(texture, sf::Vector2u(FIRST, FIRST), ZERO_POINT__ONE_EIGHT);
 }
 
 void SuperPower::move(float time) {

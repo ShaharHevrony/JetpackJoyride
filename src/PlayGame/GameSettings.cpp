@@ -27,10 +27,10 @@ void GameSettings::create() {
     // Create game settings buttons
     for (int index = 0; index < GAME_SETTINGS; index++) {
         m_gameSettings[index].setTexture(*ResourcesManager::instance().getSettingButtons(index));
-        m_gameSettings[index].setPosition(WIDTH_CENTER, PLAYER_POS_Y + 2 * GAME_SETTING_Y * index);
-        m_gameSettings[index].setOrigin(WIDTH_CENTER / 8, HEIGHT_CENTER / 8);
-        m_gameSettings[index].setOrigin(m_gameSettings[index].getTexture()->getSize().x / 2, m_gameSettings[index].getTexture()->getSize().y / 2);
-        m_gameSettings[index].setScale(OBJECT_SCALE * 1.5, OBJECT_SCALE * 1.5); // Increase button size by 20%
+        m_gameSettings[index].setPosition(WIDTH_CENTER, PLAYER_POS_Y + DIV_TWO * GAME_SETTING_Y * index);
+        m_gameSettings[index].setOrigin(WIDTH_CENTER / BUTTON_NUM, HEIGHT_CENTER / BUTTON_NUM);
+        m_gameSettings[index].setOrigin(m_gameSettings[index].getTexture()->getSize().x / DIV_TWO, m_gameSettings[index].getTexture()->getSize().y / DIV_TWO);
+        m_gameSettings[index].setScale(OBJECT_SCALE * ONE_POINT_FIVE, OBJECT_SCALE * ONE_POINT_FIVE); // Increase button size by 20%
     }
 }
 
@@ -49,15 +49,15 @@ bool GameSettings::run(int playerType) {
                 sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
                 // Check if the resume button was clicked and the player is not dead
-                if (m_gameSettings[0].getGlobalBounds().contains(mousePosF) && playerType != DeadPlayer) {
+                if (m_gameSettings[ZERO].getGlobalBounds().contains(mousePosF) && playerType != DeadPlayer) {
                     return false; // Resume the game
                 }
                 // Check if the restart button was clicked
-                else if (m_gameSettings[1].getGlobalBounds().contains(mousePosF)) {
+                else if (m_gameSettings[FIRST].getGlobalBounds().contains(mousePosF)) {
                     return true; // Restart the game
                 }
                 // Check if the quit button was clicked
-                else if (m_gameSettings[2].getGlobalBounds().contains(mousePosF)) {
+                else if (m_gameSettings[SECOND].getGlobalBounds().contains(mousePosF)) {
                     m_window->close();
                     return false; // Quit the game
                 }
@@ -68,10 +68,10 @@ bool GameSettings::run(int playerType) {
                 for (int i = 0; i < settingsButtons.size(); i++) {
                     // Check if the mouse is over a settings button
                     if (m_gameSettings[i].getGlobalBounds().contains(sf::Vector2f(event.mouseMove.x, event.mouseMove.y))) {
-                        m_gameSettings[i].setScale(OBJECT_SCALE * 1.8, OBJECT_SCALE * 1.8); // Increase button size by 20%
+                        m_gameSettings[i].setScale(OBJECT_SCALE * ONE_POINT_EIGHT, OBJECT_SCALE * ONE_POINT_EIGHT); // Increase button size by 20%
                     }
                     else {
-                        m_gameSettings[i].setScale(OBJECT_SCALE * 1.5, OBJECT_SCALE * 1.5); // Reset button size
+                        m_gameSettings[i].setScale(OBJECT_SCALE * ONE_POINT_FIVE, OBJECT_SCALE * ONE_POINT_FIVE); // Reset button size
                     }
                 }
             }
@@ -83,11 +83,11 @@ bool GameSettings::run(int playerType) {
 
         // Draw the resume button if the player is not dead
         if (playerType != DeadPlayer && playerType != GameOver) {
-            m_window->draw(m_gameSettings[0]);
+            m_window->draw(m_gameSettings[ZERO]);
         }
 
-        m_window->draw(m_gameSettings[1]); // Draw the restart button
-        m_window->draw(m_gameSettings[2]); // Draw the quit button
+        m_window->draw(m_gameSettings[FIRST]); // Draw the restart button
+        m_window->draw(m_gameSettings[SECOND]); // Draw the quit button
 
         m_window->display(); // Update the window
     }

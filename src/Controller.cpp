@@ -24,25 +24,25 @@ void Controller::create() {
     // Set the texture, position, origin, and scale of the title sprite
     m_title.setTexture(*ResourcesManager::instance().getTitle());
     m_title.setPosition(WIDTH_CENTER, TITLE_POSITION);
-    m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x / 2, ResourcesManager::instance().getTitle()->getSize().y / 2);
+    m_title.setOrigin(ResourcesManager::instance().getTitle()->getSize().x / DIV_TWO, ResourcesManager::instance().getTitle()->getSize().y / DIV_TWO);
     m_title.setScale(PLAYER_SCALE, PLAYER_SCALE);
 
     sf::Sprite tempSpr;
-    for (int button = 0; button < 8; button++) {
+    for (int button = 0; button < BUTTON_NUM; button++) {
         tempSpr.setTexture(*ResourcesManager::instance().getButtons(button));
-        if ((button % 4) == PlayButton) {
+        if ((button % BUTTON_NUM_DIV_TWO) == PlayButton) {
             tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER);
         }
-        else if ((button % 4) == ShopButton) {
+        else if ((button % BUTTON_NUM_DIV_TWO) == ShopButton) {
             tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER);
         }
-        else if ((button % 4) == SettingButton) {
+        else if ((button % BUTTON_NUM_DIV_TWO) == SettingButton) {
             tempSpr.setPosition(WIDTH_CENTER - WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
         }
         else {
             tempSpr.setPosition(WIDTH_CENTER + WIDTH_GAP, HEIGHT_CENTER + HEIGHT_GAP);
         }
-        tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x / 2, ResourcesManager::instance().getButtons(button)->getSize().y / 2);
+        tempSpr.setOrigin(ResourcesManager::instance().getButtons(button)->getSize().x / DIV_TWO, ResourcesManager::instance().getButtons(button)->getSize().y / DIV_TWO);
         tempSpr.setScale(SET_BUTTONS, SET_BUTTONS);
         m_getButtonSpr.push_back(tempSpr);  // Add the temporary button sprite to the vector
     }
@@ -139,7 +139,7 @@ void Controller::handleMouseMoved(sf::Event::MouseMoveEvent& event) {
     auto location = m_window.mapPixelToCoords({ event.x, event.y });  // Map the mouse position to coordinates relative to the window
     for (int button = 0; button < NUM_OF_BUTTONS; button++) {
         if (m_gameButtons[button].getGlobalBounds().contains(location)) {  // Check if the mouse is over a game button
-            m_gameButtons[button].setTexture(*m_getButtonSpr[button + 4].getTexture());  // Set the texture of the game button to the highlighted version
+            m_gameButtons[button].setTexture(*m_getButtonSpr[button + BUTTON_NUM_DIV_TWO].getTexture());  // Set the texture of the game button to the highlighted version
         }
     }
 }

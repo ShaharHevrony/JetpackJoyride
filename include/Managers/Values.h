@@ -3,8 +3,8 @@
 #include <box2d/box2d.h>
 #include <iostream>
 
-const std::string PATH = "../../../";
-//const std::string PATH = "";
+//const std::string PATH = "../../../";
+const std::string PATH = "";
 
 //------------------------------ Enums definitions ------------------------------
 enum Buttons {
@@ -111,6 +111,61 @@ const int COLLECTED_MONEY   = 1;
 const int COLLECTED_PIGGY   = 10;
 const int COLLECTED_SUPER   = 30;
 const int TOP_FIVE          = 5;
+const int BUTTON_NUM = 8;
+const int BUTTON_NUM_DIV_TWO = 4;
+const int DIV_TWO = 2;
+const int THIRD = 3;
+const int ZERO = 0;
+const int FIRST = 1;
+const int SECOND = 2;
+const int FOUR = 4;
+const int SIX = 6;
+const int SEVEN = 7;
+const int TEN = 10;
+const int TWENTY = 20;
+const int TWENTY_SIX = 26;
+const int EIGHTY = 80;
+const int HUNDRED = 100;
+const int ONE_TWENY_EIGHT = 128;
+const int ONE_FIFTHY = 150;
+const int ONE_EIGHTY_INT = 180;
+const int TWO_HUNDRED = 200;
+const int THREE_HUNDRED = 300;
+const int TWO_FIFTHY_FIVE = 255;
+const float TWO_POINT_O = 2.0;
+const float ONE_POINT_FIVE = 1.5;
+const float ONE_POINT_ZERO = 1.0;
+const float ONE_POINT_TWO = 1.2;
+const float ONE_POINT_THIRTY_FIVE = 1.35;
+const float ZERO_POINT_FIVE = 0.5;
+const float ZERO_POINT_ONE_TWO = 0.12;
+const float ONE_EIGHTY = 180.0;
+const float NINETY = 90.0;
+const float TWO_SEVENTY = 270.0;
+const float THREE_SIXTY = 360.0;
+const float ZERO_POINT_TWO_TWO = 0.22;
+const float ZERO_POINT_ZERO_TWO = 0.02;
+const float ZERO_POINT_ONE = 0.1;
+const float FIVE_F = 5;
+const float THREE_F = 3;
+const float FOUR_F = 4;
+const float ONE_POINT_EIGHT = 1.8;
+const float ONE_POINT_ONE_EIGHT = 1.18;
+const float ZERO_POINT_EIGHT = 0.8;
+const float ZERO_POINT_THREE = 0.3;
+const float ZERO_POINT_SEVEN = 0.7;
+const float ZERO_POINT__ONE_EIGHT = 0.18;
+const float ONE_POINT_TWO_EIGHT = 1.28;
+
+
+
+
+
+
+
+
+
+
 
 //Double:
 const double PI             = 3.14159265358;

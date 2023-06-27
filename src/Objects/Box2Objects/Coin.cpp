@@ -2,11 +2,11 @@
 
 Coin::Coin(sf::Texture* texture, const sf::Vector2f& position, b2World* world, float scale, int type)
         :Box2Object(texture, position, type), m_scale(scale) {
-    setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(8, 1), 0.1f);
+    setAnimate(ResourcesManager::instance().getCoin(), sf::Vector2u(BUTTON_NUM, FIRST), ZERO_POINT_ONE);
     if (type == B2StaticCoin) {
         create(world, b2_staticBody);
     } else if (type == B2DynamicCoin) {
-        m_object.setOrigin(m_object.getTextureRect().width/2, m_object.getTextureRect().height);
+        m_object.setOrigin(m_object.getTextureRect().width/DIV_TWO, m_object.getTextureRect().height);
         create(world, b2_dynamicBody);
     }
 }
@@ -20,16 +20,16 @@ void Coin::create(b2World* world, b2BodyType bodyType) {
     m_body = world->CreateBody(&bodyDef);
 
     b2CircleShape shape;
-    shape.m_p.Set(0, 0);
-    shape.m_radius = 0.1f;
+    shape.m_p.Set(ZERO, ZERO);
+    shape.m_radius = ZERO_POINT_ONE;
 
     //FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 0.5f;
+    fixtureDef.density = ZERO_POINT_FIVE;
     fixtureDef.friction = FRICTION;
-    fixtureDef.restitution = 1.f; //Add the restitution property
+    fixtureDef.restitution = ONE_POINT_ZERO; //Add the restitution property
     m_body->CreateFixture(&fixtureDef);
 
     b2MassData mass;
@@ -47,10 +47,10 @@ void Coin::move(float time) {
     //Function to handle coin movement
     if (m_body->GetType() == b2_dynamicBody) {
         b2Vec2 bodyVelocity = m_body->GetLinearVelocity();
-        if (m_scale >= 4.f) {
+        if (m_scale >= FOUR_F) {
             bodyVelocity.x = -time * m_scale;
         } else {
-            bodyVelocity.x = -4 * time * m_scale;
+            bodyVelocity.x = -FOUR * time * m_scale;
         }
         m_body->SetLinearVelocity(bodyVelocity);
         b2Vec2 bodyPosition = m_body->GetPosition();
@@ -67,7 +67,7 @@ void Coin::updateCollisionTime(float time) {
     if (m_collided) {
         m_collisionTime += time;
     }
-    if ((m_collisionTime >= 0.1f && m_body->GetType() == b2_dynamicBody) || (m_collisionTime >= 0.3f && m_body->GetType() == b2_staticBody)) {
+    if ((m_collisionTime >= 0.1f && m_body->GetType() == b2_dynamicBody) || (m_collisionTime >= ZERO_POINT_THREE && m_body->GetType() == b2_staticBody)) {
         m_isDelete = true;
     }
 }

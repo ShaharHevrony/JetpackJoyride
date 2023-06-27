@@ -31,9 +31,9 @@ std::vector<std::unique_ptr<Object>> Event::createFallingCoins() {
     b2World* world = PlayerStateManager::instance().getWorld();
     int random;
     srand(time(nullptr));
-    for (int index = 0; index <= 80; index++) {
-        position.x += index / 4;
-        random = (rand() % 8) + 1;
+    for (int index = 0; index <= EIGHTY; index++) {
+        position.x += index / FOUR;
+        random = (rand() % BUTTON_NUM) + FIRST;
         // Create a falling coin object and add it to the vector.
         fallingCoins.push_back(std::make_unique<Coin>(ResourcesManager::instance().getCoin(), position, world, random, B2DynamicCoin));
     }

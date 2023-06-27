@@ -2,8 +2,8 @@
 
 Beam::Beam(sf::Texture* texture, const sf::Vector2f& position, float rotate, float distance) : Object(texture, position) {
     // Constructor
-    m_animation.setAnimation(texture, sf::Vector2u(4, 1), 0.18f);
-    m_object.setOrigin(m_object.getTextureRect().width / 2, 1.f);
+    m_animation.setAnimation(texture, sf::Vector2u(BUTTON_NUM_DIV_TWO, FIRST), ZERO_POINT__ONE_EIGHT);
+    m_object.setOrigin(m_object.getTextureRect().width / SECOND, ONE_POINT_ZERO);
     m_object.setRotation(rotate);
     calculatePoints(distance);
 }
@@ -11,10 +11,10 @@ Beam::Beam(sf::Texture* texture, const sf::Vector2f& position, float rotate, flo
 void Beam::calculatePoints(float distance) {
     // Function to calculate the points along the beam
     float size = std::min(ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular)->getSize().x,
-        ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular)->getSize().y) * 0.8 / PLAYER_SCALE;
-    int numOfCircle = (distance / size) + 1;
-    float radius = WINDOW_HEIGHT * 0.02;
-    float angleRadians = (m_object.getRotation() + 90.f) * (PI / 180.0f);
+        ResourcesManager::instance().getPlayerStates(GameManager::instance().getCharacter(), Regular)->getSize().y) * ZERO_POINT_EIGHT / PLAYER_SCALE;
+    int numOfCircle = (distance / size) + FIRST;
+    float radius = WINDOW_HEIGHT * ZERO_POINT_ZERO_TWO;
+    float angleRadians = (m_object.getRotation() + NINETY) * (PI / ONE_EIGHTY);
     sf::Vector2f currentPosition = m_object.getPosition();
 
     for (int count = 0; count < numOfCircle; count++) {

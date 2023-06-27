@@ -33,19 +33,19 @@ void NonCollisionObject::handleCollision(Player& player) {
 
 //---------------------------------------- Flame ----------------------------------------
 Flame::Flame(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.1f);
+    m_animation.setAnimation(texture, sf::Vector2u(SIX, FIRST), ZERO_POINT_ONE);
 }
 
 //Function to move the flame
 void Flame::move(float time) {
-    float flamePosX = PlayerStateManager::instance().getPosition().x - PlayerStateManager::instance().getOrigin().x/2;
-    float flamePosY = PlayerStateManager::instance().getPosition().y + PlayerStateManager::instance().getOrigin().y/2;
+    float flamePosX = PlayerStateManager::instance().getPosition().x - PlayerStateManager::instance().getOrigin().x/DIV_TWO;
+    float flamePosY = PlayerStateManager::instance().getPosition().y + PlayerStateManager::instance().getOrigin().y/DIV_TWO;
     m_object.setPosition(sf::Vector2f(flamePosX, flamePosY));
 }
 
 //---------------------------------------- Lights ---------------------------------------
 Light::Light(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(6, 1), 0.12f);
+    m_animation.setAnimation(texture, sf::Vector2u(SIX, FIRST), ZERO_POINT_ONE_TWO);
 }
 
 //Function to move the light
@@ -55,7 +55,7 @@ void Light::move(float time) {
 
 //-------------------------------------- Scientist --------------------------------------
 Scientist::Scientist(sf::Texture* texture, const sf::Vector2f& position) : NonCollisionObject(texture, position) {
-    m_animation.setAnimation(texture, sf::Vector2u(3, 1), 0.22f);
+    m_animation.setAnimation(texture, sf::Vector2u(THIRD, FIRST), ZERO_POINT_TWO_TWO);
 }
 
 //Function to move the scientist

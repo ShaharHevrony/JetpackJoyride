@@ -19,17 +19,17 @@ void Player::create(b2World* world, b2BodyType bodyType) {
     b2BodyDef bodyDef;
     bodyDef.type = bodyType;
     bodyDef.position.Set(m_object.getPosition().x, m_object.getPosition().y);
-    bodyDef.angularDamping = 1.f;
+    bodyDef.angularDamping = ONE_POINT_ZERO;
     m_body = world->CreateBody(&bodyDef); //Create the Box2D body in the specified world
 
     b2PolygonShape shape;
-    shape.SetAsBox(m_object.getTextureRect().width / 8, m_object.getTextureRect().height / 8); //Set the shape of the Box2D body as a box
+    shape.SetAsBox(m_object.getTextureRect().width / BUTTON_NUM, m_object.getTextureRect().height / BUTTON_NUM); //Set the shape of the Box2D body as a box
 
     //FixtureDef
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = false;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 0.3f;
+    fixtureDef.density = ZERO_POINT_THREE;
     fixtureDef.friction = FRICTION;
     m_body->CreateFixture(&fixtureDef); // Attach the fixture to the Box2D body
 
@@ -58,7 +58,7 @@ void Player::handleCollision(Object& object) {
 void Player::handleCollision(Laser& laser) {
     if (laser.getShape().getGlobalBounds().intersects(m_object.getGlobalBounds())) {
         //Collision between Player and Laser detected
-        float obstacleTime = 0.7f;
+        float obstacleTime = ZERO_POINT_SEVEN;
         PlayerStateManager::instance().handleCollisionByState(obstacleTime); //Handle collision based on player state
         m_ZapperSound.play();                                                //Play the Zapper sound effect
     }
@@ -69,7 +69,7 @@ void Player::handleCollision(Beam& beam) {
     for (auto circle : beamsCircles) {
         if (circle.getGlobalBounds().intersects(m_object.getGlobalBounds())) {
             //Collision between Player and Beam detected
-            float beamTime = 1.f;
+            float beamTime = ONE_POINT_ZERO;
             PlayerStateManager::instance().handleCollisionByState(beamTime); //Handle collision based on player state
             m_ZapperSound.play();                                            //Play the Zapper sound effect
         }
@@ -90,7 +90,7 @@ void Player::handleCollision(Coin& coin) {
     if (coin.getObject().getGlobalBounds().intersects(getObject().getGlobalBounds()) && !coin.getCollided()) {
         //Collision between Player and Coin detected
         coin.setCollided(); //Mark the Coin as collided
-        coin.setAnimate(ResourcesManager::instance().getGlitter(), sf::Vector2u(3, 1), 0.1f); //Set animation for the Coin
+        coin.setAnimate(ResourcesManager::instance().getGlitter(), sf::Vector2u(THIRD, FIRST), ZERO_POINT_ONE); //Set animation for the Coin
         Event event = Event(CollectedMoney, COLLECTED_MONEY);
         EventsQueue::instance().push(event); //Push an event to the event queue
         m_CoinCollect.play();                //Play the Coin Collect sound effect

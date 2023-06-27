@@ -24,6 +24,6 @@ private:
     static std::string time;
     static int best;
 
-    std::stringstream m_str[3];     // StringStream objects used for formatting text
-    sf::Text m_scoreBoard[3];       // Array of Text objects representing the scoreboard
+    std::stringstream m_str[THIRD];     // StringStream objects used for formatting text
+    sf::Text m_scoreBoard[THIRD];       // Array of Text objects representing the scoreboard
 };

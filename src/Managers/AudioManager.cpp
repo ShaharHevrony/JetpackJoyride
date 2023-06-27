@@ -9,7 +9,7 @@ void AudioManager::create(int index) {
     sf::Vector2f position = sf::Vector2f(WIDTH_CENTER / 6, HEIGHT_CENTER / 6);
 
     //Calculate start and end positions based on the index
-    if (index == 2) {
+    if (index == SECOND) {
         m_start = sf::Vector2f(WIDTH_CENTER - 3.5f * position.x, HEIGHT_CENTER + index * position.y);
         m_end = sf::Vector2f(WIDTH_CENTER - position.x, HEIGHT_CENTER + index * position.y);
     } else if (index == 1) {
@@ -28,10 +28,10 @@ void AudioManager::create(int index) {
     //Set properties of the type text:
     m_type = sf::Text("", ResourcesManager::instance().getFont(), SETTING_SIZE);
     m_type.setPosition(WIDTH_CENTER, m_start.y - position.y);
-    m_type.setOrigin(WIDTH_CENTER / 10, (SETTING_CIRCLE - SETTING_SIZE) / 2);
+    m_type.setOrigin(WIDTH_CENTER / TEN, (SETTING_CIRCLE - SETTING_SIZE) / SECOND);
     m_type.setFillColor(sf::Color::White);
     m_type.setOutlineColor(sf::Color::Black);
-    m_type.setOutlineThickness(5.f);
+    m_type.setOutlineThickness(FIVE_F);
     volumeToPosition(); //Adjust the circle position based on the volume value
 }
 
@@ -60,16 +60,16 @@ float AudioManager::positionToVolume() {
     sf::Vector2f circleVector = m_circle.getPosition() - m_start;
     float circleDistance = std::sqrt(circleVector.x * circleVector.x + circleVector.y * circleVector.y);
     //Calculate the volume based on the circle's distance from the start and the line length
-    m_volume = (circleDistance / lineLength) * 100;
+    m_volume = (circleDistance / lineLength) * HUNDRED;
     return m_volume;
 }
 
 void AudioManager::volumeToPosition() {
     //Clamp the volume value between 0 and 100
-    m_volume = std::max(0, std::min(m_volume, 100));
+    m_volume = std::max(ZERO, std::min(m_volume, HUNDRED));
 
     //Calculate the line length and the distance based on the volume
-    float lineLength = std::sqrt(std::pow(m_end.x - m_start.x, 2) + std::pow(m_end.y - m_start.y, 2));
+    float lineLength = std::sqrt(std::pow(m_end.x - m_start.x, SECOND) + std::pow(m_end.y - m_start.y, SECOND));
     float distance = (m_volume / 100.f) * lineLength;
 
     //Calculate the new position along the line based on the distance

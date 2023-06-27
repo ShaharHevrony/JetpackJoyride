@@ -2,8 +2,8 @@
 
 Laser::Laser(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
     // Constructor
-    m_object.setOrigin(m_object.getTextureRect().width / 2, m_object.getTextureRect().height / 2);
-    float radius = WINDOW_HEIGHT * 0.02;
+    m_object.setOrigin(m_object.getTextureRect().width / DIV_TWO, m_object.getTextureRect().height / DIV_TWO);
+    float radius = WINDOW_HEIGHT * ZERO_POINT_ZERO_TWO;
     m_laserShape.setRadius(radius);
     m_laserShape.setPosition(m_object.getPosition());
     m_laserShape.setOrigin(radius, radius);
@@ -11,11 +11,11 @@ Laser::Laser(sf::Texture* texture, const sf::Vector2f& position) : Object(textur
 
 float Laser::calculateAngle(sf::Vector2f otherPosition) {
     // Function to calculate the angle between the laser and another position
-    sf::Vector2f midpoint = (m_object.getPosition() + otherPosition) * 0.5f;
+    sf::Vector2f midpoint = (m_object.getPosition() + otherPosition) * ZERO_POINT_FIVE;
     sf::Vector2f delta = m_object.getPosition() - midpoint;
     float angleRadians = std::atan2(delta.y, delta.x);
-    float angleDegrees = angleRadians * (180.0f / PI) + 270.f;
-    angleDegrees = std::fmod(angleDegrees, 360.0f);
+    float angleDegrees = angleRadians * (ONE_EIGHTY / PI) + TWO_SEVENTY;
+    angleDegrees = std::fmod(angleDegrees, THREE_SIXTY);
     m_object.setRotation(angleDegrees);
     return angleDegrees;
 }

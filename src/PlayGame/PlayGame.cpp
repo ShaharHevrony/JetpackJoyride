@@ -23,7 +23,7 @@ void PlayGame::create() {
     m_board.setBackgrounds();
     m_settingButton.setTexture(*ResourcesManager::instance().getGameSetting());
     m_settingButton.setPosition(GAME_SETTING_X, GAME_SETTING_Y);
-    m_settingButton.setOrigin(m_settingButton.getTexture()->getSize().x / 2, m_settingButton.getTexture()->getSize().y / 2);
+    m_settingButton.setOrigin(m_settingButton.getTexture()->getSize().x / DIV_TWO, m_settingButton.getTexture()->getSize().y / DIV_TWO);
     m_settingButton.setScale(OBJECT_SCALE, OBJECT_SCALE);
     checkIfNeedToClear();
 }
@@ -102,7 +102,7 @@ void PlayGame::run() {
             if (PlayerStateManager::instance().getState() == GameOver) { //Check if the game is over
                 // Check the elapsed time since game over and restart the game if necessary
                 sf::Time elapsed = m_settingTimer.getElapsedTime();
-                if (elapsed.asSeconds() >= 2.0) {
+                if (elapsed.asSeconds() >= TWO_POINT_O) {
                     GameManager::instance().checkPotentialBest(m_scoreBoard.getScore());
                     GameManager::instance().setCollectedSum(m_scoreBoard.getScore());
                     m_scoreBoard.setScore();
@@ -135,19 +135,19 @@ void PlayGame::createObjectMap() {
                     //Create a Laser object and add it to the paired objects container
                     m_pairedObj.push_back(std::make_unique<Laser>(ResourcesManager::instance().getLaser(), position));
                     //Check if the number of paired objects is even
-                    if (m_pairedObj.size() % 2 == 0) {
+                    if (m_pairedObj.size() % DIV_TWO == ZERO) {
                         //Get the position of the previous laser object
-                        sf::Vector2f otherPosition = m_pairedObj[m_pairedObj.size() - 2]->getObject().getPosition();
+                        sf::Vector2f otherPosition = m_pairedObj[m_pairedObj.size() - DIV_TWO]->getObject().getPosition();
                         //Calculate the angle between the current and previous laser objects
-                        m_pairedObj[m_pairedObj.size() - 1]->calculateAngle(otherPosition);
+                        m_pairedObj[m_pairedObj.size() - FIRST]->calculateAngle(otherPosition);
                         //Calculate the distance between the current and previous laser objects
-                        float distance = m_pairedObj[m_pairedObj.size() - 2]->calculateDistance(position);
+                        float distance = m_pairedObj[m_pairedObj.size() - DIV_TWO]->calculateDistance(position);
                         //Calculate the angle between the current and previous laser objects
-                        float angle = m_pairedObj[m_pairedObj.size() - 2]->calculateAngle(position);
+                        float angle = m_pairedObj[m_pairedObj.size() - DIV_TWO]->calculateAngle(position);
                         //Create a Beam object and add it to the single objects container
                         m_singleObj.push_back(std::make_unique<Beam>(ResourcesManager::instance().getLasersBeam(), position, angle,distance));
                         //Set the scale of the Beam object
-                        m_singleObj[m_singleObj.size() - 1]->getObject().setScale(OBJECT_SCALE, distance/ResourcesManager::instance().getLasersBeam()->getSize().y);
+                        m_singleObj[m_singleObj.size() - FIRST]->getObject().setScale(OBJECT_SCALE, distance/ResourcesManager::instance().getLasersBeam()->getSize().y);
                     }
                     break;
                 }
@@ -227,7 +227,7 @@ void PlayGame::animateObj() {
 
     //Animate the paired objects (except for the last object if the number of paired objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - 1] || m_pairedObj.size() % 2 == 0) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
             pairedObj->animate();
         }
     }
@@ -260,7 +260,7 @@ void PlayGame::moveObj() {
 
     //Move the paired objects (except for the last object if the number of paired objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - 1] || m_pairedObj.size() % 2 == 0) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
             pairedObj->move(movement);
             //Update the lastObjectX if the x position of the object is greater than the current lastObjectX
             if (pairedObj->getObject().getPosition().x >= m_lastObjectX) {
@@ -434,7 +434,7 @@ void PlayGame::draw() {
     }
     //Draw paired objects (except the last one if the number of objects is even)
     for (auto& pairedObj : m_pairedObj) {
-        if (pairedObj != m_pairedObj[m_pairedObj.size() - 1] || m_pairedObj.size() % 2 == 0) {
+        if (pairedObj != m_pairedObj[m_pairedObj.size() - FIRST] || m_pairedObj.size() % DIV_TWO == ZERO) {
             pairedObj->draw(m_window);
         }
     }

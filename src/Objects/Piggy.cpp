@@ -2,8 +2,8 @@
 
 Piggy::Piggy(sf::Texture* texture, const sf::Vector2f& position) : Object(texture, position) {
     // Constructor
-    m_animation.setAnimation(texture, sf::Vector2u(1, 1), 0.18f);
-    m_object.setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
+    m_animation.setAnimation(texture, sf::Vector2u(FIRST, FIRST), ZERO_POINT__ONE_EIGHT);
+    m_object.setOrigin(texture->getSize().x / DIV_TWO, texture->getSize().y / DIV_TWO);
 }
 
 void Piggy::move(float time) {

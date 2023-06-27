@@ -11,7 +11,7 @@ ScoreBoard::ScoreBoard() {
     // Constructor for the ScoreBoard class
     // Resets the clock and initializes score and best values
     clock.restart().asSeconds();
-    score = 0;
+    score = ZERO;
     best = GameManager::instance().getBest();
 }
 
@@ -27,9 +27,9 @@ void ScoreBoard::draw(sf::RenderWindow* window) {
         m_str[i].str("");
     }
     setTime();
-    m_str[0] << score;
-    m_str[1] << time;
-    m_str[2] << best;
+    m_str[ZERO] << score;
+    m_str[FIRST] << time;
+    m_str[SECOND] << best;
 
     for (int board = 0; board < scoreBoard.size(); board++) {
         m_scoreBoard[board] = sf::Text(scoreBoard[board] + m_str[board].str().c_str(),
@@ -47,7 +47,7 @@ int ScoreBoard::getScore() const {
 
 void ScoreBoard::setScore() {
     // Function to reset the score value to 0
-    score = 0;
+    score = ZERO;
 }
 
 void ScoreBoard::setTime() {
@@ -56,7 +56,7 @@ void ScoreBoard::setTime() {
     if (PlayerStateManager::instance().getState() != DeadPlayer &&
         PlayerStateManager::instance().getState() != GameOver) {
         int elapse = round(clock.getElapsedTime().asSeconds());
-        int minute = 0;
+        int minute = ZERO;
         while (elapse >= MINUTE) {
             minute++;
             elapse -= MINUTE;
